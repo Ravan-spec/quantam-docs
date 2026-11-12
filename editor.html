@@ -302,7 +302,7 @@ button.danger{color:#b42318}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-
+<script src="./js/image-tools.js"></script>
 <script>
 (() => {
 'use strict';
@@ -730,7 +730,9 @@ async function init(){
    docs.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
    await openDocument(docs[0].id);
   }
-
+  
+window.QUANTAM_IMAGE_MANAGER.create(quill, scheduleSave);
+  
   quill.on('text-change',scheduleSave);
   $('docTitle').addEventListener('input',scheduleSave);
   $('folderSelect').addEventListener('change',scheduleSave);
