@@ -8,160 +8,40 @@
 <title>QUANTAM DOCS Editor</title>
 
 <style>
-*{
- margin:0;
- padding:0;
- box-sizing:border-box;
-}
-
-body{
- font-family:Arial,sans-serif;
- background:#eef1f6;
- color:#202b3d;
-}
-
-.topbar{
- height:62px;
- background:#10172a;
- color:white;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 20px;
- gap:10px;
-}
-
-.brand{
- font-size:19px;
- font-weight:bold;
-}
-
-.brand span{color:#5796ff;}
-
-.top-actions{
- display:flex;
- align-items:center;
- gap:10px;
-}
-
-.top-actions button{
- padding:9px 13px;
- border:0;
- border-radius:6px;
- cursor:pointer;
-}
-
-.save{
- background:#2868ed;
- color:white;
-}
-
-.back{
- background:#273654;
- color:white;
-}
-
-.titlebar{
- background:white;
- padding:12px 20px;
- border-bottom:1px solid #ddd;
-}
-
-.titlebar input{
- width:100%;
- max-width:450px;
- border:0;
- outline:0;
- font-size:17px;
- font-weight:bold;
-}
-
-.toolbar{
- background:#fff;
- padding:12px;
- display:flex;
- flex-wrap:wrap;
- align-items:center;
- gap:7px;
- border-bottom:1px solid #dce1e9;
- position:sticky;
- top:0;
- z-index:5;
-}
-
-.toolbar button,
-.toolbar select,
-.toolbar input{
- height:34px;
- min-width:34px;
- border:1px solid #d9dfeb;
- border-radius:5px;
- background:white;
- padding:5px 8px;
- cursor:pointer;
-}
-
-.toolbar button:hover{
- background:#eaf1ff;
-}
-
-.toolbar input[type=color]{
- width:40px;
- padding:3px;
-}
-
-.workspace{
- padding:30px 15px;
- display:flex;
- justify-content:center;
- min-height:calc(100vh - 160px);
-}
-
-.page{
- width:816px;
- min-height:1056px;
- background:white;
- padding:75px 80px;
- box-shadow:0 3px 18px rgba(0,0,0,.09);
- outline:none;
- font-family:Arial,sans-serif;
- font-size:16px;
- line-height:1.6;
- overflow-wrap:anywhere;
-}
-
-.page:empty:before{
- content:"Start typing your document here...";
- color:#adb5c3;
- pointer-events:none;
-}
-
-.statusbar{
- position:fixed;
- bottom:0;
- left:0;
- width:100%;
- height:30px;
- background:#10172a;
- color:#cbd5e5;
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:0 15px;
- font-size:11px;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#eef1f6;color:#202b3d}
+.topbar{min-height:62px;background:#10172a;color:white;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;gap:10px}
+.brand{font-size:19px;font-weight:bold}
+.brand span{color:#5796ff}
+.top-actions{display:flex;gap:8px}
+button,select,input{font:inherit}
+.top-actions button,.toolbar button{padding:9px 12px;border:1px solid #d9dfeb;border-radius:6px;cursor:pointer}
+.top-actions button{background:#273654;color:white;border:0}
+.top-actions .save{background:#2868ed}
+.titlebar{background:white;padding:12px 18px;border-bottom:1px solid #ddd}
+.titlebar input{width:100%;max-width:500px;border:0;outline:0;font-size:18px;font-weight:bold}
+.toolbar{background:white;padding:10px;display:flex;flex-wrap:wrap;align-items:center;gap:7px;border-bottom:1px solid #dce1e9;position:sticky;top:0;z-index:5}
+.toolbar button,.toolbar select,.toolbar input{height:36px;min-width:36px;border:1px solid #d9dfeb;border-radius:5px;background:white;padding:5px 8px;cursor:pointer}
+.toolbar button:hover{background:#eaf1ff}
+.toolbar input[type=color]{width:42px;padding:3px}
+.toolbar button.active{background:#dbeafe;border-color:#60a5fa}
+.workspace{padding:25px 12px 55px;display:flex;justify-content:center;min-height:calc(100vh - 160px)}
+.page{width:816px;max-width:100%;min-height:1056px;background:white;padding:75px 80px;box-shadow:0 3px 18px #00000012;outline:none;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;overflow-wrap:anywhere}
+.page:empty:before{content:"Start typing your document here...";color:#adb5c3;pointer-events:none}
+.page img{max-width:100%;height:auto}
+.page h1{font-size:2em}
+.page h2{font-size:1.5em}
+.page h3{font-size:1.17em}
+.page ul,.page ol{padding-left:30px}
+.statusbar{position:fixed;bottom:0;left:0;width:100%;height:30px;background:#10172a;color:#cbd5e5;display:flex;justify-content:space-between;align-items:center;padding:0 15px;font-size:11px;z-index:10}
 @media(max-width:600px){
- .topbar{padding:0 10px;}
- .brand{font-size:16px;}
- .top-actions button{padding:8px;}
- .toolbar{gap:5px;padding:8px;}
- .workspace{padding:12px 5px 40px;}
- .page{
-  width:100%;
-  min-height:750px;
-  padding:35px 22px;
- }
+.topbar{padding:10px}
+.brand{font-size:15px}
+.top-actions button{padding:8px}
+.toolbar{gap:5px;padding:7px}
+.toolbar button,.toolbar select{font-size:13px}
+.workspace{padding:10px 5px 45px}
+.page{min-height:750px;padding:35px 22px}
 }
 </style>
 </head>
@@ -169,192 +49,282 @@ body{
 <body>
 
 <header class="topbar">
- <div class="brand">QUANTAM <span>DOCS</span></div>
-
- <div class="top-actions">
-  <button class="back" onclick="location.href='index.html'">
-   Home
-  </button>
-  <button class="save" onclick="saveDocument()">
-   Save
-  </button>
- </div>
+  <div class="brand">QUANTAM <span>DOCS</span></div>
+  <div class="top-actions">
+    <button type="button" onclick="goHome()">Home</button>
+    <button type="button" class="save" onclick="saveDocument()">Save</button>
+  </div>
 </header>
 
 <div class="titlebar">
- <input id="docTitle" value="Untitled Document"
- placeholder="Document Name">
+  <input id="docTitle" value="Untitled Document" placeholder="Document Name">
 </div>
 
 <div class="toolbar">
+  <button type="button" data-cmd="undo" title="Undo">↶</button>
+  <button type="button" data-cmd="redo" title="Redo">↷</button>
 
- <button onclick="command('undo')" title="Undo">↶</button>
- <button onclick="command('redo')" title="Redo">↷</button>
+  <select id="fontFamily" title="Font">
+    <option value="Arial">Arial</option>
+    <option value="Times New Roman">Times New Roman</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Verdana">Verdana</option>
+    <option value="Courier New">Courier New</option>
+  </select>
 
- <select onchange="changeFont(this.value)">
-  <option value="Arial">Arial</option>
-  <option value="Times New Roman">Times New Roman</option>
-  <option value="Georgia">Georgia</option>
-  <option value="Verdana">Verdana</option>
-  <option value="Courier New">Courier New</option>
- </select>
+  <select id="fontSize" title="Font Size">
+    <option value="3">12</option>
+    <option value="4" selected>14</option>
+    <option value="5">18</option>
+    <option value="6">24</option>
+    <option value="7">36</option>
+  </select>
 
- <select onchange="changeSize(this.value)">
-  <option value="3">12</option>
-  <option value="4" selected>14</option>
-  <option value="5">18</option>
-  <option value="6">24</option>
-  <option value="7">36</option>
- </select>
+  <button type="button" data-cmd="bold"><b>B</b></button>
+  <button type="button" data-cmd="italic"><i>I</i></button>
+  <button type="button" data-cmd="underline"><u>U</u></button>
 
- <button onclick="command('bold')"><b>B</b></button>
- <button onclick="command('italic')"><i>I</i></button>
- <button onclick="command('underline')"><u>U</u></button>
+  <input type="color" id="textColor" value="#000000" title="Text Colour">
 
- <input type="color" value="#000000"
- onchange="changeColor(this.value)" title="Text Color">
+  <button type="button" data-cmd="justifyLeft">Left</button>
+  <button type="button" data-cmd="justifyCenter">Center</button>
+  <button type="button" data-cmd="justifyRight">Right</button>
 
- <button onclick="command('justifyLeft')">≡</button>
- <button onclick="command('justifyCenter')">☰</button>
- <button onclick="command('justifyRight')">≣</button>
+  <button type="button" data-cmd="insertUnorderedList">• List</button>
+  <button type="button" data-cmd="insertOrderedList">1. List</button>
 
- <button onclick="command('insertUnorderedList')">• List</button>
- <button onclick="command('insertOrderedList')">1. List</button>
+  <select id="heading" title="Text Style">
+    <option value="P">Normal Text</option>
+    <option value="H1">Heading 1</option>
+    <option value="H2">Heading 2</option>
+    <option value="H3">Heading 3</option>
+  </select>
 
- <select onchange="changeHeading(this.value)">
-  <option value="P">Normal Text</option>
-  <option value="H1">Heading 1</option>
-  <option value="H2">Heading 2</option>
-  <option value="H3">Heading 3</option>
- </select>
-
- <button onclick="insertLink()">Link</button>
- <button onclick="insertImage()">Image</button>
-
+  <button type="button" id="linkButton">Link</button>
+  <button type="button" id="imageButton">Image</button>
+  <button type="button" id="clearButton">Clear Format</button>
 </div>
 
 <main class="workspace">
-
- <div
-  class="page"
-  id="editor"
-  contenteditable="true"
-  spellcheck="true"
- >
- </div>
-
+  <div class="page" id="editor" contenteditable="true" spellcheck="true"></div>
 </main>
 
+<input type="file" id="imageInput" accept="image/*" hidden>
+
 <div class="statusbar">
- <span id="wordCount">Words: 0</span>
- <span id="saveStatus">Ready</span>
+  <span id="wordCount">Words: 0</span>
+  <span id="saveStatus">Ready</span>
 </div>
 
 <script>
 const editor = document.getElementById("editor");
 const titleInput = document.getElementById("docTitle");
+const saveStatus = document.getElementById("saveStatus");
 
-function command(name){
- editor.focus();
- document.execCommand(name,false,null);
+let savedRange = null;
+let statusTimer = null;
+
+function rememberSelection(){
+  const selection = window.getSelection();
+
+  if(selection && selection.rangeCount){
+    const range = selection.getRangeAt(0);
+
+    if(editor.contains(range.commonAncestorContainer)){
+      savedRange = range.cloneRange();
+    }
+  }
 }
 
-function changeFont(font){
- editor.focus();
- document.execCommand("fontName",false,font);
-}
+document.addEventListener("selectionchange", rememberSelection);
 
-function changeSize(size){
- editor.focus();
- document.execCommand("fontSize",false,size);
-}
-
-function changeColor(color){
- editor.focus();
- document.execCommand("foreColor",false,color);
-}
-
-function changeHeading(value){
- editor.focus();
- document.execCommand("formatBlock",false,value);
-}
-
-function insertLink(){
- const url=prompt("Enter link URL:");
- if(url){
+function restoreSelection(){
   editor.focus();
-  document.execCommand("createLink",false,url);
- }
+
+  if(savedRange){
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(savedRange);
+  }
 }
 
-function insertImage(){
- const input=document.createElement("input");
- input.type="file";
- input.accept="image/*";
+function updateSavedRange(){
+  rememberSelection();
+}
 
- input.onchange=function(){
-  const file=input.files[0];
+function runCommand(command, value=null){
+  restoreSelection();
+
+  try{
+    document.execCommand(command,false,value);
+    updateSavedRange();
+    updateCount();
+    markUnsaved();
+  }catch(error){
+    console.error("Formatting error:",error);
+    saveStatus.textContent="Formatting failed";
+  }
+}
+
+document.querySelectorAll("[data-cmd]").forEach(button=>{
+  button.addEventListener("mousedown",event=>event.preventDefault());
+
+  button.addEventListener("click",()=>{
+    runCommand(button.dataset.cmd);
+  });
+});
+
+document.getElementById("fontFamily").addEventListener("change",function(){
+  runCommand("fontName",this.value);
+});
+
+document.getElementById("fontSize").addEventListener("change",function(){
+  runCommand("fontSize",this.value);
+});
+
+document.getElementById("textColor").addEventListener("input",function(){
+  runCommand("foreColor",this.value);
+});
+
+document.getElementById("heading").addEventListener("change",function(){
+  runCommand("formatBlock","<"+this.value+">");
+});
+
+document.getElementById("linkButton").addEventListener("mousedown",event=>{
+  event.preventDefault();
+});
+
+document.getElementById("linkButton").addEventListener("click",()=>{
+  const url=prompt("Enter link URL:");
+
+  if(!url)return;
+
+  if(!/^https?:\/\//i.test(url)){
+    alert("Please enter a valid URL starting with https:// or http://");
+    return;
+  }
+
+  runCommand("createLink",url);
+});
+
+document.getElementById("imageButton").addEventListener("mousedown",event=>{
+  event.preventDefault();
+});
+
+document.getElementById("imageButton").addEventListener("click",()=>{
+  document.getElementById("imageInput").click();
+});
+
+document.getElementById("imageInput").addEventListener("change",function(){
+  const file=this.files[0];
   if(!file)return;
+
+  if(!file.type.startsWith("image/")){
+    alert("Please select an image file.");
+    return;
+  }
 
   const reader=new FileReader();
 
-  reader.onload=function(){
-   editor.focus();
-   document.execCommand(
-    "insertImage",false,reader.result
-   );
+  reader.onload=()=>{
+    restoreSelection();
+
+    const image=document.createElement("img");
+    image.src=reader.result;
+    image.alt=file.name;
+    image.style.maxWidth="100%";
+
+    const selection=window.getSelection();
+
+    if(selection && selection.rangeCount){
+      const range=selection.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(image);
+      range.setStartAfter(image);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      savedRange=range.cloneRange();
+    }else{
+      editor.appendChild(image);
+    }
+
+    updateCount();
+    markUnsaved();
   };
 
   reader.readAsDataURL(file);
- };
-
- input.click();
-}
-
-function updateCount(){
- const text=editor.innerText.trim();
- const words=text?text.split(/\s+/).length:0;
-
- document.getElementById("wordCount").textContent=
- "Words: "+words;
-}
-
-editor.addEventListener("input",function(){
- updateCount();
- document.getElementById("saveStatus").textContent=
- "Unsaved changes";
+  this.value="";
 });
 
+document.getElementById("clearButton").addEventListener("mousedown",event=>{
+  event.preventDefault();
+});
+
+document.getElementById("clearButton").addEventListener("click",()=>{
+  runCommand("removeFormat");
+});
+
+function updateCount(){
+  const text=editor.innerText.trim();
+  const words=text ? text.split(/\s+/).length : 0;
+  document.getElementById("wordCount").textContent="Words: "+words;
+}
+
+function markUnsaved(){
+  saveStatus.textContent="Unsaved changes";
+  clearTimeout(statusTimer);
+  statusTimer=setTimeout(()=>{
+    if(saveStatus.textContent==="Unsaved changes"){
+      saveStatus.textContent="Ready to save";
+    }
+  },1500);
+}
+
+editor.addEventListener("input",()=>{
+  updateCount();
+  markUnsaved();
+  rememberSelection();
+});
+
+titleInput.addEventListener("input",markUnsaved);
+
 function saveDocument(){
- const data={
-  title:titleInput.value,
-  content:editor.innerHTML,
-  updatedAt:new Date().toISOString()
- };
+  const data={
+    title:titleInput.value.trim() || "Untitled Document",
+    content:editor.innerHTML,
+    updatedAt:new Date().toISOString()
+  };
 
- localStorage.setItem(
-  "quantam_document",
-  JSON.stringify(data)
- );
-
- document.getElementById("saveStatus").textContent=
- "Saved locally";
+  try{
+    localStorage.setItem("quantam_document",JSON.stringify(data));
+    saveStatus.textContent="Saved locally";
+  }catch(error){
+    console.error(error);
+    saveStatus.textContent="Save failed";
+    alert("Storage is full or unavailable. Your document could not be saved.");
+  }
 }
 
 function loadDocument(){
- const saved=localStorage.getItem("quantam_document");
-
- if(saved){
   try{
-   const data=JSON.parse(saved);
-   titleInput.value=data.title||"Untitled Document";
-   editor.innerHTML=data.content||"";
-  }catch(error){
-   console.error("Document loading failed",error);
-  }
- }
+    const saved=localStorage.getItem("quantam_document");
 
- updateCount();
+    if(saved){
+      const data=JSON.parse(saved);
+      titleInput.value=data.title || "Untitled Document";
+      editor.innerHTML=data.content || "";
+    }
+  }catch(error){
+    console.error("Loading error:",error);
+    saveStatus.textContent="Could not load document";
+  }
+
+  updateCount();
+}
+
+function goHome(){
+  window.location.href="./index.html";
 }
 
 loadDocument();
