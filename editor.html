@@ -9,37 +9,38 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#eef1f6;color:#202b3d}
-.topbar{min-height:62px;background:#10172a;color:white;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;gap:10px}
-.brand{font-size:19px;font-weight:bold}
-.brand span{color:#5796ff}
-.top-actions{display:flex;gap:8px}
+body{font-family:Arial,sans-serif;background:#e9edf4;color:#202b3d}
 button,select,input{font:inherit}
-.top-actions button,.toolbar button{padding:9px 12px;border:1px solid #d9dfeb;border-radius:6px;cursor:pointer}
-.top-actions button{background:#273654;color:white;border:0}
-.top-actions .save{background:#2868ed}
-.titlebar{background:white;padding:12px 18px;border-bottom:1px solid #ddd}
-.titlebar input{width:100%;max-width:500px;border:0;outline:0;font-size:18px;font-weight:bold}
-.toolbar{background:white;padding:10px;display:flex;flex-wrap:wrap;align-items:center;gap:7px;border-bottom:1px solid #dce1e9;position:sticky;top:0;z-index:5}
-.toolbar button,.toolbar select,.toolbar input{height:36px;min-width:36px;border:1px solid #d9dfeb;border-radius:5px;background:white;padding:5px 8px;cursor:pointer}
-.toolbar button:hover{background:#eaf1ff}
-.toolbar input[type=color]{width:42px;padding:3px}
-.toolbar button.active{background:#dbeafe;border-color:#60a5fa}
-.workspace{padding:25px 12px 55px;display:flex;justify-content:center;min-height:calc(100vh - 160px)}
-.page{width:816px;max-width:100%;min-height:1056px;background:white;padding:75px 80px;box-shadow:0 3px 18px #00000012;outline:none;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;overflow-wrap:anywhere}
-.page:empty:before{content:"Start typing your document here...";color:#adb5c3;pointer-events:none}
+.topbar{height:58px;background:#10172a;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.brand{font-weight:bold;font-size:20px}
+.brand span{color:#60a5fa}
+.actions{display:flex;gap:8px}
+.actions button{padding:9px 15px;border:0;border-radius:5px;background:#263958;color:white;cursor:pointer}
+.actions .save{background:#2563eb}
+.titlebar{background:white;padding:12px 20px;border-bottom:1px solid #ddd}
+#docTitle{border:0;outline:0;font-size:19px;font-weight:bold;width:100%;max-width:600px}
+.ribbon{background:#fff;padding:9px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:7px;border-bottom:1px solid #d5dce8;position:sticky;top:0;z-index:10}
+.group{display:flex;align-items:center;gap:5px;padding-right:9px;border-right:1px solid #dce1e9}
+.ribbon button,.ribbon select,.ribbon input{height:35px;border:1px solid #d7deea;background:white;border-radius:5px;padding:5px 8px;cursor:pointer}
+.ribbon button{min-width:35px}
+.ribbon button:hover,.ribbon select:hover{background:#eaf2ff}
+.ribbon input[type=color]{width:42px;padding:3px}
+.ribbon select{max-width:140px}
+.workspace{padding:25px 12px 55px;display:flex;justify-content:center;min-height:calc(100vh - 155px)}
+.page{width:816px;max-width:100%;min-height:1056px;background:white;padding:75px 80px;box-shadow:0 3px 18px #00000012;outline:none;overflow-wrap:anywhere;font-family:Arial,sans-serif;font-size:12px;line-height:1.6}
+.page:empty:before{content:"Start typing your document here...";color:#aab3c1;pointer-events:none}
 .page img{max-width:100%;height:auto}
-.page h1{font-size:2em}
-.page h2{font-size:1.5em}
-.page h3{font-size:1.17em}
+.page table{border-collapse:collapse;width:100%}
+.page td,.page th{border:1px solid #555;padding:7px}
 .page ul,.page ol{padding-left:30px}
-.statusbar{position:fixed;bottom:0;left:0;width:100%;height:30px;background:#10172a;color:#cbd5e5;display:flex;justify-content:space-between;align-items:center;padding:0 15px;font-size:11px;z-index:10}
+.statusbar{position:fixed;bottom:0;left:0;width:100%;height:29px;background:#10172a;color:#cbd5e5;display:flex;justify-content:space-between;align-items:center;padding:0 15px;font-size:11px;z-index:20}
 @media(max-width:600px){
-.topbar{padding:10px}
+.topbar{padding:0 9px}
 .brand{font-size:15px}
-.top-actions button{padding:8px}
-.toolbar{gap:5px;padding:7px}
-.toolbar button,.toolbar select{font-size:13px}
+.actions button{padding:8px}
+.ribbon{gap:5px;padding:7px}
+.group{gap:3px;padding-right:5px}
+.ribbon button,.ribbon select{font-size:12px;padding:4px}
 .workspace{padding:10px 5px 45px}
 .page{min-height:750px;padding:35px 22px}
 }
@@ -50,7 +51,7 @@ button,select,input{font:inherit}
 
 <header class="topbar">
   <div class="brand">QUANTAM <span>DOCS</span></div>
-  <div class="top-actions">
+  <div class="actions">
     <button type="button" onclick="goHome()">Home</button>
     <button type="button" class="save" onclick="saveDocument()">Save</button>
   </div>
@@ -60,49 +61,82 @@ button,select,input{font:inherit}
   <input id="docTitle" value="Untitled Document" placeholder="Document Name">
 </div>
 
-<div class="toolbar">
-  <button type="button" data-cmd="undo" title="Undo">↶</button>
-  <button type="button" data-cmd="redo" title="Redo">↷</button>
+<div class="ribbon">
 
-  <select id="fontFamily" title="Font">
-    <option value="Arial">Arial</option>
-    <option value="Times New Roman">Times New Roman</option>
-    <option value="Georgia">Georgia</option>
-    <option value="Verdana">Verdana</option>
-    <option value="Courier New">Courier New</option>
-  </select>
+  <div class="group">
+    <button type="button" data-cmd="undo" title="Undo">↶</button>
+    <button type="button" data-cmd="redo" title="Redo">↷</button>
+  </div>
 
-  <select id="fontSize" title="Font Size">
-    <option value="3">12</option>
-    <option value="4" selected>14</option>
-    <option value="5">18</option>
-    <option value="6">24</option>
-    <option value="7">36</option>
-  </select>
+  <div class="group">
+    <select id="fontFamily" title="Font">
+      <option value="Arial">Arial</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Verdana">Verdana</option>
+      <option value="Courier New">Courier New</option>
+    </select>
 
-  <button type="button" data-cmd="bold"><b>B</b></button>
-  <button type="button" data-cmd="italic"><i>I</i></button>
-  <button type="button" data-cmd="underline"><u>U</u></button>
+    <select id="fontSize" title="Font Size">
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12" selected>12</option>
+      <option value="14">14</option>
+      <option value="16">16</option>
+      <option value="18">18</option>
+      <option value="20">20</option>
+      <option value="24">24</option>
+      <option value="28">28</option>
+      <option value="32">32</option>
+      <option value="36">36</option>
+      <option value="48">48</option>
+      <option value="72">72</option>
+    </select>
+  </div>
 
-  <input type="color" id="textColor" value="#000000" title="Text Colour">
+  <div class="group">
+    <button type="button" data-cmd="bold"><b>B</b></button>
+    <button type="button" data-cmd="italic"><i>I</i></button>
+    <button type="button" data-cmd="underline"><u>U</u></button>
+    <button type="button" data-cmd="strikeThrough"><s>S</s></button>
+  </div>
 
-  <button type="button" data-cmd="justifyLeft">Left</button>
-  <button type="button" data-cmd="justifyCenter">Center</button>
-  <button type="button" data-cmd="justifyRight">Right</button>
+  <div class="group">
+    <input type="color" id="textColor" value="#000000" title="Text Colour">
+    <input type="color" id="highlightColor" value="#ffff00" title="Highlight Colour">
+  </div>
 
-  <button type="button" data-cmd="insertUnorderedList">• List</button>
-  <button type="button" data-cmd="insertOrderedList">1. List</button>
+  <div class="group">
+    <button type="button" data-cmd="justifyLeft">Left</button>
+    <button type="button" data-cmd="justifyCenter">Center</button>
+    <button type="button" data-cmd="justifyRight">Right</button>
+    <button type="button" data-cmd="justifyFull">Justify</button>
+  </div>
 
-  <select id="heading" title="Text Style">
-    <option value="P">Normal Text</option>
-    <option value="H1">Heading 1</option>
-    <option value="H2">Heading 2</option>
-    <option value="H3">Heading 3</option>
-  </select>
+  <div class="group">
+    <select id="heading" title="Paragraph Style">
+      <option value="P">Normal</option>
+      <option value="H1">Heading 1</option>
+      <option value="H2">Heading 2</option>
+      <option value="H3">Heading 3</option>
+    </select>
+  </div>
 
-  <button type="button" id="linkButton">Link</button>
-  <button type="button" id="imageButton">Image</button>
-  <button type="button" id="clearButton">Clear Format</button>
+  <div class="group">
+    <button type="button" data-cmd="insertUnorderedList">• List</button>
+    <button type="button" data-cmd="insertOrderedList">1. List</button>
+  </div>
+
+  <div class="group">
+    <button type="button" id="linkButton">Link</button>
+    <button type="button" id="imageButton">Image</button>
+    <button type="button" id="tableButton">Table</button>
+  </div>
+
+  <div class="group">
+    <button type="button" id="clearButton">Clear Format</button>
+  </div>
+
 </div>
 
 <main class="workspace">
@@ -117,99 +151,130 @@ button,select,input{font:inherit}
 </div>
 
 <script>
-const editor = document.getElementById("editor");
-const titleInput = document.getElementById("docTitle");
-const saveStatus = document.getElementById("saveStatus");
+const editor=document.getElementById("editor");
+const titleInput=document.getElementById("docTitle");
+const saveStatus=document.getElementById("saveStatus");
 
-let savedRange = null;
-let statusTimer = null;
+let savedRange=null;
 
 function rememberSelection(){
-  const selection = window.getSelection();
-
+  const selection=window.getSelection();
   if(selection && selection.rangeCount){
-    const range = selection.getRangeAt(0);
-
+    const range=selection.getRangeAt(0);
     if(editor.contains(range.commonAncestorContainer)){
-      savedRange = range.cloneRange();
+      savedRange=range.cloneRange();
     }
   }
 }
 
-document.addEventListener("selectionchange", rememberSelection);
+document.addEventListener("selectionchange",rememberSelection);
 
 function restoreSelection(){
   editor.focus();
-
   if(savedRange){
-    const selection = window.getSelection();
+    const selection=window.getSelection();
     selection.removeAllRanges();
     selection.addRange(savedRange);
   }
 }
 
-function updateSavedRange(){
-  rememberSelection();
-}
-
-function runCommand(command, value=null){
-  restoreSelection();
-
-  try{
-    document.execCommand(command,false,value);
-    updateSavedRange();
-    updateCount();
-    markUnsaved();
-  }catch(error){
-    console.error("Formatting error:",error);
-    saveStatus.textContent="Formatting failed";
+function updateSelection(){
+  const selection=window.getSelection();
+  if(selection && selection.rangeCount){
+    const range=selection.getRangeAt(0);
+    if(editor.contains(range.commonAncestorContainer)){
+      savedRange=range.cloneRange();
+    }
   }
 }
 
-document.querySelectorAll("[data-cmd]").forEach(button=>{
-  button.addEventListener("mousedown",event=>event.preventDefault());
+function runCommand(command,value=null){
+  restoreSelection();
+  document.execCommand(command,false,value);
+  updateSelection();
+  updateCount();
+  markUnsaved();
+}
 
+document.querySelectorAll("[data-cmd]").forEach(button=>{
+  button.addEventListener("mousedown",e=>e.preventDefault());
   button.addEventListener("click",()=>{
     runCommand(button.dataset.cmd);
   });
 });
 
-document.getElementById("fontFamily").addEventListener("change",function(){
-  runCommand("fontName",this.value);
-});
+function applyStyle(styleName,value){
+  restoreSelection();
+  const selection=window.getSelection();
+
+  if(!selection || !selection.rangeCount){
+    alert("Pehle text select karo.");
+    return;
+  }
+
+  const range=selection.getRangeAt(0);
+
+  if(range.collapsed){
+    alert("Pehle text select karo.");
+    return;
+  }
+
+  const span=document.createElement("span");
+  span.style[styleName]=value;
+
+  try{
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+
+    const newRange=document.createRange();
+    newRange.selectNodeContents(span);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    savedRange=newRange.cloneRange();
+  }catch(error){
+    console.error(error);
+    alert("Formatting apply nahi ho payi.");
+  }
+
+  updateCount();
+  markUnsaved();
+}
 
 document.getElementById("fontSize").addEventListener("change",function(){
-  runCommand("fontSize",this.value);
+  applyStyle("fontSize",this.value+"px");
+});
+
+document.getElementById("fontFamily").addEventListener("change",function(){
+  applyStyle("fontFamily",this.value);
 });
 
 document.getElementById("textColor").addEventListener("input",function(){
-  runCommand("foreColor",this.value);
+  applyStyle("color",this.value);
+});
+
+document.getElementById("highlightColor").addEventListener("input",function(){
+  applyStyle("backgroundColor",this.value);
 });
 
 document.getElementById("heading").addEventListener("change",function(){
   runCommand("formatBlock","<"+this.value+">");
 });
 
-document.getElementById("linkButton").addEventListener("mousedown",event=>{
-  event.preventDefault();
-});
+document.getElementById("linkButton").addEventListener("mousedown",e=>e.preventDefault());
 
 document.getElementById("linkButton").addEventListener("click",()=>{
-  const url=prompt("Enter link URL:");
-
+  const url=prompt("Enter full URL (https://...)");
   if(!url)return;
 
   if(!/^https?:\/\//i.test(url)){
-    alert("Please enter a valid URL starting with https:// or http://");
+    alert("Enter a valid http or https URL.");
     return;
   }
 
   runCommand("createLink",url);
 });
 
-document.getElementById("imageButton").addEventListener("mousedown",event=>{
-  event.preventDefault();
-});
+document.getElementById("imageButton").addEventListener("mousedown",e=>e.preventDefault());
 
 document.getElementById("imageButton").addEventListener("click",()=>{
   document.getElementById("imageInput").click();
@@ -220,7 +285,7 @@ document.getElementById("imageInput").addEventListener("change",function(){
   if(!file)return;
 
   if(!file.type.startsWith("image/")){
-    alert("Please select an image file.");
+    alert("Select a valid image.");
     return;
   }
 
@@ -229,24 +294,23 @@ document.getElementById("imageInput").addEventListener("change",function(){
   reader.onload=()=>{
     restoreSelection();
 
-    const image=document.createElement("img");
-    image.src=reader.result;
-    image.alt=file.name;
-    image.style.maxWidth="100%";
+    const img=document.createElement("img");
+    img.src=reader.result;
+    img.alt=file.name;
 
     const selection=window.getSelection();
 
     if(selection && selection.rangeCount){
       const range=selection.getRangeAt(0);
       range.deleteContents();
-      range.insertNode(image);
-      range.setStartAfter(image);
+      range.insertNode(img);
+      range.setStartAfter(img);
       range.collapse(true);
       selection.removeAllRanges();
       selection.addRange(range);
       savedRange=range.cloneRange();
     }else{
-      editor.appendChild(image);
+      editor.appendChild(img);
     }
 
     updateCount();
@@ -257,10 +321,32 @@ document.getElementById("imageInput").addEventListener("change",function(){
   this.value="";
 });
 
-document.getElementById("clearButton").addEventListener("mousedown",event=>{
-  event.preventDefault();
+document.getElementById("tableButton").addEventListener("mousedown",e=>e.preventDefault());
+
+document.getElementById("tableButton").addEventListener("click",()=>{
+  const rows=parseInt(prompt("Number of rows:", "3"));
+  const cols=parseInt(prompt("Number of columns:", "3"));
+
+  if(!Number.isInteger(rows)||!Number.isInteger(cols)||rows<1||cols<1||rows>20||cols>10){
+    alert("Enter valid rows (1–20) and columns (1–10).");
+    return;
+  }
+
+  let html="<table><tbody>";
+
+  for(let r=0;r<rows;r++){
+    html+="<tr>";
+    for(let c=0;c<cols;c++){
+      html+="<td><br></td>";
+    }
+    html+="</tr>";
+  }
+
+  html+="</tbody></table><p><br></p>";
+  runCommand("insertHTML",html);
 });
 
+document.getElementById("clearButton").addEventListener("mousedown",e=>e.preventDefault());
 document.getElementById("clearButton").addEventListener("click",()=>{
   runCommand("removeFormat");
 });
@@ -273,25 +359,11 @@ function updateCount(){
 
 function markUnsaved(){
   saveStatus.textContent="Unsaved changes";
-  clearTimeout(statusTimer);
-  statusTimer=setTimeout(()=>{
-    if(saveStatus.textContent==="Unsaved changes"){
-      saveStatus.textContent="Ready to save";
-    }
-  },1500);
 }
-
-editor.addEventListener("input",()=>{
-  updateCount();
-  markUnsaved();
-  rememberSelection();
-});
-
-titleInput.addEventListener("input",markUnsaved);
 
 function saveDocument(){
   const data={
-    title:titleInput.value.trim() || "Untitled Document",
+    title:titleInput.value.trim()||"Untitled Document",
     content:editor.innerHTML,
     updatedAt:new Date().toISOString()
   };
@@ -300,9 +372,8 @@ function saveDocument(){
     localStorage.setItem("quantam_document",JSON.stringify(data));
     saveStatus.textContent="Saved locally";
   }catch(error){
-    console.error(error);
     saveStatus.textContent="Save failed";
-    alert("Storage is full or unavailable. Your document could not be saved.");
+    alert("Browser storage unavailable or full.");
   }
 }
 
@@ -312,12 +383,12 @@ function loadDocument(){
 
     if(saved){
       const data=JSON.parse(saved);
-      titleInput.value=data.title || "Untitled Document";
-      editor.innerHTML=data.content || "";
+      titleInput.value=data.title||"Untitled Document";
+      editor.innerHTML=data.content||"";
     }
   }catch(error){
-    console.error("Loading error:",error);
-    saveStatus.textContent="Could not load document";
+    console.error(error);
+    saveStatus.textContent="Load failed";
   }
 
   updateCount();
@@ -326,6 +397,14 @@ function loadDocument(){
 function goHome(){
   window.location.href="./index.html";
 }
+
+editor.addEventListener("input",()=>{
+  updateCount();
+  markUnsaved();
+  rememberSelection();
+});
+
+titleInput.addEventListener("input",markUnsaved);
 
 loadDocument();
 </script>
