@@ -304,6 +304,9 @@ button.danger{color:#b42318}
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="./js/image-tools.js"></script>
  <script src="./js/document-tools.js"></script>
+ <script src="./js/page-layout.js"></script>
+
+ 
 <script>
 (() => {
 'use strict';
@@ -734,10 +737,12 @@ async function init(){
   
 window.QUANTAM_IMAGE_MANAGER.create(quill, scheduleSave);
   window.QUANTAM_DOCUMENT_TOOLS.create(quill, scheduleSave);
+window.QUANTAM_PAGE_LAYOUT.create();
   
   quill.on('text-change',scheduleSave);
   $('docTitle').addEventListener('input',scheduleSave);
   $('folderSelect').addEventListener('change',scheduleSave);
+  
 
   $('saveBtn').addEventListener('click',()=>saveCurrent(true));
   $('newBtn').addEventListener('click',createDocument);
