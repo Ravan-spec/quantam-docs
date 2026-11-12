@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10172a">
+<title>QUANTAM DOCS</title>
+
+<style>
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Arial,sans-serif;
+}
+
+body{
+ background:#f4f6fb;
+ color:#172033;
+ min-height:100vh;
+}
+
+header{
+ height:70px;
+ background:#10172a;
+ color:white;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 6%;
+}
+
+.logo{
+ font-size:24px;
+ font-weight:bold;
+ letter-spacing:1px;
+}
+
+.logo span{color:#5796ff;}
+
+.profile{
+ background:#273654;
+ padding:10px 15px;
+ border-radius:25px;
+ font-size:13px;
+}
+
+main{
+ max-width:1150px;
+ margin:auto;
+ padding:45px 20px;
+}
+
+.welcome h1{
+ font-size:32px;
+ margin-bottom:10px;
+}
+
+.welcome p{
+ color:#68758b;
+ font-size:15px;
+}
+
+.create-section{
+ margin-top:35px;
+}
+
+.section-title{
+ font-size:19px;
+ margin-bottom:18px;
+}
+
+.create-card{
+ background:white;
+ border:1px solid #e2e7f0;
+ border-radius:15px;
+ padding:25px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
+ flex-wrap:wrap;
+ box-shadow:0 5px 20px rgba(0,0,0,.03);
+}
+
+.create-card h2{
+ font-size:21px;
+ margin-bottom:8px;
+}
+
+.create-card p{
+ color:#778196;
+ font-size:14px;
+}
+
+button{
+ border:0;
+ cursor:pointer;
+ font-weight:bold;
+ border-radius:9px;
+ padding:13px 21px;
+ transition:.2s;
+}
+
+button:hover{transform:translateY(-2px);}
+
+.primary{
+ background:#2868ed;
+ color:white;
+}
+
+.primary:hover{background:#1755d4;}
+
+.documents{
+ margin-top:40px;
+}
+
+.document-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:18px;
+}
+
+.document-card{
+ background:white;
+ border:1px solid #e2e7f0;
+ padding:23px;
+ border-radius:13px;
+ min-height:150px;
+}
+
+.doc-icon{
+ width:45px;
+ height:50px;
+ background:#eaf1ff;
+ color:#2868ed;
+ display:grid;
+ place-items:center;
+ border-radius:9px;
+ font-size:23px;
+ margin-bottom:17px;
+}
+
+.document-card h3{
+ font-size:16px;
+ margin-bottom:7px;
+}
+
+.document-card p{
+ color:#8290a5;
+ font-size:13px;
+}
+
+.recent{
+ margin-top:45px;
+}
+
+.empty{
+ background:white;
+ border:1px dashed #ccd4e1;
+ padding:45px 15px;
+ text-align:center;
+ border-radius:13px;
+ color:#8792a4;
+}
+
+footer{
+ text-align:center;
+ padding:25px;
+ color:#8a94a5;
+ font-size:12px;
+}
+
+@media(max-width:600px){
+ header{padding:0 18px;}
+ .logo{font-size:20px;}
+ main{padding:35px 16px;}
+ .welcome h1{font-size:26px;}
+ .create-card{align-items:flex-start;}
+ .create-card button{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">QUANTAM <span>DOCS</span></div>
+ <div class="profile">My Workspace</div>
+</header>
+
+<main>
+
+ <section class="welcome">
+  <h1>Welcome to QUANTAM DOCS</h1>
+  <p>Your workspace for creating, editing and managing documents.</p>
+ </section>
+
+ <section class="create-section">
+  <h2 class="section-title">Create New</h2>
+
+  <div class="create-card">
+   <div>
+    <h2>Start a new document</h2>
+    <p>Create professional documents in your own workspace.</p>
+   </div>
+
+   <button class="primary" id="newDocument">
+    + Blank Document
+   </button>
+  </div>
+ </section>
+
+ <section class="documents">
+  <h2 class="section-title">Document Templates</h2>
+
+  <div class="document-grid">
+
+   <div class="document-card">
+    <div class="doc-icon">📄</div>
+    <h3>Blank Document</h3>
+    <p>Start with a clean page.</p>
+   </div>
+
+   <div class="document-card">
+    <div class="doc-icon">📝</div>
+    <h3>Study Notes</h3>
+    <p>Organize your study material.</p>
+   </div>
+
+   <div class="document-card">
+    <div class="doc-icon">📋</div>
+    <h3>Business Report</h3>
+    <p>Create structured reports.</p>
+   </div>
+
+   <div class="document-card">
+    <div class="doc-icon">✉️</div>
+    <h3>Letter</h3>
+    <p>Prepare professional letters.</p>
+   </div>
+
+  </div>
+ </section>
+
+ <section class="recent">
+  <h2 class="section-title">Recent Documents</h2>
+
+  <div class="empty" id="recentDocuments">
+   <p>No documents yet.</p>
+   <p style="margin-top:8px;font-size:13px;">
+    Your recent documents will appear here.
+   </p>
+  </div>
+ </section>
+
+</main>
+
+<footer>
+ QUANTAM DOCS · Your Documents, Your Workspace
+</footer>
+
+<script>
+document.getElementById("newDocument")
+.addEventListener("click",function(){
+ alert("Document Editor will be connected in the next development step.");
+});
+</script>
+
+</body>
+</html>
