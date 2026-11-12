@@ -3,366 +3,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111827">
-<title>QUANTAM DOCS — Editor</title>
-
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<title>QUANTAM DOCS</title>
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
 <style>
-:root {
-  --bg:#f3f5f9;
-  --panel:#fff;
-  --ink:#172033;
-  --muted:#697386;
-  --line:#e3e7ef;
-  --accent:#4f46e5;
-  --dark:#111827;
+*{box-sizing:border-box}
+body{margin:0;background:#f2f4f8;color:#182033;font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+.topbar{background:#111827;color:white;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:30}
+.brand{font-size:17px;font-weight:800}.brand span{color:#a5b4fc}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+button{cursor:pointer;border:1px solid #d8deea;background:white;color:#182033;border-radius:7px;padding:8px 11px}
+button.primary{background:#4f46e5;color:white;border-color:#4f46e5}
+button.danger{color:#b42318}
+button:disabled{opacity:.5;cursor:not-allowed}
+.layout{max-width:1400px;margin:auto;padding:14px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:14px}
+.panel{background:white;border:1px solid #e0e5ee;border-radius:10px;padding:13px;min-width:0}
+.sidebar h3{margin:2px 0 12px}
+.sidebar input,.sidebar select{width:100%;padding:9px;border:1px solid #dce1e9;border-radius:7px;margin:5px 0 10px}
+.doclist{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.docitem{border:1px solid #e4e8ef;border-radius:8px;padding:10px;text-align:left;width:100%;background:#fff}
+.docitem.active{border-color:#6366f1;background:#eef2ff}
+.docitem strong{display:block;overflow-wrap:anywhere}
+.docitem small{display:block;color:#697386;margin-top:5px}
+.main{min-width:0}
+.docbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+#docTitle{font-size:18px;font-weight:bold;border:1px solid transparent;background:transparent;padding:8px;min-width:180px;max-width:100%;border-radius:7px}
+#docTitle:focus{outline:none;border-color:#a5b4fc;background:white}
+#folderSelect{padding:8px;border:1px solid #dce1e9;border-radius:7px;background:white}
+#status{font-size:12px;color:#697386}
+.toolbar{background:white;border:1px solid #e0e5ee;border-radius:9px 9px 0 0;position:sticky;top:56px;z-index:10}
+#toolbar{border:0!important;display:flex;flex-wrap:wrap;gap:2px;padding:8px}
+#toolbar .ql-formats{margin-right:6px!important}
+#toolbar button{padding:0;border:0}
+#toolbar select{max-width:100px}
+.extra{display:flex;gap:7px;flex-wrap:wrap;padding:0 9px 9px}
+.stage{background:#e9edf4;padding:20px 10px 45px;border:1px solid #e0e5ee;border-top:0}
+#editor{width:min(100%,794px);margin:auto;background:white;border:1px solid #d8deea;box-shadow:0 4px 18px #11182712}
+#editor.ql-container{font-size:12pt;font-family:Arial,sans-serif}
+#editor .ql-editor{min-height:1000px;padding:65px 70px;line-height:1.6;overflow-wrap:anywhere}
+#editor .ql-editor.ql-blank::before{left:70px;right:70px}
+.library-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.hint{font-size:12px;color:#697386;line-height:1.5}
+.empty{color:#697386;text-align:center;padding:25px 8px;font-size:13px}
+@media(max-width:760px){
+ .layout{grid-template-columns:1fr;padding:8px;gap:9px}
+ .sidebar{order:2}
+ .main{order:1}
+ .topbar{padding:10px}
+ .brand{font-size:15px}
+ .actions button{padding:7px 8px;font-size:12px}
+ .toolbar{top:54px}
+ #toolbar{padding:5px}
+ #toolbar .ql-formats{margin-right:3px!important}
+ #toolbar button{width:29px;height:29px}
+ #toolbar select{height:29px}
+ .stage{padding:8px 0 25px}
+ #editor{width:100%;border-left:0;border-right:0;box-shadow:none}
+ #editor .ql-editor{min-height:75vh;padding:28px 19px}
+ #editor .ql-editor.ql-blank::before{left:19px;right:19px}
 }
-
-* { box-sizing:border-box; }
-
-html,body {
-  margin:0;
-  min-height:100%;
-  font-family:Arial,Helvetica,sans-serif;
-  color:var(--ink);
-  background:var(--bg);
-}
-
-.topbar {
-  min-height:58px;
-  background:var(--dark);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:9px 18px;
-  gap:12px;
-  position:sticky;
-  top:0;
-  z-index:20;
-}
-
-.brand {
-  font-weight:800;
-  letter-spacing:.5px;
-  font-size:17px;
-  white-space:nowrap;
-}
-
-.brand span { color:#a5b4fc; }
-
-.top-actions {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.top-actions button,
-.top-actions a {
-  border:1px solid #4b5563;
-  background:#1f2937;
-  color:#fff;
-  border-radius:8px;
-  padding:8px 11px;
-  font-size:13px;
-  text-decoration:none;
-  cursor:pointer;
-}
-
-.top-actions button.primary {
-  background:var(--accent);
-  border-color:var(--accent);
-}
-
-.workspace {
-  max-width:1200px;
-  margin:18px auto;
-  padding:0 16px;
-}
-
-.docbar {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-  flex-wrap:wrap;
-}
-
-.doc-title {
-  font-size:18px;
-  font-weight:700;
-  border:1px solid transparent;
-  background:transparent;
-  padding:8px 10px;
-  border-radius:7px;
-  min-width:220px;
-  max-width:100%;
-  outline:none;
-}
-
-.doc-title:focus {
-  border-color:#c7d2fe;
-  background:#fff;
-}
-
-.status {
-  font-size:12px;
-  color:var(--muted);
-}
-
-.toolbar-wrap {
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:10px 10px 0 0;
-  position:sticky;
-  top:58px;
-  z-index:10;
-  box-shadow:0 2px 8px #1018280a;
-}
-
-#toolbar {
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:2px;
-  padding:8px 10px;
-  border:0!important;
-}
-
-#toolbar .ql-formats {
-  margin-right:7px!important;
-  display:inline-flex;
-  align-items:center;
-  gap:2px;
-}
-
-#toolbar button {
-  width:32px;
-  height:30px;
-  border-radius:5px!important;
-}
-
-#toolbar select {
-  height:30px;
-  max-width:110px;
-  border-radius:5px!important;
-}
-
-#toolbar .ql-size { width:82px; }
-#toolbar .ql-header { width:105px; }
-
-.extra-tools {
-  display:flex;
-  gap:6px;
-  align-items:center;
-  padding:0 10px 9px;
-  flex-wrap:wrap;
-}
-
-.extra-tools button {
-  border:1px solid var(--line);
-  background:#fff;
-  color:#273247;
-  border-radius:7px;
-  padding:6px 10px;
-  cursor:pointer;
-  font-size:12px;
-}
-
-.editor-stage {
-  background:#e9edf4;
-  border:1px solid var(--line);
-  border-top:0;
-  padding:26px 12px 50px;
-  min-height:70vh;
-}
-
-#editor {
-  width:min(100%,794px);
-  min-height:1050px;
-  margin:0 auto;
-  background:#fff;
-  border:1px solid #d9dee8;
-  box-shadow:0 5px 22px #10182812;
-}
-
-#editor.ql-container {
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:12pt;
-  border:1px solid #d9dee8!important;
-}
-
-#editor .ql-editor {
-  min-height:1050px;
-  padding:76px 76px 90px;
-  line-height:1.6;
-  font-size:12pt;
-  overflow-wrap:anywhere;
-}
-
-#editor .ql-editor.ql-blank::before {
-  left:76px;
-  right:76px;
-  color:#9aa3b2;
-  font-style:normal;
-}
-
-#editor .ql-editor img {
-  max-width:100%;
-  height:auto;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-label::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item::before {
-  content:attr(data-value);
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-label:not([data-value])::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item:not([data-value])::before {
-  content:'12pt';
-}
-
-.ql-snow .ql-picker.ql-header .ql-picker-label::before,
-.ql-snow .ql-picker.ql-header .ql-picker-item::before {
-  content:'Normal';
-}
-
-.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
-.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
-  content:'Heading 1';
-}
-
-.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
-.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
-  content:'Heading 2';
-}
-
-.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
-.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
-  content:'Heading 3';
-}
-
-.notice {
-  max-width:794px;
-  margin:10px auto 0;
-  color:#667085;
-  font-size:12px;
-  text-align:center;
-}
-
-#imageInput { display:none; }
-
-@media(max-width:700px) {
-  .topbar {
-    min-height:56px;
-    padding:9px 10px;
-    flex-wrap:wrap;
-  }
-
-  .brand { font-size:15px; }
-
-  .top-actions { gap:5px; }
-
-  .top-actions button,
-  .top-actions a {
-    padding:7px 8px;
-    font-size:12px;
-  }
-
-  .workspace {
-    margin:10px auto;
-    padding:0 7px;
-  }
-
-  .doc-title {
-    font-size:16px;
-    min-width:170px;
-  }
-
-  .toolbar-wrap { top:56px; }
-
-  #toolbar {
-    padding:6px;
-    gap:0;
-  }
-
-  #toolbar .ql-formats {
-    margin:0 4px 4px 0!important;
-  }
-
-  #toolbar button {
-    width:29px;
-    height:29px;
-  }
-
-  #toolbar select { height:29px; }
-  #toolbar .ql-header { width:92px; }
-
-  .editor-stage {
-    padding:10px 0 30px;
-    min-height:65vh;
-  }
-
-  #editor {
-    width:100%;
-    min-height:calc(100vh - 260px);
-    border-left:0!important;
-    border-right:0!important;
-    box-shadow:none;
-  }
-
-  #editor .ql-editor {
-    min-height:calc(100vh - 260px);
-    padding:28px 20px 60px;
-    font-size:12pt;
-  }
-
-  #editor .ql-editor.ql-blank::before {
-    left:20px;
-    right:20px;
-  }
-
-  .extra-tools { padding:0 7px 7px; }
-}
-
-@media print {
-  body { background:#fff; }
-
-  .topbar,
-  .docbar,
-  .toolbar-wrap,
-  .notice {
-    display:none!important;
-  }
-
-  .workspace {
-    margin:0;
-    padding:0;
-    max-width:none;
-  }
-
-  .editor-stage {
-    padding:0;
-    background:#fff;
-    border:0;
-  }
-
-  #editor {
-    width:100%;
-    min-height:0;
-    border:0;
-    box-shadow:none;
-  }
-
-  #editor .ql-editor {
-    min-height:0;
-    padding:0;
-    overflow:visible;
-  }
+@media print{
+ .topbar,.sidebar,.docbar,.toolbar,.no-print{display:none!important}
+ .layout{display:block;padding:0}
+ .panel{border:0;padding:0}
+ .stage{background:white;padding:0;border:0}
+ #editor{width:100%;border:0;box-shadow:none}
+ #editor .ql-editor{padding:0;min-height:0}
 }
 </style>
 </head>
@@ -370,474 +79,709 @@ html,body {
 <body>
 
 <header class="topbar">
-  <div class="brand">QUANTAM <span>DOCS</span></div>
-
-  <div class="top-actions">
-    <a href="./index.html">← Dashboard</a>
-    <button id="downloadBtn" type="button">Download HTML</button>
-    <button id="printBtn" type="button">Print / PDF</button>
-    <button id="saveBtn" class="primary" type="button">Save</button>
-  </div>
+ <div class="brand">QUANTAM <span>DOCS</span></div>
+ <div class="actions">
+  <a href="./index.html" style="color:white;text-decoration:none;padding:8px">Dashboard</a>
+  <button id="saveBtn" class="primary">Save</button>
+  <button id="htmlBtn">Download HTML</button>
+  <button id="backupBtn">Backup All</button>
+  <button id="printBtn">Print / PDF</button>
+ </div>
 </header>
 
-<main class="workspace">
+<div class="layout">
 
-  <div class="docbar">
-    <input
-      id="docTitle"
-      class="doc-title"
-      type="text"
-      value="Untitled document"
-      aria-label="Document title"
-      maxlength="100"
-    >
-    <span id="saveStatus" class="status" role="status">
-      Not saved yet
-    </span>
+ <aside class="panel sidebar">
+  <h3>My Library</h3>
+
+  <button id="newBtn" class="primary" style="width:100%">＋ New Document</button>
+  <button id="newFolderBtn" style="width:100%;margin-top:7px">＋ Create Folder</button>
+
+  <label class="hint" for="folderFilter">Filter folder</label>
+  <select id="folderFilter">
+   <option value="all">All folders</option>
+  </select>
+
+  <input id="searchDocs" type="search" placeholder="Search documents...">
+
+  <div id="docList" class="doclist">
+   <div class="empty">Loading Library...</div>
   </div>
 
-  <section class="toolbar-wrap" aria-label="Document formatting tools">
+  <div class="library-actions">
+   <button id="importBtn">Import Backup</button>
+   <input id="importFile" type="file" accept=".json,application/json" hidden>
+  </div>
 
-    <div id="toolbar">
+  <p class="hint">
+   Documents are stored in this browser using IndexedDB.
+   Use Backup All to keep a copy on your device.
+  </p>
+ </aside>
 
-      <span class="ql-formats">
-        <select class="ql-header" aria-label="Heading">
-          <option selected></option>
-          <option value="1"></option>
-          <option value="2"></option>
-          <option value="3"></option>
-        </select>
+ <main class="main">
+  <div class="panel">
+   <div class="docbar">
+    <input id="docTitle" value="Untitled document" maxlength="100" aria-label="Document title">
+    <select id="folderSelect" aria-label="Document folder"></select>
+    <span id="status">Loading...</span>
+   </div>
+  </div>
 
-        <select class="ql-size" aria-label="Font size">
-          <option value="8pt">8</option>
-          <option value="9pt">9</option>
-          <option value="10pt">10</option>
-          <option value="11pt">11</option>
-          <option value="12pt" selected>12</option>
-          <option value="14pt">14</option>
-          <option value="16pt">16</option>
-          <option value="18pt">18</option>
-          <option value="20pt">20</option>
-          <option value="24pt">24</option>
-          <option value="28pt">28</option>
-          <option value="36pt">36</option>
-          <option value="48pt">48</option>
-          <option value="72pt">72</option>
-        </select>
-      </span>
-
-      <span class="ql-formats">
-        <button class="ql-bold" aria-label="Bold"></button>
-        <button class="ql-italic" aria-label="Italic"></button>
-        <button class="ql-underline" aria-label="Underline"></button>
-        <button class="ql-strike" aria-label="Strikethrough"></button>
-      </span>
-
-      <span class="ql-formats">
-        <select class="ql-color" aria-label="Text colour"></select>
-        <select class="ql-background" aria-label="Highlight colour"></select>
-      </span>
-
-      <span class="ql-formats">
-        <button class="ql-list" value="ordered" aria-label="Numbered list"></button>
-        <button class="ql-list" value="bullet" aria-label="Bulleted list"></button>
-        <button class="ql-blockquote" aria-label="Quote"></button>
-      </span>
-
-      <span class="ql-formats">
-        <select class="ql-align" aria-label="Text alignment">
-          <option selected></option>
-          <option value="center"></option>
-          <option value="right"></option>
-          <option value="justify"></option>
-        </select>
-
-        <button class="ql-indent" value="-1" aria-label="Decrease indent"></button>
-        <button class="ql-indent" value="+1" aria-label="Increase indent"></button>
-      </span>
-
-      <span class="ql-formats">
-        <button class="ql-link" aria-label="Insert link"></button>
-        <button id="imageButton" type="button" aria-label="Insert image">▧</button>
-        <button class="ql-clean" aria-label="Clear formatting"></button>
-      </span>
-
-    </div>
-
-    <div class="extra-tools">
-      <button id="undoBtn" type="button">↶ Undo</button>
-      <button id="redoBtn" type="button">↷ Redo</button>
-      <button id="newDocBtn" type="button">＋ New document</button>
-    </div>
-
+  <section class="toolbar">
+   <div id="toolbar">
+    <span class="ql-formats">
+     <select class="ql-header">
+      <option selected></option>
+      <option value="1"></option>
+      <option value="2"></option>
+      <option value="3"></option>
+     </select>
+     <select class="ql-size">
+      <option value="8pt">8</option>
+      <option value="10pt">10</option>
+      <option value="11pt">11</option>
+      <option value="12pt" selected>12</option>
+      <option value="14pt">14</option>
+      <option value="16pt">16</option>
+      <option value="18pt">18</option>
+      <option value="20pt">20</option>
+      <option value="24pt">24</option>
+      <option value="28pt">28</option>
+      <option value="36pt">36</option>
+      <option value="48pt">48</option>
+      <option value="72pt">72</option>
+     </select>
+    </span>
+    <span class="ql-formats">
+     <button class="ql-bold"></button>
+     <button class="ql-italic"></button>
+     <button class="ql-underline"></button>
+     <button class="ql-strike"></button>
+    </span>
+    <span class="ql-formats">
+     <select class="ql-color"></select>
+     <select class="ql-background"></select>
+    </span>
+    <span class="ql-formats">
+     <button class="ql-list" value="ordered"></button>
+     <button class="ql-list" value="bullet"></button>
+     <button class="ql-blockquote"></button>
+    </span>
+    <span class="ql-formats">
+     <select class="ql-align">
+      <option selected></option>
+      <option value="center"></option>
+      <option value="right"></option>
+      <option value="justify"></option>
+     </select>
+     <button class="ql-indent" value="-1"></button>
+     <button class="ql-indent" value="+1"></button>
+    </span>
+    <span class="ql-formats">
+     <button class="ql-link"></button>
+     <button class="ql-image"></button>
+     <button class="ql-clean"></button>
+    </span>
+   </div>
+   <div class="extra">
+    <button id="undoBtn">↶ Undo</button>
+    <button id="redoBtn">↷ Redo</button>
+    <button id="deleteBtn" class="danger">Delete Current Document</button>
+   </div>
   </section>
 
-  <section class="editor-stage">
-    <div id="editor"><p><br></p></div>
-
-    <p class="notice">
-      Your document is saved in this browser on this device.
-      Download an HTML copy for a separate backup.
-    </p>
+  <section class="stage">
+   <div id="editor"><p><br></p></div>
   </section>
+ </main>
 
-</main>
-
-<input
-  id="imageInput"
-  type="file"
-  accept="image/png,image/jpeg,image/webp,image/gif"
->
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
 <script>
 (() => {
-  'use strict';
+'use strict';
 
-  const STORAGE_KEY = 'quantam_docs_document_v2';
-  const OLD_KEY = 'quantam_document';
+const DB_NAME = 'QUANTAM_DOCS_LIBRARY';
+const DB_VERSION = 1;
+const DOC_STORE = 'documents';
+const FOLDER_STORE = 'folders';
 
-  const $ = (id) => document.getElementById(id);
+let db;
+let quill;
+let currentId = null;
+let saveTimer = null;
+let isLoading = false;
 
-  const statusEl = $('saveStatus');
+const $ = id => document.getElementById(id);
 
-  let saveTimer = null;
-  let quill;
+function makeId(){
+ return (crypto.randomUUID ?
+  crypto.randomUUID() :
+  'doc-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+}
 
-  function setStatus(message, isError = false) {
-    statusEl.textContent = message;
-    statusEl.style.color = isError ? '#b42318' : '#697386';
+function setStatus(message, error=false){
+ $('status').textContent = message;
+ $('status').style.color = error ? '#b42318' : '#697386';
+}
+
+function requestResult(request){
+ return new Promise((resolve,reject)=>{
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+function openDatabase(){
+ return new Promise((resolve,reject)=>{
+  const request=indexedDB.open(DB_NAME,DB_VERSION);
+
+  request.onupgradeneeded=()=>{
+   const database=request.result;
+
+   if(!database.objectStoreNames.contains(DOC_STORE)){
+    const store=database.createObjectStore(DOC_STORE,{keyPath:'id'});
+    store.createIndex('updatedAt','updatedAt');
+    store.createIndex('folder','folder');
+   }
+
+   if(!database.objectStoreNames.contains(FOLDER_STORE)){
+    database.createObjectStore(FOLDER_STORE,{keyPath:'id'});
+   }
+  };
+
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+function getAll(storeName){
+ return requestResult(
+  db.transaction(storeName,'readonly')
+    .objectStore(storeName).getAll()
+ );
+}
+
+function getOne(storeName,id){
+ return requestResult(
+  db.transaction(storeName,'readonly')
+    .objectStore(storeName).get(id)
+ );
+}
+
+function putOne(storeName,value){
+ return requestResult(
+  db.transaction(storeName,'readwrite')
+    .objectStore(storeName).put(value)
+ );
+}
+
+function deleteOne(storeName,id){
+ return requestResult(
+  db.transaction(storeName,'readwrite')
+    .objectStore(storeName).delete(id)
+ );
+}
+
+async function ensureDefaultFolder(){
+ let folders=await getAll(FOLDER_STORE);
+
+ if(!folders.length){
+  await putOne(FOLDER_STORE,{
+   id:'general',
+   name:'General',
+   createdAt:new Date().toISOString()
+  });
+ }
+}
+
+async function migrateOldDocument(){
+ const existing=await getAll(DOC_STORE);
+ if(existing.length) return;
+
+ let old=null;
+
+ try{
+  const raw=localStorage.getItem('quantam_docs_document_v2') ||
+            localStorage.getItem('quantam_document');
+
+  if(raw) old=JSON.parse(raw);
+ }catch(e){
+  console.warn('Old document migration failed',e);
+ }
+
+ if(old){
+  let title='Imported document';
+  let html='';
+
+  if(typeof old==='string'){
+   html=old;
+  }else{
+   title=old.title || old.name || title;
+   html=old.html || old.content || old.contentHTML || '';
   }
 
-  function getSavedDocument() {
-    try {
-      const current = localStorage.getItem(STORAGE_KEY);
+  await putOne(DOC_STORE,{
+   id:makeId(),
+   title,
+   html,
+   folder:'general',
+   createdAt:new Date().toISOString(),
+   updatedAt:new Date().toISOString()
+  });
+ }
+}
 
-      if (current) {
-        return JSON.parse(current);
-      }
+async function refreshFolders(){
+ const folders=await getAll(FOLDER_STORE);
+ const filter=$('folderFilter');
+ const select=$('folderSelect');
+ const oldFilter=filter.value;
+ const oldFolder=select.value;
 
-      const old = localStorage.getItem(OLD_KEY);
+ filter.innerHTML='';
+ select.innerHTML='';
 
-      if (old) {
-        const parsed = JSON.parse(old);
+ const all=document.createElement('option');
+ all.value='all';
+ all.textContent='All folders';
+ filter.appendChild(all);
 
-        if (typeof parsed === 'string') {
-          return {
-            title:'Untitled document',
-            html:parsed
-          };
-        }
+ folders.sort((a,b)=>a.name.localeCompare(b.name));
 
-        if (parsed && typeof parsed === 'object') {
-          return {
-            title:parsed.title || parsed.name || 'Untitled document',
-            html:parsed.html || parsed.content || parsed.contentHTML || ''
-          };
-        }
-      }
+ for(const folder of folders){
+  const a=document.createElement('option');
+  a.value=folder.id;
+  a.textContent=folder.name;
+  filter.appendChild(a);
 
-    } catch (error) {
-      console.warn('Could not read saved document:', error);
-      setStatus('Previous saved data could not be read', true);
-    }
+  const b=document.createElement('option');
+  b.value=folder.id;
+  b.textContent=folder.name;
+  select.appendChild(b);
+ }
 
-    return null;
+ if([...filter.options].some(o=>o.value===oldFilter)){
+  filter.value=oldFilter;
+ }
+
+ if([...select.options].some(o=>o.value===oldFolder)){
+  select.value=oldFolder;
+ }else if(select.options.length){
+  select.value=select.options[0].value;
+ }
+}
+
+async function refreshLibrary(){
+ const docs=await getAll(DOC_STORE);
+ const folders=await getAll(FOLDER_STORE);
+ const folderMap=new Map(folders.map(f=>[f.id,f.name]));
+
+ const list=$('docList');
+ const query=$('searchDocs').value.trim().toLowerCase();
+ const selectedFolder=$('folderFilter').value;
+
+ list.innerHTML='';
+
+ const filtered=docs
+  .filter(doc=>{
+   const matchesFolder=selectedFolder==='all' ||
+     doc.folder===selectedFolder;
+   const matchesSearch=(doc.title || '').toLowerCase().includes(query);
+   return matchesFolder && matchesSearch;
+  })
+  .sort((a,b)=>(b.updatedAt || '').localeCompare(a.updatedAt || ''));
+
+ if(!filtered.length){
+  list.innerHTML='<div class="empty">No documents found. Create a new document.</div>';
+  return;
+ }
+
+ for(const doc of filtered){
+  const button=document.createElement('button');
+  button.className='docitem'+(doc.id===currentId?' active':'');
+  button.type='button';
+
+  const title=document.createElement('strong');
+  title.textContent=doc.title || 'Untitled document';
+
+  const meta=document.createElement('small');
+  const date=doc.updatedAt ? new Date(doc.updatedAt).toLocaleString() : '';
+  meta.textContent=(folderMap.get(doc.folder)||'General')+' · '+date;
+
+  button.append(title,meta);
+  button.addEventListener('click',()=>openDocument(doc.id));
+
+  list.appendChild(button);
+ }
+}
+
+async function createDocument(){
+ await saveCurrent(false);
+
+ const folders=await getAll(FOLDER_STORE);
+ const folder=folders.find(f=>f.id===$('folderFilter').value) ||
+              folders.find(f=>f.id==='general') ||
+              folders[0];
+
+ const now=new Date().toISOString();
+
+ const doc={
+  id:makeId(),
+  title:'Untitled document',
+  html:'<p><br></p>',
+  folder:folder.id,
+  createdAt:now,
+  updatedAt:now
+ };
+
+ await putOne(DOC_STORE,doc);
+ await refreshFolders();
+ await openDocument(doc.id);
+}
+
+async function openDocument(id){
+ if(id===currentId) return;
+
+ await saveCurrent(false);
+
+ const doc=await getOne(DOC_STORE,id);
+
+ if(!doc){
+  setStatus('Document not found',true);
+  return;
+ }
+
+ isLoading=true;
+ currentId=id;
+
+ $('docTitle').value=doc.title || 'Untitled document';
+ $('folderSelect').value=doc.folder || 'general';
+
+ quill.setText('');
+ quill.clipboard.dangerouslyPasteHTML(
+  doc.html || '<p><br></p>',
+  'silent'
+ );
+
+ quill.history.clear();
+
+ isLoading=false;
+
+ setStatus('Document opened');
+ await refreshLibrary();
+}
+
+async function saveCurrent(showMessage=true){
+ if(!currentId || !quill || isLoading) return false;
+
+ clearTimeout(saveTimer);
+
+ const old=await getOne(DOC_STORE,currentId);
+
+ if(!old) return false;
+
+ const doc={
+  ...old,
+  title:$('docTitle').value.trim() || 'Untitled document',
+  folder:$('folderSelect').value || 'general',
+  html:quill.root.innerHTML,
+  updatedAt:new Date().toISOString()
+ };
+
+ try{
+  await putOne(DOC_STORE,doc);
+
+  if(showMessage) setStatus('Saved successfully');
+
+  await refreshLibrary();
+  return true;
+
+ }catch(error){
+  console.error(error);
+  setStatus('Save failed: browser storage error',true);
+  return false;
+ }
+}
+
+function scheduleSave(){
+ if(isLoading) return;
+
+ setStatus('Saving changes...');
+
+ clearTimeout(saveTimer);
+
+ saveTimer=setTimeout(()=>{
+  saveCurrent(true);
+ },600);
+}
+
+async function deleteCurrent(){
+ if(!currentId) return;
+
+ const doc=await getOne(DOC_STORE,currentId);
+ if(!doc) return;
+
+ if(!confirm('Delete "'+doc.title+'"? This cannot be undone.')) return;
+
+ await deleteOne(DOC_STORE,currentId);
+ currentId=null;
+
+ const remaining=await getAll(DOC_STORE);
+
+ if(remaining.length){
+  remaining.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+  await openDocument(remaining[0].id);
+ }else{
+  await createDocument();
+ }
+
+ await refreshLibrary();
+}
+
+async function createFolder(){
+ const name=prompt('Enter folder name:');
+ if(!name || !name.trim()) return;
+
+ const clean=name.trim().slice(0,60);
+ const folders=await getAll(FOLDER_STORE);
+
+ if(folders.some(f=>f.name.toLowerCase()===clean.toLowerCase())){
+  alert('This folder already exists.');
+  return;
+ }
+
+ const folder={
+  id:makeId(),
+  name:clean,
+  createdAt:new Date().toISOString()
+ };
+
+ await putOne(FOLDER_STORE,folder);
+ await refreshFolders();
+ $('folderFilter').value=folder.id;
+ $('folderSelect').value=folder.id;
+ await saveCurrent(true);
+ await refreshLibrary();
+}
+
+function download(filename,content,type){
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');
+ a.href=url;
+ a.download=filename;
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+function cleanFilename(name){
+ return (name||'document')
+  .replace(/[\\/:*?"<>|]/g,'-')
+  .trim() || 'document';
+}
+
+async function exportHtml(){
+ await saveCurrent(false);
+
+ const doc=await getOne(DOC_STORE,currentId);
+ if(!doc) return;
+
+ const html='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+
+  escapeHtml(doc.title)+
+  '</title><style>body{max-width:794px;margin:40px auto;padding:20px;font-family:Arial;line-height:1.6}img{max-width:100%;height:auto}</style></head><body>'+
+  doc.html+'</body></html>';
+
+ download(cleanFilename(doc.title)+'.html',html,'text/html;charset=utf-8');
+}
+
+function escapeHtml(text){
+ return String(text).replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+
+async function exportBackup(){
+ await saveCurrent(false);
+
+ const docs=await getAll(DOC_STORE);
+ const folders=await getAll(FOLDER_STORE);
+
+ const backup={
+  app:'QUANTAM DOCS',
+  version:1,
+  exportedAt:new Date().toISOString(),
+  folders,
+  documents:docs
+ };
+
+ download(
+  'QUANTAM-DOCS-BACKUP-'+new Date().toISOString().slice(0,10)+'.json',
+  JSON.stringify(backup,null,2),
+  'application/json'
+ );
+}
+
+async function importBackup(file){
+ if(!file) return;
+
+ try{
+  const backup=JSON.parse(await file.text());
+
+  if(backup.app!=='QUANTAM DOCS' ||
+     !Array.isArray(backup.documents) ||
+     !Array.isArray(backup.folders)){
+   throw new Error('Invalid QUANTAM DOCS backup file');
   }
 
-  function saveDocument(showMessage = true) {
-    const payload = {
-      title:$('docTitle').value.trim() || 'Untitled document',
-      html:quill.root.innerHTML,
-      updatedAt:new Date().toISOString()
-    };
+  if(!confirm('Import '+backup.documents.length+' documents? Existing documents will be kept.')) return;
 
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  for(const folder of backup.folders){
+   if(!folder || !folder.name) continue;
 
-      if (showMessage) {
-        setStatus(
-          'Saved on this device · ' +
-          new Date().toLocaleTimeString()
-        );
-      }
+   const folders=await getAll(FOLDER_STORE);
+   const exists=folders.find(f=>
+    f.name.toLowerCase()===folder.name.toLowerCase()
+   );
 
-      return true;
-
-    } catch (error) {
-      console.error('Save failed:', error);
-
-      setStatus(
-        'Save failed: browser storage is full. Download a backup.',
-        true
-      );
-
-      return false;
-    }
+   if(!exists){
+    await putOne(FOLDER_STORE,{
+     id:makeId(),
+     name:folder.name,
+     createdAt:new Date().toISOString()
+    });
+   }
   }
 
-  function scheduleSave() {
-    setStatus('Unsaved changes…');
+  const currentFolders=await getAll(FOLDER_STORE);
 
+  for(const doc of backup.documents){
+   if(!doc || typeof doc.html!=='string') continue;
+
+   const matching=currentFolders.find(f=>
+    f.name===(
+     backup.folders.find(x=>x.id===doc.folder)?.name || 'General'
+    )
+   );
+
+   await putOne(DOC_STORE,{
+    id:makeId(),
+    title:String(doc.title||'Imported document'),
+    html:doc.html,
+    folder:matching ? matching.id : 'general',
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString()
+   });
+  }
+
+  await refreshFolders();
+  await refreshLibrary();
+
+  alert('Backup imported successfully.');
+
+ }catch(error){
+  console.error(error);
+  alert('Import failed: '+error.message);
+ }
+}
+
+async function init(){
+ if(!window.Quill){
+  setStatus('Editor library failed to load. Check internet.',true);
+  return;
+ }
+
+ if(!window.indexedDB){
+  setStatus('This browser does not support IndexedDB.',true);
+  return;
+ }
+
+ const SizeStyle=Quill.import('attributors/style/size');
+ SizeStyle.whitelist=[
+  '8pt','10pt','11pt','12pt','14pt','16pt',
+  '18pt','20pt','24pt','28pt','36pt','48pt','72pt'
+ ];
+ Quill.register(SizeStyle,true);
+
+ quill=new Quill('#editor',{
+  theme:'snow',
+  placeholder:'Start writing your document...',
+  modules:{
+   toolbar:'#toolbar',
+   history:{delay:800,maxStack:100,userOnly:true}
+  }
+ });
+
+ try{
+  db=await openDatabase();
+
+  await ensureDefaultFolder();
+  await migrateOldDocument();
+  await refreshFolders();
+
+  let docs=await getAll(DOC_STORE);
+
+  if(!docs.length){
+   await createDocument();
+  }else{
+   docs.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+   await openDocument(docs[0].id);
+  }
+
+  quill.on('text-change',scheduleSave);
+
+  $('docTitle').addEventListener('input',scheduleSave);
+  $('folderSelect').addEventListener('change',scheduleSave);
+
+  $('saveBtn').addEventListener('click',()=>saveCurrent(true));
+  $('newBtn').addEventListener('click',createDocument);
+  $('newFolderBtn').addEventListener('click',createFolder);
+  $('deleteBtn').addEventListener('click',deleteCurrent);
+
+  $('undoBtn').addEventListener('click',()=>quill.history.undo());
+  $('redoBtn').addEventListener('click',()=>quill.history.redo());
+
+  $('htmlBtn').addEventListener('click',exportHtml);
+  $('backupBtn').addEventListener('click',exportBackup);
+  $('printBtn').addEventListener('click',()=>window.print());
+
+  $('searchDocs').addEventListener('input',refreshLibrary);
+  $('folderFilter').addEventListener('change',refreshLibrary);
+
+  $('importBtn').addEventListener('click',()=>$('importFile').click());
+
+  $('importFile').addEventListener('change',async e=>{
+   await importBackup(e.target.files[0]);
+   e.target.value='';
+  });
+
+  window.addEventListener('beforeunload',()=>{
+   if(saveTimer){
     clearTimeout(saveTimer);
+    saveCurrent(false);
+   }
+  });
 
-    saveTimer = setTimeout(() => {
-      saveDocument(true);
-    }, 700);
-  }
+  await refreshLibrary();
 
-  function downloadFile(filename, content, type) {
-    const blob = new Blob([content], {type});
+ }catch(error){
+  console.error(error);
+  setStatus('Library initialization failed: '+error.message,true);
+ }
+}
 
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-
-    link.href = url;
-    link.download = filename;
-
-    document.body.appendChild(link);
-
-    link.click();
-    link.remove();
-
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-
-  function safeFilename(name) {
-    return (
-      name || 'quantam-document'
-    ).replace(/[\\/:*?"<>|]+/g, '-').trim() ||
-      'quantam-document';
-  }
-
-  function exportHtml() {
-    const title =
-      $('docTitle').value.trim() || 'Untitled document';
-
-    const escapedTitle = title.replace(/[&<>"']/g, c => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[c]));
-
-    const html =
-      '<!DOCTYPE html><html lang="en"><head>' +
-      '<meta charset="UTF-8">' +
-      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-      '<title>' + escapedTitle + '</title>' +
-      '<style>' +
-      'body{font-family:Arial,sans-serif;max-width:794px;margin:40px auto;padding:0 24px;line-height:1.6}' +
-      'img{max-width:100%;height:auto}' +
-      '@media print{body{margin:0;max-width:none}}' +
-      '</style></head><body>' +
-      quill.root.innerHTML +
-      '</body></html>';
-
-    downloadFile(
-      safeFilename(title) + '.html',
-      html,
-      'text/html;charset=utf-8'
-    );
-  }
-
-  function insertImage(file) {
-    if (!file) return;
-
-    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
-      alert('Please choose a PNG, JPG, WEBP or GIF image.');
-      return;
-    }
-
-    if (file.size > 1.5 * 1024 * 1024) {
-      alert(
-        'Image is larger than 1.5 MB. ' +
-        'Please choose a smaller image to avoid filling browser storage.'
-      );
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const range = quill.getSelection(true) || {
-        index:Math.max(0, quill.getLength() - 1)
-      };
-
-      quill.insertEmbed(
-        range.index,
-        'image',
-        reader.result,
-        'user'
-      );
-
-      quill.setSelection(
-        range.index + 1,
-        0,
-        'silent'
-      );
-
-      scheduleSave();
-    };
-
-    reader.onerror = () => {
-      alert('Image could not be read. Try another image.');
-    };
-
-    reader.readAsDataURL(file);
-  }
-
-  function init() {
-
-    if (!window.Quill) {
-      setStatus(
-        'Editor library did not load. Check your internet connection and reload.',
-        true
-      );
-
-      $('editor').innerHTML =
-        '<p style="padding:20px;color:#b42318">' +
-        'QUANTAM DOCS editor could not load. ' +
-        'Please connect to the internet and reload this page.' +
-        '</p>';
-
-      return;
-    }
-
-    const SizeStyle =
-      Quill.import('attributors/style/size');
-
-    SizeStyle.whitelist = [
-      '8pt','9pt','10pt','11pt','12pt',
-      '14pt','16pt','18pt','20pt','24pt',
-      '28pt','36pt','48pt','72pt'
-    ];
-
-    Quill.register(SizeStyle, true);
-
-    quill = new Quill('#editor', {
-      theme:'snow',
-
-      placeholder:'Start writing your document…',
-
-      modules:{
-        toolbar:{
-          container:'#toolbar'
-        },
-
-        history:{
-          delay:800,
-          maxStack:100,
-          userOnly:true
-        }
-      }
-    });
-
-    const saved = getSavedDocument();
-
-    if (saved) {
-      $('docTitle').value =
-        saved.title || 'Untitled document';
-
-      if (saved.html) {
-        quill.root.innerHTML = saved.html;
-      }
-
-      setStatus('Saved document loaded');
-    }
-
-    quill.on('text-change', (delta, oldDelta, source) => {
-      if (source === 'user') {
-        scheduleSave();
-      }
-    });
-
-    $('docTitle').addEventListener(
-      'input',
-      scheduleSave
-    );
-
-    $('saveBtn').addEventListener(
-      'click',
-      () => saveDocument(true)
-    );
-
-    $('downloadBtn').addEventListener(
-      'click',
-      () => {
-        saveDocument(false);
-        exportHtml();
-      }
-    );
-
-    $('printBtn').addEventListener(
-      'click',
-      () => window.print()
-    );
-
-    $('undoBtn').addEventListener(
-      'click',
-      () => quill.history.undo()
-    );
-
-    $('redoBtn').addEventListener(
-      'click',
-      () => quill.history.redo()
-    );
-
-    $('imageButton').addEventListener(
-      'click',
-      () => $('imageInput').click()
-    );
-
-    $('imageInput').addEventListener(
-      'change',
-      (event) => {
-        insertImage(
-          event.target.files && event.target.files[0]
-        );
-
-        event.target.value = '';
-      }
-    );
-
-    $('newDocBtn').addEventListener(
-      'click',
-      () => {
-        if (!confirm(
-          'Start a new blank document? Download or save your current document first.'
-        )) {
-          return;
-        }
-
-        $('docTitle').value = 'Untitled document';
-
-        quill.setText('');
-
-        saveDocument(true);
-      }
-    );
-
-    window.addEventListener('beforeunload', () => {
-      if (saveTimer) {
-        clearTimeout(saveTimer);
-        saveDocument(false);
-      }
-    });
-
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+if(document.readyState==='loading'){
+ document.addEventListener('DOMContentLoaded',init);
+}else{
+ init();
+}
 
 })();
 </script>
-
 </body>
 </html>
