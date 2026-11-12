@@ -3,46 +3,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#10172a">
-<title>QUANTAM DOCS Editor</title>
+<title>QUANTAM DOCS</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#e9edf4;color:#202b3d}
-button,select,input{font:inherit}
-.topbar{height:58px;background:#10172a;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
-.brand{font-weight:bold;font-size:20px}
+*{box-sizing:border-box}
+body{margin:0;background:#e9edf4;color:#202b3d;font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+.topbar{background:#10172a;color:white;padding:13px 18px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:20px;font-weight:bold}
 .brand span{color:#60a5fa}
 .actions{display:flex;gap:8px}
-.actions button{padding:9px 15px;border:0;border-radius:5px;background:#263958;color:white;cursor:pointer}
+.actions button{background:#263958;color:white;border:0;padding:9px 14px;border-radius:5px}
 .actions .save{background:#2563eb}
-.titlebar{background:white;padding:12px 20px;border-bottom:1px solid #ddd}
-#docTitle{border:0;outline:0;font-size:19px;font-weight:bold;width:100%;max-width:600px}
-.ribbon{background:#fff;padding:9px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:7px;border-bottom:1px solid #d5dce8;position:sticky;top:0;z-index:10}
-.group{display:flex;align-items:center;gap:5px;padding-right:9px;border-right:1px solid #dce1e9}
-.ribbon button,.ribbon select,.ribbon input{height:35px;border:1px solid #d7deea;background:white;border-radius:5px;padding:5px 8px;cursor:pointer}
-.ribbon button{min-width:35px}
-.ribbon button:hover,.ribbon select:hover{background:#eaf2ff}
+.titlebar{background:white;padding:12px 18px;border-bottom:1px solid #ddd}
+#docTitle{font-size:18px;font-weight:bold;border:0;outline:0;width:100%;max-width:600px}
+.ribbon{background:white;padding:9px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;border-bottom:1px solid #d5dce8;position:sticky;top:0;z-index:5}
+.group{display:flex;gap:4px;align-items:center;border-right:1px solid #ddd;padding-right:7px}
+.ribbon button,.ribbon select,.ribbon input{height:36px;border:1px solid #d5dce8;background:white;border-radius:5px;padding:5px 8px}
+.ribbon button{min-width:35px;cursor:pointer}
+.ribbon button:active{background:#dbeafe}
+.ribbon select{max-width:145px}
 .ribbon input[type=color]{width:42px;padding:3px}
-.ribbon select{max-width:140px}
-.workspace{padding:25px 12px 55px;display:flex;justify-content:center;min-height:calc(100vh - 155px)}
-.page{width:816px;max-width:100%;min-height:1056px;background:white;padding:75px 80px;box-shadow:0 3px 18px #00000012;outline:none;overflow-wrap:anywhere;font-family:Arial,sans-serif;font-size:12px;line-height:1.6}
-.page:empty:before{content:"Start typing your document here...";color:#aab3c1;pointer-events:none}
+.workspace{display:flex;justify-content:center;padding:25px 10px 60px}
+.page{background:white;width:816px;max-width:100%;min-height:1056px;padding:75px 80px;box-shadow:0 3px 18px #0001;outline:none;overflow-wrap:anywhere;font-family:Arial,sans-serif;font-size:12px;line-height:1.6}
+.page:empty:before{content:"Start typing your document here...";color:#aaa;pointer-events:none}
 .page img{max-width:100%;height:auto}
 .page table{border-collapse:collapse;width:100%}
 .page td,.page th{border:1px solid #555;padding:7px}
 .page ul,.page ol{padding-left:30px}
-.statusbar{position:fixed;bottom:0;left:0;width:100%;height:29px;background:#10172a;color:#cbd5e5;display:flex;justify-content:space-between;align-items:center;padding:0 15px;font-size:11px;z-index:20}
+.statusbar{position:fixed;bottom:0;left:0;right:0;background:#10172a;color:white;padding:7px 12px;display:flex;justify-content:space-between;font-size:12px;z-index:10}
 @media(max-width:600px){
-.topbar{padding:0 9px}
-.brand{font-size:15px}
-.actions button{padding:8px}
-.ribbon{gap:5px;padding:7px}
-.group{gap:3px;padding-right:5px}
-.ribbon button,.ribbon select{font-size:12px;padding:4px}
-.workspace{padding:10px 5px 45px}
-.page{min-height:750px;padding:35px 22px}
+ .topbar{padding:10px}
+ .brand{font-size:16px}
+ .actions button{padding:8px}
+ .ribbon{gap:5px;padding:6px}
+ .group{gap:3px;padding-right:5px}
+ .ribbon button,.ribbon select{font-size:12px;padding:4px}
+ .workspace{padding:10px 4px 50px}
+ .page{padding:35px 20px;min-height:750px}
 }
 </style>
 </head>
@@ -58,63 +58,63 @@ button,select,input{font:inherit}
 </header>
 
 <div class="titlebar">
-  <input id="docTitle" value="Untitled Document" placeholder="Document Name">
+  <input id="docTitle" value="Untitled Document" placeholder="Document name">
 </div>
 
 <div class="ribbon">
 
   <div class="group">
-    <button type="button" data-cmd="undo" title="Undo">↶</button>
-    <button type="button" data-cmd="redo" title="Redo">↷</button>
+    <button type="button" data-command="undo">↶</button>
+    <button type="button" data-command="redo">↷</button>
   </div>
 
   <div class="group">
-    <select id="fontFamily" title="Font">
+    <select id="fontFamily">
       <option value="Arial">Arial</option>
-      <option value="Times New Roman">Times New Roman</option>
       <option value="Georgia">Georgia</option>
+      <option value="Times New Roman">Times New Roman</option>
       <option value="Verdana">Verdana</option>
       <option value="Courier New">Courier New</option>
     </select>
 
-    <select id="fontSize" title="Font Size">
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12" selected>12</option>
-      <option value="14">14</option>
-      <option value="16">16</option>
-      <option value="18">18</option>
-      <option value="20">20</option>
-      <option value="24">24</option>
-      <option value="28">28</option>
-      <option value="32">32</option>
-      <option value="36">36</option>
-      <option value="48">48</option>
-      <option value="72">72</option>
+    <select id="fontSize">
+      <option value="10px">10</option>
+      <option value="11px">11</option>
+      <option value="12px" selected>12</option>
+      <option value="14px">14</option>
+      <option value="16px">16</option>
+      <option value="18px">18</option>
+      <option value="20px">20</option>
+      <option value="24px">24</option>
+      <option value="28px">28</option>
+      <option value="32px">32</option>
+      <option value="36px">36</option>
+      <option value="48px">48</option>
+      <option value="72px">72</option>
     </select>
   </div>
 
   <div class="group">
-    <button type="button" data-cmd="bold"><b>B</b></button>
-    <button type="button" data-cmd="italic"><i>I</i></button>
-    <button type="button" data-cmd="underline"><u>U</u></button>
-    <button type="button" data-cmd="strikeThrough"><s>S</s></button>
+    <button type="button" data-style="fontWeight" data-value="bold"><b>B</b></button>
+    <button type="button" data-style="fontStyle" data-value="italic"><i>I</i></button>
+    <button type="button" data-style="textDecoration" data-value="underline"><u>U</u></button>
+    <button type="button" data-style="textDecoration" data-value="line-through"><s>S</s></button>
   </div>
 
   <div class="group">
-    <input type="color" id="textColor" value="#000000" title="Text Colour">
-    <input type="color" id="highlightColor" value="#ffff00" title="Highlight Colour">
+    <input type="color" id="textColor" value="#000000" title="Text colour">
+    <input type="color" id="highlightColor" value="#ffff00" title="Highlight">
   </div>
 
   <div class="group">
-    <button type="button" data-cmd="justifyLeft">Left</button>
-    <button type="button" data-cmd="justifyCenter">Center</button>
-    <button type="button" data-cmd="justifyRight">Right</button>
-    <button type="button" data-cmd="justifyFull">Justify</button>
+    <button type="button" data-command="justifyLeft">Left</button>
+    <button type="button" data-command="justifyCenter">Center</button>
+    <button type="button" data-command="justifyRight">Right</button>
+    <button type="button" data-command="justifyFull">Justify</button>
   </div>
 
   <div class="group">
-    <select id="heading" title="Paragraph Style">
+    <select id="heading">
       <option value="P">Normal</option>
       <option value="H1">Heading 1</option>
       <option value="H2">Heading 2</option>
@@ -123,18 +123,15 @@ button,select,input{font:inherit}
   </div>
 
   <div class="group">
-    <button type="button" data-cmd="insertUnorderedList">• List</button>
-    <button type="button" data-cmd="insertOrderedList">1. List</button>
+    <button type="button" data-command="insertUnorderedList">• List</button>
+    <button type="button" data-command="insertOrderedList">1. List</button>
   </div>
 
   <div class="group">
     <button type="button" id="linkButton">Link</button>
     <button type="button" id="imageButton">Image</button>
     <button type="button" id="tableButton">Table</button>
-  </div>
-
-  <div class="group">
-    <button type="button" id="clearButton">Clear Format</button>
+    <button type="button" id="clearButton">Clear</button>
   </div>
 
 </div>
@@ -153,130 +150,194 @@ button,select,input{font:inherit}
 <script>
 const editor=document.getElementById("editor");
 const titleInput=document.getElementById("docTitle");
-const saveStatus=document.getElementById("saveStatus");
 
 let savedRange=null;
 
-function rememberSelection(){
-  const selection=window.getSelection();
-  if(selection && selection.rangeCount){
-    const range=selection.getRangeAt(0);
+function saveSelection(){
+  const sel=window.getSelection();
+
+  if(sel && sel.rangeCount){
+    const range=sel.getRangeAt(0);
+
     if(editor.contains(range.commonAncestorContainer)){
       savedRange=range.cloneRange();
     }
   }
 }
-
-document.addEventListener("selectionchange",rememberSelection);
 
 function restoreSelection(){
   editor.focus();
-  if(savedRange){
-    const selection=window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(savedRange);
+
+  if(!savedRange)return false;
+
+  try{
+    const sel=window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    return true;
+  }catch(error){
+    return false;
   }
 }
 
-function updateSelection(){
-  const selection=window.getSelection();
-  if(selection && selection.rangeCount){
-    const range=selection.getRangeAt(0);
-    if(editor.contains(range.commonAncestorContainer)){
-      savedRange=range.cloneRange();
-    }
-  }
-}
+document.addEventListener("selectionchange",saveSelection);
 
-function runCommand(command,value=null){
-  restoreSelection();
-  document.execCommand(command,false,value);
-  updateSelection();
-  updateCount();
-  markUnsaved();
-}
-
-document.querySelectorAll("[data-cmd]").forEach(button=>{
-  button.addEventListener("mousedown",e=>e.preventDefault());
-  button.addEventListener("click",()=>{
-    runCommand(button.dataset.cmd);
+document.querySelectorAll(".ribbon button,.ribbon select,.ribbon input").forEach(control=>{
+  control.addEventListener("pointerdown",()=>{
+    saveSelection();
   });
 });
 
-function applyStyle(styleName,value){
+function getSelectedRange(){
   restoreSelection();
-  const selection=window.getSelection();
 
-  if(!selection || !selection.rangeCount){
-    alert("Pehle text select karo.");
-    return;
+  const sel=window.getSelection();
+
+  if(!sel || !sel.rangeCount){
+    alert("Pehle editor mein text select karo.");
+    return null;
   }
 
-  const range=selection.getRangeAt(0);
+  const range=sel.getRangeAt(0);
 
-  if(range.collapsed){
-    alert("Pehle text select karo.");
-    return;
+  if(range.collapsed || !editor.contains(range.commonAncestorContainer)){
+    alert("Formatting ke liye editor ka text select karo.");
+    return null;
   }
+
+  return range;
+}
+
+function applyStyle(property,value){
+  const range=getSelectedRange();
+  if(!range)return;
 
   const span=document.createElement("span");
-  span.style[styleName]=value;
+  span.style[property]=value;
 
   try{
-    span.appendChild(range.extractContents());
+    const fragment=range.extractContents();
+    span.appendChild(fragment);
     range.insertNode(span);
 
     const newRange=document.createRange();
     newRange.selectNodeContents(span);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
+
+    const sel=window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+
     savedRange=newRange.cloneRange();
+
+    updateCount();
+    markUnsaved();
   }catch(error){
     console.error(error);
     alert("Formatting apply nahi ho payi.");
   }
-
-  updateCount();
-  markUnsaved();
 }
 
+function toggleStyle(property,value,normalValue){
+  const range=getSelectedRange();
+  if(!range)return;
+
+  let node=range.startContainer;
+
+  if(node.nodeType===3)node=node.parentElement;
+
+  const current=getComputedStyle(node)[property];
+  let newValue=value;
+
+  if(property==="fontWeight"){
+    if(current==="bold" || Number(current)>=600){
+      newValue=normalValue;
+    }
+  }else if(property==="fontStyle"){
+    if(current==="italic")newValue=normalValue;
+  }else if(property==="textDecoration"){
+    if(current.includes(value))newValue="none";
+  }
+
+  applyStyle(property,newValue);
+}
+
+document.querySelectorAll("[data-style]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    toggleStyle(
+      button.dataset.style,
+      button.dataset.value,
+      button.dataset.style==="fontWeight"?"normal":"none"
+    );
+  });
+});
+
 document.getElementById("fontSize").addEventListener("change",function(){
-  applyStyle("fontSize",this.value+"px");
+  applyStyle("fontSize",this.value);
 });
 
 document.getElementById("fontFamily").addEventListener("change",function(){
   applyStyle("fontFamily",this.value);
 });
 
-document.getElementById("textColor").addEventListener("input",function(){
+document.getElementById("textColor").addEventListener("change",function(){
   applyStyle("color",this.value);
 });
 
-document.getElementById("highlightColor").addEventListener("input",function(){
+document.getElementById("highlightColor").addEventListener("change",function(){
   applyStyle("backgroundColor",this.value);
 });
 
-document.getElementById("heading").addEventListener("change",function(){
-  runCommand("formatBlock","<"+this.value+">");
+document.querySelectorAll("[data-command]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    if(!restoreSelection()){
+      alert("Editor mein cursor ya text select karo.");
+      return;
+    }
+
+    document.execCommand(button.dataset.command,false,null);
+    saveSelection();
+    updateCount();
+    markUnsaved();
+  });
 });
 
-document.getElementById("linkButton").addEventListener("mousedown",e=>e.preventDefault());
+document.getElementById("heading").addEventListener("change",function(){
+  if(!restoreSelection())return;
+
+  document.execCommand("formatBlock",false,this.value);
+  saveSelection();
+  markUnsaved();
+});
 
 document.getElementById("linkButton").addEventListener("click",()=>{
-  const url=prompt("Enter full URL (https://...)");
+  const range=getSelectedRange();
+  if(!range)return;
+
+  const url=prompt("Enter URL starting with https://");
   if(!url)return;
 
   if(!/^https?:\/\//i.test(url)){
-    alert("Enter a valid http or https URL.");
+    alert("Valid http/https URL enter karo.");
     return;
   }
 
-  runCommand("createLink",url);
+  const link=document.createElement("a");
+  link.href=url;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+
+  try{
+    link.appendChild(range.extractContents());
+    range.insertNode(link);
+    saveSelection();
+    markUnsaved();
+  }catch(error){
+    alert("Link insert nahi ho paya.");
+  }
 });
 
-document.getElementById("imageButton").addEventListener("mousedown",e=>e.preventDefault());
-
 document.getElementById("imageButton").addEventListener("click",()=>{
+  saveSelection();
   document.getElementById("imageInput").click();
 });
 
@@ -285,29 +346,28 @@ document.getElementById("imageInput").addEventListener("change",function(){
   if(!file)return;
 
   if(!file.type.startsWith("image/")){
-    alert("Select a valid image.");
+    alert("Image file select karo.");
+    this.value="";
     return;
   }
 
   const reader=new FileReader();
 
   reader.onload=()=>{
-    restoreSelection();
-
     const img=document.createElement("img");
     img.src=reader.result;
     img.alt=file.name;
 
-    const selection=window.getSelection();
-
-    if(selection && selection.rangeCount){
-      const range=selection.getRangeAt(0);
+    if(restoreSelection()){
+      const range=window.getSelection().getRangeAt(0);
       range.deleteContents();
       range.insertNode(img);
       range.setStartAfter(img);
       range.collapse(true);
-      selection.removeAllRanges();
-      selection.addRange(range);
+
+      const sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
       savedRange=range.cloneRange();
     }else{
       editor.appendChild(img);
@@ -321,14 +381,12 @@ document.getElementById("imageInput").addEventListener("change",function(){
   this.value="";
 });
 
-document.getElementById("tableButton").addEventListener("mousedown",e=>e.preventDefault());
-
 document.getElementById("tableButton").addEventListener("click",()=>{
-  const rows=parseInt(prompt("Number of rows:", "3"));
-  const cols=parseInt(prompt("Number of columns:", "3"));
+  const rows=Number(prompt("Rows (1-20):","3"));
+  const cols=Number(prompt("Columns (1-10):","3"));
 
-  if(!Number.isInteger(rows)||!Number.isInteger(cols)||rows<1||cols<1||rows>20||cols>10){
-    alert("Enter valid rows (1–20) and columns (1–10).");
+  if(!Number.isInteger(rows)||!Number.isInteger(cols)||rows<1||rows>20||cols<1||cols>10){
+    alert("Valid row aur column number enter karo.");
     return;
   }
 
@@ -343,37 +401,43 @@ document.getElementById("tableButton").addEventListener("click",()=>{
   }
 
   html+="</tbody></table><p><br></p>";
-  runCommand("insertHTML",html);
+
+  if(restoreSelection()){
+    document.execCommand("insertHTML",false,html);
+    saveSelection();
+    markUnsaved();
+  }
 });
 
-document.getElementById("clearButton").addEventListener("mousedown",e=>e.preventDefault());
 document.getElementById("clearButton").addEventListener("click",()=>{
-  runCommand("removeFormat");
+  if(!restoreSelection())return;
+  document.execCommand("removeFormat",false,null);
+  saveSelection();
+  markUnsaved();
 });
 
 function updateCount(){
   const text=editor.innerText.trim();
-  const words=text ? text.split(/\s+/).length : 0;
-  document.getElementById("wordCount").textContent="Words: "+words;
+  const count=text?text.split(/\s+/).length:0;
+  document.getElementById("wordCount").textContent="Words: "+count;
 }
 
 function markUnsaved(){
-  saveStatus.textContent="Unsaved changes";
+  document.getElementById("saveStatus").textContent="Unsaved changes";
 }
 
 function saveDocument(){
   const data={
-    title:titleInput.value.trim()||"Untitled Document",
+    title:titleInput.value||"Untitled Document",
     content:editor.innerHTML,
     updatedAt:new Date().toISOString()
   };
 
   try{
     localStorage.setItem("quantam_document",JSON.stringify(data));
-    saveStatus.textContent="Saved locally";
+    document.getElementById("saveStatus").textContent="Saved locally";
   }catch(error){
-    saveStatus.textContent="Save failed";
-    alert("Browser storage unavailable or full.");
+    alert("Document save nahi ho paya.");
   }
 }
 
@@ -388,20 +452,19 @@ function loadDocument(){
     }
   }catch(error){
     console.error(error);
-    saveStatus.textContent="Load failed";
   }
 
   updateCount();
 }
 
 function goHome(){
-  window.location.href="./index.html";
+  location.href="./index.html";
 }
 
 editor.addEventListener("input",()=>{
   updateCount();
   markUnsaved();
-  rememberSelection();
+  saveSelection();
 });
 
 titleInput.addEventListener("input",markUnsaved);
