@@ -1,120 +1,398 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#10172a">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17365d">
 <title>QUANTAM DOCS</title>
 
 <style>
+:root{
+  --navy:#17365d;
+  --blue:#2563eb;
+  --line:#d8dee9;
+  --bg:#edf1f6;
+}
+
 *{box-sizing:border-box}
-body{margin:0;background:#e9edf4;color:#202b3d;font-family:Arial,sans-serif}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#202938;
+  background:var(--bg);
+}
+
 button,input,select{font:inherit}
-.topbar{background:#10172a;color:white;padding:13px 18px;display:flex;justify-content:space-between;align-items:center}
-.brand{font-size:20px;font-weight:bold}
-.brand span{color:#60a5fa}
-.actions{display:flex;gap:8px}
-.actions button{background:#263958;color:white;border:0;padding:9px 14px;border-radius:5px}
-.actions .save{background:#2563eb}
-.titlebar{background:white;padding:12px 18px;border-bottom:1px solid #ddd}
-#docTitle{font-size:18px;font-weight:bold;border:0;outline:0;width:100%;max-width:600px}
-.ribbon{background:white;padding:9px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;border-bottom:1px solid #d5dce8;position:sticky;top:0;z-index:5}
-.group{display:flex;gap:4px;align-items:center;border-right:1px solid #ddd;padding-right:7px}
-.ribbon button,.ribbon select,.ribbon input{height:36px;border:1px solid #d5dce8;background:white;border-radius:5px;padding:5px 8px}
-.ribbon button{min-width:35px;cursor:pointer}
+
+.appbar{
+  height:58px;
+  background:var(--navy);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  gap:12px;
+}
+
+.brand{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:.3px;
+  white-space:nowrap;
+}
+
+.brand span{color:#8ec5ff}
+
+.app-actions{
+  display:flex;
+  gap:8px;
+}
+
+.app-actions button{
+  border:1px solid #ffffff55;
+  background:#ffffff14;
+  color:#fff;
+  border-radius:6px;
+  padding:8px 13px;
+  cursor:pointer;
+}
+
+.app-actions .primary{
+  background:#2563eb;
+  border-color:#2563eb;
+}
+
+.docbar{
+  height:48px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+}
+
+.docbar input{
+  width:min(600px,100%);
+  border:0;
+  outline:0;
+  font-size:17px;
+  font-weight:600;
+  color:#27364b;
+}
+
+.tabs{
+  display:flex;
+  gap:2px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:0 14px;
+}
+
+.tab{
+  padding:10px 14px;
+  border:0;
+  border-bottom:3px solid transparent;
+  background:transparent;
+  color:#40516a;
+  cursor:pointer;
+}
+
+.tab.active{
+  border-bottom-color:var(--blue);
+  color:var(--blue);
+  font-weight:700;
+}
+
+.ribbon{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:9px 12px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  z-index:3;
+}
+
+.group{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding-right:9px;
+  border-right:1px solid #e0e5ed;
+  min-height:34px;
+}
+
+.group:last-child{border:0}
+
+.ribbon button,
+.ribbon select,
+.ribbon input{
+  height:34px;
+  border:1px solid #d7deea;
+  background:#fff;
+  border-radius:5px;
+  color:#26364d;
+}
+
+.ribbon button{
+  min-width:34px;
+  padding:5px 9px;
+  cursor:pointer;
+}
+
+.ribbon button:hover{
+  background:#edf4ff;
+  border-color:#9dbcf7;
+}
+
 .ribbon button:active{background:#dbeafe}
-.ribbon select{max-width:145px}
-.ribbon input[type=color]{width:42px;padding:3px}
-.workspace{display:flex;justify-content:center;padding:25px 10px 60px}
-.page{background:white;width:816px;max-width:100%;min-height:1056px;padding:75px 80px;box-shadow:0 3px 18px #0001;outline:none;overflow-wrap:anywhere;font-family:Arial,sans-serif;font-size:12px;line-height:1.6}
-.page:empty:before{content:"Start typing your document here...";color:#aaa;pointer-events:none}
-.page img{max-width:100%;height:auto}
-.page table{border-collapse:collapse;width:100%}
-.page td,.page th{border:1px solid #555;padding:7px}
-.page ul,.page ol{padding-left:30px}
-.statusbar{position:fixed;bottom:0;left:0;right:0;background:#10172a;color:white;padding:7px 12px;display:flex;justify-content:space-between;font-size:12px;z-index:10}
-@media(max-width:600px){
- .topbar{padding:10px}
- .brand{font-size:16px}
- .actions button{padding:8px}
- .ribbon{gap:5px;padding:6px}
- .group{gap:3px;padding-right:5px}
- .ribbon button,.ribbon select{font-size:12px;padding:4px}
- .workspace{padding:10px 4px 50px}
- .page{padding:35px 20px;min-height:750px}
+
+.ribbon select{
+  padding:4px 7px;
+  max-width:150px;
+}
+
+.ribbon input[type=color]{
+  width:39px;
+  padding:3px;
+  cursor:pointer;
+}
+
+.ribbon .font-size{width:66px}
+
+.workspace{
+  padding:24px 14px 55px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:calc(100vh - 180px);
+  overflow:auto;
+}
+
+.paper{
+  width:816px;
+  min-height:1056px;
+  max-width:100%;
+  background:#fff;
+  padding:76px 80px;
+  box-shadow:0 2px 14px #26364d1c;
+  outline:none;
+  overflow-wrap:anywhere;
+  font:12pt Arial,sans-serif;
+  line-height:1.5;
+  caret-color:#1d4ed8;
+}
+
+.paper:empty:before{
+  content:'Start typing your document here…';
+  color:#a7b0bf;
+  pointer-events:none;
+}
+
+.paper img{
+  max-width:100%;
+  height:auto;
+}
+
+.paper table{
+  border-collapse:collapse;
+  width:100%;
+  margin:8px 0;
+}
+
+.paper td,.paper th{
+  border:1px solid #657084;
+  padding:7px;
+  min-width:35px;
+}
+
+.paper ul,.paper ol{padding-left:28px}
+
+.paper a{
+  color:#1457bb;
+  text-decoration:underline;
+}
+
+.status{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:29px;
+  background:var(--navy);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  font-size:12px;
+  z-index:5;
+}
+
+.hidden{display:none!important}
+
+@media(max-width:700px){
+
+  .appbar{
+    height:54px;
+    padding:0 10px;
+  }
+
+  .brand{font-size:16px}
+
+  .app-actions button{
+    font-size:12px;
+    padding:7px 9px;
+  }
+
+  .docbar{
+    padding:0 11px;
+    height:44px;
+  }
+
+  .tabs{
+    padding:0 6px;
+    overflow-x:auto;
+  }
+
+  .tab{
+    padding:9px 11px;
+    white-space:nowrap;
+    font-size:13px;
+  }
+
+  .ribbon{
+    position:sticky;
+    top:0;
+    gap:6px;
+    padding:7px;
+    max-height:none;
+  }
+
+  .group{
+    gap:4px;
+    padding-right:6px;
+  }
+
+  .ribbon button,.ribbon select{
+    height:36px;
+    font-size:13px;
+  }
+
+  .ribbon select{max-width:125px}
+
+  .workspace{
+    padding:9px 5px 48px;
+    min-height:calc(100vh - 200px);
+  }
+
+  .paper{
+    width:100%;
+    min-height:calc(100vh - 240px);
+    padding:30px 20px;
+    box-shadow:0 1px 8px #26364d18;
+    font-size:12pt;
+  }
+}
+
+@media(min-width:701px) and (max-width:1050px){
+  .paper{padding:55px 55px}
+  .ribbon{gap:6px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="topbar">
+<header class="appbar">
   <div class="brand">QUANTAM <span>DOCS</span></div>
-  <div class="actions">
-    <button type="button" onclick="goHome()">Home</button>
-    <button type="button" class="save" onclick="saveDocument()">Save</button>
+
+  <div class="app-actions">
+    <button type="button" id="homeBtn">Home</button>
+    <button type="button" id="saveBtn" class="primary">Save</button>
   </div>
 </header>
 
-<div class="titlebar">
-  <input id="docTitle" value="Untitled Document" placeholder="Document name">
+<div class="docbar">
+  <input id="docTitle" value="Untitled Document" aria-label="Document name">
 </div>
 
-<div class="ribbon">
+<nav class="tabs">
+  <button class="tab active" type="button">Home</button>
+  <button class="tab" type="button" id="insertTab">Insert</button>
+  <button class="tab" type="button" id="layoutTab">Layout</button>
+</nav>
+
+<section class="ribbon" id="homeRibbon">
 
   <div class="group">
-    <button type="button" data-command="undo">↶</button>
-    <button type="button" data-command="redo">↷</button>
+    <button type="button" id="undoBtn" title="Undo">↶</button>
+    <button type="button" id="redoBtn" title="Redo">↷</button>
   </div>
 
   <div class="group">
-    <select id="fontFamily">
-      <option value="Arial">Arial</option>
-      <option value="Georgia">Georgia</option>
-      <option value="Times New Roman">Times New Roman</option>
-      <option value="Verdana">Verdana</option>
-      <option value="Courier New">Courier New</option>
+    <select id="fontFamily" aria-label="Font family">
+      <option>Arial</option>
+      <option>Calibri</option>
+      <option>Georgia</option>
+      <option>Times New Roman</option>
+      <option>Verdana</option>
+      <option>Courier New</option>
     </select>
 
-    <select id="fontSize">
-      <option value="10px">10</option>
-      <option value="11px">11</option>
-      <option value="12px" selected>12</option>
-      <option value="14px">14</option>
-      <option value="16px">16</option>
-      <option value="18px">18</option>
-      <option value="20px">20</option>
-      <option value="24px">24</option>
-      <option value="28px">28</option>
-      <option value="32px">32</option>
-      <option value="36px">36</option>
-      <option value="48px">48</option>
-      <option value="72px">72</option>
+    <select id="fontSize" class="font-size" aria-label="Font size">
+      <option>8</option>
+      <option>9</option>
+      <option>10</option>
+      <option>11</option>
+      <option selected>12</option>
+      <option>14</option>
+      <option>16</option>
+      <option>18</option>
+      <option>20</option>
+      <option>22</option>
+      <option>24</option>
+      <option>26</option>
+      <option>28</option>
+      <option>36</option>
+      <option>48</option>
+      <option>72</option>
     </select>
   </div>
 
   <div class="group">
-    <button type="button" data-style="fontWeight" data-value="bold"><b>B</b></button>
-    <button type="button" data-style="fontStyle" data-value="italic"><i>I</i></button>
-    <button type="button" data-style="textDecoration" data-value="underline"><u>U</u></button>
-    <button type="button" data-style="textDecoration" data-value="line-through"><s>S</s></button>
+    <button type="button" data-style="bold"><b>B</b></button>
+    <button type="button" data-style="italic"><i>I</i></button>
+    <button type="button" data-style="underline"><u>U</u></button>
+    <button type="button" data-style="strike"><s>S</s></button>
   </div>
 
   <div class="group">
-    <input type="color" id="textColor" value="#000000" title="Text colour">
-    <input type="color" id="highlightColor" value="#ffff00" title="Highlight">
+    <label title="Font colour">
+      A
+      <input type="color" id="textColor" value="#000000" aria-label="Font colour">
+    </label>
+
+    <label title="Highlight colour">
+      ▰
+      <input type="color" id="highlightColor" value="#ffff00" aria-label="Highlight colour">
+    </label>
   </div>
 
   <div class="group">
-    <button type="button" data-command="justifyLeft">Left</button>
-    <button type="button" data-command="justifyCenter">Center</button>
-    <button type="button" data-command="justifyRight">Right</button>
-    <button type="button" data-command="justifyFull">Justify</button>
+    <button type="button" data-cmd="justifyLeft">Left</button>
+    <button type="button" data-cmd="justifyCenter">Center</button>
+    <button type="button" data-cmd="justifyRight">Right</button>
+    <button type="button" data-cmd="justifyFull">Justify</button>
   </div>
 
   <div class="group">
-    <select id="heading">
+    <select id="blockStyle" aria-label="Paragraph style">
       <option value="P">Normal</option>
       <option value="H1">Heading 1</option>
       <option value="H2">Heading 2</option>
@@ -123,353 +401,704 @@ button,input,select{font:inherit}
   </div>
 
   <div class="group">
-    <button type="button" data-command="insertUnorderedList">• List</button>
-    <button type="button" data-command="insertOrderedList">1. List</button>
+    <button type="button" data-cmd="insertUnorderedList">• List</button>
+    <button type="button" data-cmd="insertOrderedList">1. List</button>
   </div>
 
   <div class="group">
-    <button type="button" id="linkButton">Link</button>
-    <button type="button" id="imageButton">Image</button>
-    <button type="button" id="tableButton">Table</button>
-    <button type="button" id="clearButton">Clear</button>
+    <button type="button" id="linkBtn">Link</button>
+    <button type="button" id="clearBtn">Clear</button>
   </div>
 
-</div>
+</section>
+
+<section class="ribbon hidden" id="insertRibbon">
+  <div class="group">
+    <button type="button" id="imageBtn">Insert Image</button>
+    <button type="button" id="tableBtn">Insert Table</button>
+    <button type="button" id="linkBtn2">Insert Link</button>
+  </div>
+
+  <div class="group">
+    <span style="font-size:12px;color:#64748b">
+      Images are embedded in this browser document.
+    </span>
+  </div>
+</section>
+
+<section class="ribbon hidden" id="layoutRibbon">
+  <div class="group">
+
+    <label style="font-size:13px">
+      Page width
+      <select id="pageWidth">
+        <option value="816">A4 (screen)</option>
+        <option value="900">Wide</option>
+        <option value="100%">Fit screen</option>
+      </select>
+    </label>
+
+    <label style="font-size:13px">
+      Margins
+      <select id="pagePadding">
+        <option value="80">Normal</option>
+        <option value="45">Narrow</option>
+        <option value="110">Wide</option>
+      </select>
+    </label>
+
+  </div>
+</section>
 
 <main class="workspace">
-  <div class="page" id="editor" contenteditable="true" spellcheck="true"></div>
+  <article
+    id="editor"
+    class="paper"
+    contenteditable="true"
+    spellcheck="true"
+    role="textbox"
+    aria-multiline="true">
+  </article>
 </main>
 
-<input type="file" id="imageInput" accept="image/*" hidden>
+<input id="imageFile" type="file" accept="image/*" hidden>
 
-<div class="statusbar">
+<footer class="status">
   <span id="wordCount">Words: 0</span>
   <span id="saveStatus">Ready</span>
-</div>
+</footer>
 
 <script>
-const editor=document.getElementById("editor");
-const titleInput=document.getElementById("docTitle");
+(()=>{
+ const editor=document.getElementById('editor');
+ const title=document.getElementById('docTitle');
 
-let savedRange=null;
+ let storedRange=null;
+ let dirty=false;
+ let history=[];
+ let historyIndex=-1;
 
-function saveSelection(){
-  const sel=window.getSelection();
+ const $=id=>document.getElementById(id);
 
-  if(sel && sel.rangeCount){
-    const range=sel.getRangeAt(0);
+ function isInsideEditor(node){
+   return !!node && (node===editor || editor.contains(node));
+ }
 
-    if(editor.contains(range.commonAncestorContainer)){
-      savedRange=range.cloneRange();
-    }
-  }
-}
+ function remember(){
+   const s=getSelection();
 
-function restoreSelection(){
-  editor.focus();
-
-  if(!savedRange)return false;
-
-  try{
-    const sel=window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(savedRange);
-    return true;
-  }catch(error){
-    return false;
-  }
-}
-
-document.addEventListener("selectionchange",saveSelection);
-
-document.querySelectorAll(".ribbon button,.ribbon select,.ribbon input").forEach(control=>{
-  control.addEventListener("pointerdown",()=>{
-    saveSelection();
-  });
-});
-
-function getSelectedRange(){
-  restoreSelection();
-
-  const sel=window.getSelection();
-
-  if(!sel || !sel.rangeCount){
-    alert("Pehle editor mein text select karo.");
-    return null;
-  }
-
-  const range=sel.getRangeAt(0);
-
-  if(range.collapsed || !editor.contains(range.commonAncestorContainer)){
-    alert("Formatting ke liye editor ka text select karo.");
-    return null;
-  }
-
-  return range;
-}
-
-function applyStyle(property,value){
-  const range=getSelectedRange();
-  if(!range)return;
-
-  const span=document.createElement("span");
-  span.style[property]=value;
-
-  try{
-    const fragment=range.extractContents();
-    span.appendChild(fragment);
-    range.insertNode(span);
-
-    const newRange=document.createRange();
-    newRange.selectNodeContents(span);
-
-    const sel=window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(newRange);
-
-    savedRange=newRange.cloneRange();
-
-    updateCount();
-    markUnsaved();
-  }catch(error){
-    console.error(error);
-    alert("Formatting apply nahi ho payi.");
-  }
-}
-
-function toggleStyle(property,value,normalValue){
-  const range=getSelectedRange();
-  if(!range)return;
-
-  let node=range.startContainer;
-
-  if(node.nodeType===3)node=node.parentElement;
-
-  const current=getComputedStyle(node)[property];
-  let newValue=value;
-
-  if(property==="fontWeight"){
-    if(current==="bold" || Number(current)>=600){
-      newValue=normalValue;
-    }
-  }else if(property==="fontStyle"){
-    if(current==="italic")newValue=normalValue;
-  }else if(property==="textDecoration"){
-    if(current.includes(value))newValue="none";
-  }
-
-  applyStyle(property,newValue);
-}
-
-document.querySelectorAll("[data-style]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    toggleStyle(
-      button.dataset.style,
-      button.dataset.value,
-      button.dataset.style==="fontWeight"?"normal":"none"
-    );
-  });
-});
-
-document.getElementById("fontSize").addEventListener("change",function(){
-  applyStyle("fontSize",this.value);
-});
-
-document.getElementById("fontFamily").addEventListener("change",function(){
-  applyStyle("fontFamily",this.value);
-});
-
-document.getElementById("textColor").addEventListener("change",function(){
-  applyStyle("color",this.value);
-});
-
-document.getElementById("highlightColor").addEventListener("change",function(){
-  applyStyle("backgroundColor",this.value);
-});
-
-document.querySelectorAll("[data-command]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    if(!restoreSelection()){
-      alert("Editor mein cursor ya text select karo.");
-      return;
-    }
-
-    document.execCommand(button.dataset.command,false,null);
-    saveSelection();
-    updateCount();
-    markUnsaved();
-  });
-});
-
-document.getElementById("heading").addEventListener("change",function(){
-  if(!restoreSelection())return;
-
-  document.execCommand("formatBlock",false,this.value);
-  saveSelection();
-  markUnsaved();
-});
-
-document.getElementById("linkButton").addEventListener("click",()=>{
-  const range=getSelectedRange();
-  if(!range)return;
-
-  const url=prompt("Enter URL starting with https://");
-  if(!url)return;
-
-  if(!/^https?:\/\//i.test(url)){
-    alert("Valid http/https URL enter karo.");
-    return;
-  }
-
-  const link=document.createElement("a");
-  link.href=url;
-  link.target="_blank";
-  link.rel="noopener noreferrer";
-
-  try{
-    link.appendChild(range.extractContents());
-    range.insertNode(link);
-    saveSelection();
-    markUnsaved();
-  }catch(error){
-    alert("Link insert nahi ho paya.");
-  }
-});
-
-document.getElementById("imageButton").addEventListener("click",()=>{
-  saveSelection();
-  document.getElementById("imageInput").click();
-});
-
-document.getElementById("imageInput").addEventListener("change",function(){
-  const file=this.files[0];
-  if(!file)return;
-
-  if(!file.type.startsWith("image/")){
-    alert("Image file select karo.");
-    this.value="";
-    return;
-  }
-
-  const reader=new FileReader();
-
-  reader.onload=()=>{
-    const img=document.createElement("img");
-    img.src=reader.result;
-    img.alt=file.name;
-
-    if(restoreSelection()){
-      const range=window.getSelection().getRangeAt(0);
-      range.deleteContents();
-      range.insertNode(img);
-      range.setStartAfter(img);
-      range.collapse(true);
-
-      const sel=window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      savedRange=range.cloneRange();
-    }else{
-      editor.appendChild(img);
-    }
-
-    updateCount();
-    markUnsaved();
-  };
-
-  reader.readAsDataURL(file);
-  this.value="";
-});
-
-document.getElementById("tableButton").addEventListener("click",()=>{
-  const rows=Number(prompt("Rows (1-20):","3"));
-  const cols=Number(prompt("Columns (1-10):","3"));
-
-  if(!Number.isInteger(rows)||!Number.isInteger(cols)||rows<1||rows>20||cols<1||cols>10){
-    alert("Valid row aur column number enter karo.");
-    return;
-  }
-
-  let html="<table><tbody>";
-
-  for(let r=0;r<rows;r++){
-    html+="<tr>";
-    for(let c=0;c<cols;c++){
-      html+="<td><br></td>";
-    }
-    html+="</tr>";
-  }
-
-  html+="</tbody></table><p><br></p>";
-
-  if(restoreSelection()){
-    document.execCommand("insertHTML",false,html);
-    saveSelection();
-    markUnsaved();
-  }
-});
-
-document.getElementById("clearButton").addEventListener("click",()=>{
-  if(!restoreSelection())return;
-  document.execCommand("removeFormat",false,null);
-  saveSelection();
-  markUnsaved();
-});
-
-function updateCount(){
-  const text=editor.innerText.trim();
-  const count=text?text.split(/\s+/).length:0;
-  document.getElementById("wordCount").textContent="Words: "+count;
-}
-
-function markUnsaved(){
-  document.getElementById("saveStatus").textContent="Unsaved changes";
-}
-
-function saveDocument(){
-  const data={
-    title:titleInput.value||"Untitled Document",
-    content:editor.innerHTML,
-    updatedAt:new Date().toISOString()
-  };
-
-  try{
-    localStorage.setItem("quantam_document",JSON.stringify(data));
-    document.getElementById("saveStatus").textContent="Saved locally";
-  }catch(error){
-    alert("Document save nahi ho paya.");
-  }
-}
-
-function loadDocument(){
-  try{
-    const saved=localStorage.getItem("quantam_document");
-
-    if(saved){
-      const data=JSON.parse(saved);
-      titleInput.value=data.title||"Untitled Document";
-      editor.innerHTML=data.content||"";
-    }
-  }catch(error){
-    console.error(error);
-  }
-
-  updateCount();
-}
-
-function goHome(){
-  location.href="./index.html";
-}
-
-editor.addEventListener("input",()=>{
-  updateCount();
-  markUnsaved();
-  saveSelection();
-});
-
-titleInput.addEventListener("input",markUnsaved);
-
-loadDocument();
+   if(s&&s.rangeCount){
+     const r=s.getRangeAt(0);
+
+     if(isInsideEditor(r.commonAncestorContainer)){
+       storedRange=r.cloneRange();
+     }
+   }
+ }
+
+ function restore(){
+   if(!storedRange || !isInsideEditor(storedRange.commonAncestorContainer)){
+     return false;
+   }
+
+   editor.focus({preventScroll:true});
+
+   const s=getSelection();
+   s.removeAllRanges();
+   s.addRange(storedRange);
+
+   return true;
+ }
+
+ document.addEventListener('selectionchange',remember);
+
+ document.querySelectorAll(
+   '.ribbon button,.ribbon select,.ribbon input'
+ ).forEach(el=>{
+
+   el.addEventListener('pointerdown',remember,{passive:true});
+   el.addEventListener('touchstart',remember,{passive:true});
+
+   if(el.tagName==='BUTTON'){
+     el.addEventListener('mousedown',e=>e.preventDefault());
+   }
+ });
+
+ function selectedRange(){
+
+   if(!restore()){
+     alert('Editor mein pehle text select karo.');
+     return null;
+   }
+
+   const s=getSelection();
+
+   if(!s || !s.rangeCount || s.getRangeAt(0).collapsed){
+     alert('Pehle text select karo.');
+     return null;
+   }
+
+   return s.getRangeAt(0).cloneRange();
+ }
+
+ function selectedTextNodes(range){
+
+   const walker=document.createTreeWalker(
+     editor,
+     NodeFilter.SHOW_TEXT
+   );
+
+   const out=[];
+   let n;
+
+   while((n=walker.nextNode())){
+
+     if(!n.nodeValue.length)continue;
+
+     const nr=document.createRange();
+     nr.selectNodeContents(n);
+
+     if(!range.intersectsNode(n))continue;
+
+     let start=n===range.startContainer ? range.startOffset : 0;
+     let end=n===range.endContainer ? range.endOffset : n.nodeValue.length;
+
+     start=Math.max(0,Math.min(start,n.nodeValue.length));
+     end=Math.max(start,Math.min(end,n.nodeValue.length));
+
+     if(end>start){
+       out.push({node:n,start,end});
+     }
+   }
+
+   return out;
+ }
+
+ function wrapSelection(styles){
+
+   const r=selectedRange();
+   if(!r)return;
+
+   const parts=selectedTextNodes(r);
+
+   if(!parts.length){
+     alert('Selected text ko format nahi kar paye.');
+     return;
+   }
+
+   const wrappers=[];
+
+   for(let i=parts.length-1;i>=0;i--){
+
+     const {node,start,end}=parts[i];
+
+     let selected=node;
+
+     if(end<selected.length){
+       selected.splitText(end);
+     }
+
+     if(start>0){
+       selected=selected.splitText(start);
+     }
+
+     const span=document.createElement('span');
+
+     for(const [key,value] of Object.entries(styles)){
+       span.style[key]=value;
+     }
+
+     selected.parentNode.insertBefore(span,selected);
+     span.appendChild(selected);
+
+     wrappers.unshift(span);
+   }
+
+   const first=wrappers[0].firstChild;
+   const last=wrappers[wrappers.length-1].firstChild;
+
+   const nr=document.createRange();
+
+   nr.setStart(first,0);
+   nr.setEnd(last,last.nodeValue.length);
+
+   const s=getSelection();
+
+   s.removeAllRanges();
+   s.addRange(nr);
+
+   storedRange=nr.cloneRange();
+
+   changed();
+ }
+
+ function currentStyle(prop){
+
+   const r=selectedRange();
+   if(!r)return null;
+
+   let n=r.startContainer;
+
+   if(n.nodeType===3){
+     n=n.parentElement;
+   }
+
+   return getComputedStyle(n)[prop];
+ }
+
+ function toggle(prop,on,off,marker){
+
+   const cur=currentStyle(prop);
+   if(cur===null)return;
+
+   let useOn=true;
+
+   if(prop==='fontWeight'){
+     useOn=!(cur==='bold'||Number(cur)>=600);
+   }else if(prop==='fontStyle'){
+     useOn=cur!=='italic';
+   }else if(prop==='textDecoration'){
+     useOn=!cur.includes(marker);
+   }
+
+   wrapSelection({
+     [prop]:useOn?on:off
+   });
+ }
+
+ document.querySelectorAll('[data-style]').forEach(b=>{
+
+   b.addEventListener('click',()=>{
+
+     const t=b.dataset.style;
+
+     if(t==='bold'){
+       toggle('fontWeight','700','400');
+     }
+
+     if(t==='italic'){
+       toggle('fontStyle','italic','normal');
+     }
+
+     if(t==='underline'){
+       toggle('textDecoration','underline','none','underline');
+     }
+
+     if(t==='strike'){
+       toggle('textDecoration','line-through','none','line-through');
+     }
+
+   });
+ });
+
+ $('fontSize').addEventListener('change',e=>{
+   wrapSelection({
+     fontSize:e.target.value+'pt'
+   });
+ });
+
+ $('fontFamily').addEventListener('change',e=>{
+   wrapSelection({
+     fontFamily:e.target.value
+   });
+ });
+
+ $('textColor').addEventListener('change',e=>{
+   wrapSelection({
+     color:e.target.value
+   });
+ });
+
+ $('highlightColor').addEventListener('change',e=>{
+   wrapSelection({
+     backgroundColor:e.target.value
+   });
+ });
+
+ document.querySelectorAll('[data-cmd]').forEach(b=>{
+
+   b.addEventListener('click',()=>{
+
+     if(!restore()){
+       alert('Editor mein cursor rakho ya text select karo.');
+       return;
+     }
+
+     document.execCommand(b.dataset.cmd,false,null);
+
+     remember();
+     changed();
+   });
+
+ });
+
+ $('blockStyle').addEventListener('change',e=>{
+
+   if(!restore())return;
+
+   document.execCommand(
+     'formatBlock',
+     false,
+     '<'+e.target.value+'>'
+   );
+
+   remember();
+   changed();
+ });
+
+ function insertLink(){
+
+   const r=selectedRange();
+   if(!r)return;
+
+   const url=prompt('Full link URL (https://...)');
+   if(!url)return;
+
+   if(!/^https?:\/\//i.test(url)){
+     alert('http:// ya https:// URL enter karo.');
+     return;
+   }
+
+   const a=document.createElement('a');
+
+   a.href=url;
+   a.target='_blank';
+   a.rel='noopener noreferrer';
+
+   a.appendChild(r.extractContents());
+   r.insertNode(a);
+
+   const nr=document.createRange();
+   nr.selectNodeContents(a);
+
+   const s=getSelection();
+   s.removeAllRanges();
+   s.addRange(nr);
+
+   storedRange=nr.cloneRange();
+
+   changed();
+ }
+
+ $('linkBtn').addEventListener('click',insertLink);
+ $('linkBtn2').addEventListener('click',insertLink);
+
+ $('imageBtn').addEventListener('click',()=>{
+   $('imageFile').click();
+ });
+
+ $('imageFile').addEventListener('change',e=>{
+
+   const file=e.target.files[0];
+   if(!file)return;
+
+   if(!file.type.startsWith('image/')){
+     alert('Valid image choose karo.');
+     e.target.value='';
+     return;
+   }
+
+   const reader=new FileReader();
+
+   reader.onload=()=>{
+
+     const img=document.createElement('img');
+
+     img.src=reader.result;
+     img.alt=file.name;
+
+     if(restore()){
+
+       const r=getSelection().getRangeAt(0);
+
+       r.deleteContents();
+       r.insertNode(img);
+       r.setStartAfter(img);
+       r.collapse(true);
+
+       const s=getSelection();
+       s.removeAllRanges();
+       s.addRange(r);
+
+       storedRange=r.cloneRange();
+
+     }else{
+       editor.appendChild(img);
+     }
+
+     changed();
+   };
+
+   reader.readAsDataURL(file);
+   e.target.value='';
+ });
+
+ $('tableBtn').addEventListener('click',()=>{
+
+   const rows=Number(prompt('Rows (1-20)','3'));
+   const cols=Number(prompt('Columns (1-10)','3'));
+
+   if(
+     !Number.isInteger(rows)||
+     !Number.isInteger(cols)||
+     rows<1||rows>20||
+     cols<1||cols>10
+   ){
+     alert('Valid row/column number enter karo.');
+     return;
+   }
+
+   if(!restore()){
+     editor.focus();
+   }
+
+   let html='<table><tbody>';
+
+   for(let i=0;i<rows;i++){
+     html+='<tr>';
+
+     for(let j=0;j<cols;j++){
+       html+='<td><br></td>';
+     }
+
+     html+='</tr>';
+   }
+
+   html+='</tbody></table><p><br></p>';
+
+   document.execCommand('insertHTML',false,html);
+
+   remember();
+   changed();
+ });
+
+ $('clearBtn').addEventListener('click',()=>{
+
+   if(!restore())return;
+
+   document.execCommand('removeFormat',false,null);
+
+   remember();
+   changed();
+ });
+
+ function count(){
+
+   const t=editor.innerText.trim();
+
+   $('wordCount').textContent=
+     'Words: '+(t?t.split(/\s+/).length:0);
+ }
+
+ function recordHistory(){
+
+   const snapshot={
+     title:title.value,
+     content:editor.innerHTML
+   };
+
+   const current=history[historyIndex];
+
+   if(
+     current &&
+     current.title===snapshot.title &&
+     current.content===snapshot.content
+   ){
+     return;
+   }
+
+   history=history.slice(0,historyIndex+1);
+   history.push(snapshot);
+
+   if(history.length>100){
+     history.shift();
+   }
+
+   historyIndex=history.length-1;
+ }
+
+ function changed(){
+
+   dirty=true;
+
+   $('saveStatus').textContent='Unsaved changes';
+
+   count();
+   recordHistory();
+ }
+
+ function restoreHistory(index){
+
+   if(index<0||index>=history.length)return;
+
+   historyIndex=index;
+
+   const item=history[historyIndex];
+
+   title.value=item.title;
+   editor.innerHTML=item.content;
+
+   storedRange=null;
+
+   count();
+
+   dirty=true;
+   $('saveStatus').textContent='Unsaved changes';
+ }
+
+ function undo(){
+
+   if(historyIndex>0){
+     restoreHistory(historyIndex-1);
+   }
+ }
+
+ function redo(){
+
+   if(historyIndex<history.length-1){
+     restoreHistory(historyIndex+1);
+   }
+ }
+
+ $('undoBtn').addEventListener('click',undo);
+ $('redoBtn').addEventListener('click',redo);
+
+ document.addEventListener('keydown',e=>{
+
+   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){
+
+     e.preventDefault();
+
+     if(e.shiftKey){
+       redo();
+     }else{
+       undo();
+     }
+
+   }else if(
+     (e.ctrlKey||e.metaKey)&&
+     e.key.toLowerCase()==='y'
+   ){
+
+     e.preventDefault();
+     redo();
+   }
+ });
+
+ function save(){
+
+   const data={
+     title:title.value||'Untitled Document',
+     content:editor.innerHTML,
+     updatedAt:new Date().toISOString()
+   };
+
+   try{
+
+     localStorage.setItem(
+       'quantam_document',
+       JSON.stringify(data)
+     );
+
+     dirty=false;
+
+     $('saveStatus').textContent='Saved on this device';
+
+   }catch(e){
+
+     $('saveStatus').textContent='Save failed';
+
+     alert('Browser storage full/unavailable.');
+   }
+ }
+
+ function load(){
+
+   try{
+
+     const raw=localStorage.getItem('quantam_document');
+
+     if(raw){
+
+       const d=JSON.parse(raw);
+
+       title.value=d.title||'Untitled Document';
+       editor.innerHTML=d.content||'';
+     }
+
+   }catch(e){
+     console.error(e);
+   }
+
+   $('saveStatus').textContent='Ready';
+
+   count();
+ }
+
+ $('saveBtn').addEventListener('click',save);
+
+ $('homeBtn').addEventListener('click',()=>{
+   location.href='./index.html';
+ });
+
+ editor.addEventListener('input',()=>{
+   remember();
+   changed();
+ });
+
+ title.addEventListener('input',changed);
+
+ $('insertTab').addEventListener('click',()=>{
+   showRibbon('insert');
+ });
+
+ $('layoutTab').addEventListener('click',()=>{
+   showRibbon('layout');
+ });
+
+ document.querySelector('.tab.active').addEventListener('click',()=>{
+   showRibbon('home');
+ });
+
+ function showRibbon(which){
+
+   $('homeRibbon').classList.toggle('hidden',which!=='home');
+   $('insertRibbon').classList.toggle('hidden',which!=='insert');
+   $('layoutRibbon').classList.toggle('hidden',which!=='layout');
+
+   document.querySelectorAll('.tab').forEach(t=>{
+     t.classList.remove('active');
+   });
+
+   document.querySelectorAll('.tab').forEach(t=>{
+     t.classList.remove('active');
+   });
+
+   document.querySelector(
+     which==='home'
+       ?'.tab'
+       :'#'+(which==='insert'?'insertTab':'layoutTab')
+   ).classList.add('active');
+ }
+
+ $('pageWidth').addEventListener('change',e=>{
+
+   editor.style.width=
+     e.target.value==='100%'
+       ?'100%'
+       :e.target.value+'px';
+ });
+
+ $('pagePadding').addEventListener('change',e=>{
+
+   editor.style.paddingLeft=e.target.value+'px';
+   editor.style.paddingRight=e.target.value+'px';
+ });
+
+ load();
+ recordHistory();
+
+})();
 </script>
 
 </body>
