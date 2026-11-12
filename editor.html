@@ -1,1102 +1,840 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17365d">
-<title>QUANTAM DOCS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>QUANTAM DOCS — Editor</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
 <style>
-:root{
-  --navy:#17365d;
-  --blue:#2563eb;
-  --line:#d8dee9;
-  --bg:#edf1f6;
+:root {
+  --bg:#f3f5f9;
+  --panel:#fff;
+  --ink:#172033;
+  --muted:#697386;
+  --line:#e3e7ef;
+  --accent:#4f46e5;
+  --dark:#111827;
 }
 
-*{box-sizing:border-box}
+* { box-sizing:border-box; }
 
-html,body{
+html,body {
   margin:0;
   min-height:100%;
   font-family:Arial,Helvetica,sans-serif;
-  color:#202938;
+  color:var(--ink);
   background:var(--bg);
 }
 
-button,input,select{font:inherit}
-
-.appbar{
-  height:58px;
-  background:var(--navy);
+.topbar {
+  min-height:58px;
+  background:var(--dark);
   color:#fff;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 18px;
+  padding:9px 18px;
   gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
 
-.brand{
-  font-size:20px;
+.brand {
   font-weight:800;
-  letter-spacing:.3px;
+  letter-spacing:.5px;
+  font-size:17px;
   white-space:nowrap;
 }
 
-.brand span{color:#8ec5ff}
+.brand span { color:#a5b4fc; }
 
-.app-actions{
-  display:flex;
-  gap:8px;
-}
-
-.app-actions button{
-  border:1px solid #ffffff55;
-  background:#ffffff14;
-  color:#fff;
-  border-radius:6px;
-  padding:8px 13px;
-  cursor:pointer;
-}
-
-.app-actions .primary{
-  background:#2563eb;
-  border-color:#2563eb;
-}
-
-.docbar{
-  height:48px;
-  background:#fff;
-  border-bottom:1px solid var(--line);
+.top-actions {
   display:flex;
   align-items:center;
-  padding:0 18px;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
-.docbar input{
-  width:min(600px,100%);
-  border:0;
-  outline:0;
-  font-size:17px;
-  font-weight:600;
-  color:#27364b;
-}
-
-.tabs{
-  display:flex;
-  gap:2px;
-  background:#fff;
-  border-bottom:1px solid var(--line);
-  padding:0 14px;
-}
-
-.tab{
-  padding:10px 14px;
-  border:0;
-  border-bottom:3px solid transparent;
-  background:transparent;
-  color:#40516a;
+.top-actions button,
+.top-actions a {
+  border:1px solid #4b5563;
+  background:#1f2937;
+  color:#fff;
+  border-radius:8px;
+  padding:8px 11px;
+  font-size:13px;
+  text-decoration:none;
   cursor:pointer;
 }
 
-.tab.active{
-  border-bottom-color:var(--blue);
-  color:var(--blue);
-  font-weight:700;
+.top-actions button.primary {
+  background:var(--accent);
+  border-color:var(--accent);
 }
 
-.ribbon{
+.workspace {
+  max-width:1200px;
+  margin:18px auto;
+  padding:0 16px;
+}
+
+.docbar {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+
+.doc-title {
+  font-size:18px;
+  font-weight:700;
+  border:1px solid transparent;
+  background:transparent;
+  padding:8px 10px;
+  border-radius:7px;
+  min-width:220px;
+  max-width:100%;
+  outline:none;
+}
+
+.doc-title:focus {
+  border-color:#c7d2fe;
   background:#fff;
-  border-bottom:1px solid var(--line);
-  padding:9px 12px;
+}
+
+.status {
+  font-size:12px;
+  color:var(--muted);
+}
+
+.toolbar-wrap {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px 10px 0 0;
+  position:sticky;
+  top:58px;
+  z-index:10;
+  box-shadow:0 2px 8px #1018280a;
+}
+
+#toolbar {
   display:flex;
   flex-wrap:wrap;
   align-items:center;
-  gap:8px;
-  position:relative;
-  z-index:3;
+  gap:2px;
+  padding:8px 10px;
+  border:0!important;
 }
 
-.group{
-  display:flex;
+#toolbar .ql-formats {
+  margin-right:7px!important;
+  display:inline-flex;
   align-items:center;
-  gap:5px;
-  padding-right:9px;
-  border-right:1px solid #e0e5ed;
-  min-height:34px;
+  gap:2px;
 }
 
-.group:last-child{border:0}
-
-.ribbon button,
-.ribbon select,
-.ribbon input{
-  height:34px;
-  border:1px solid #d7deea;
-  background:#fff;
-  border-radius:5px;
-  color:#26364d;
+#toolbar button {
+  width:32px;
+  height:30px;
+  border-radius:5px!important;
 }
 
-.ribbon button{
-  min-width:34px;
-  padding:5px 9px;
-  cursor:pointer;
+#toolbar select {
+  height:30px;
+  max-width:110px;
+  border-radius:5px!important;
 }
 
-.ribbon button:hover{
-  background:#edf4ff;
-  border-color:#9dbcf7;
-}
+#toolbar .ql-size { width:82px; }
+#toolbar .ql-header { width:105px; }
 
-.ribbon button:active{background:#dbeafe}
-
-.ribbon select{
-  padding:4px 7px;
-  max-width:150px;
-}
-
-.ribbon input[type=color]{
-  width:39px;
-  padding:3px;
-  cursor:pointer;
-}
-
-.ribbon .font-size{width:66px}
-
-.workspace{
-  padding:24px 14px 55px;
+.extra-tools {
   display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  min-height:calc(100vh - 180px);
-  overflow:auto;
+  gap:6px;
+  align-items:center;
+  padding:0 10px 9px;
+  flex-wrap:wrap;
 }
 
-.paper{
-  width:816px;
-  min-height:1056px;
-  max-width:100%;
+.extra-tools button {
+  border:1px solid var(--line);
   background:#fff;
-  padding:76px 80px;
-  box-shadow:0 2px 14px #26364d1c;
-  outline:none;
+  color:#273247;
+  border-radius:7px;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.editor-stage {
+  background:#e9edf4;
+  border:1px solid var(--line);
+  border-top:0;
+  padding:26px 12px 50px;
+  min-height:70vh;
+}
+
+#editor {
+  width:min(100%,794px);
+  min-height:1050px;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid #d9dee8;
+  box-shadow:0 5px 22px #10182812;
+}
+
+#editor.ql-container {
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12pt;
+  border:1px solid #d9dee8!important;
+}
+
+#editor .ql-editor {
+  min-height:1050px;
+  padding:76px 76px 90px;
+  line-height:1.6;
+  font-size:12pt;
   overflow-wrap:anywhere;
-  font:12pt Arial,sans-serif;
-  line-height:1.5;
-  caret-color:#1d4ed8;
 }
 
-.paper:empty:before{
-  content:'Start typing your document here…';
-  color:#a7b0bf;
-  pointer-events:none;
+#editor .ql-editor.ql-blank::before {
+  left:76px;
+  right:76px;
+  color:#9aa3b2;
+  font-style:normal;
 }
 
-.paper img{
+#editor .ql-editor img {
   max-width:100%;
   height:auto;
 }
 
-.paper table{
-  border-collapse:collapse;
-  width:100%;
-  margin:8px 0;
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content:attr(data-value);
 }
 
-.paper td,.paper th{
-  border:1px solid #657084;
-  padding:7px;
-  min-width:35px;
+.ql-snow .ql-picker.ql-size .ql-picker-label:not([data-value])::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item:not([data-value])::before {
+  content:'12pt';
 }
 
-.paper ul,.paper ol{padding-left:28px}
-
-.paper a{
-  color:#1457bb;
-  text-decoration:underline;
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content:'Normal';
 }
 
-.status{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:29px;
-  background:var(--navy);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 14px;
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content:'Heading 1';
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content:'Heading 2';
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content:'Heading 3';
+}
+
+.notice {
+  max-width:794px;
+  margin:10px auto 0;
+  color:#667085;
   font-size:12px;
-  z-index:5;
+  text-align:center;
 }
 
-.hidden{display:none!important}
+#imageInput { display:none; }
 
-@media(max-width:700px){
-
-  .appbar{
-    height:54px;
-    padding:0 10px;
+@media(max-width:700px) {
+  .topbar {
+    min-height:56px;
+    padding:9px 10px;
+    flex-wrap:wrap;
   }
 
-  .brand{font-size:16px}
+  .brand { font-size:15px; }
 
-  .app-actions button{
+  .top-actions { gap:5px; }
+
+  .top-actions button,
+  .top-actions a {
+    padding:7px 8px;
     font-size:12px;
-    padding:7px 9px;
   }
 
-  .docbar{
-    padding:0 11px;
-    height:44px;
+  .workspace {
+    margin:10px auto;
+    padding:0 7px;
   }
 
-  .tabs{
-    padding:0 6px;
-    overflow-x:auto;
+  .doc-title {
+    font-size:16px;
+    min-width:170px;
   }
 
-  .tab{
-    padding:9px 11px;
-    white-space:nowrap;
-    font-size:13px;
+  .toolbar-wrap { top:56px; }
+
+  #toolbar {
+    padding:6px;
+    gap:0;
   }
 
-  .ribbon{
-    position:sticky;
-    top:0;
-    gap:6px;
-    padding:7px;
-    max-height:none;
+  #toolbar .ql-formats {
+    margin:0 4px 4px 0!important;
   }
 
-  .group{
-    gap:4px;
-    padding-right:6px;
+  #toolbar button {
+    width:29px;
+    height:29px;
   }
 
-  .ribbon button,.ribbon select{
-    height:36px;
-    font-size:13px;
+  #toolbar select { height:29px; }
+  #toolbar .ql-header { width:92px; }
+
+  .editor-stage {
+    padding:10px 0 30px;
+    min-height:65vh;
   }
 
-  .ribbon select{max-width:125px}
-
-  .workspace{
-    padding:9px 5px 48px;
-    min-height:calc(100vh - 200px);
-  }
-
-  .paper{
+  #editor {
     width:100%;
-    min-height:calc(100vh - 240px);
-    padding:30px 20px;
-    box-shadow:0 1px 8px #26364d18;
+    min-height:calc(100vh - 260px);
+    border-left:0!important;
+    border-right:0!important;
+    box-shadow:none;
+  }
+
+  #editor .ql-editor {
+    min-height:calc(100vh - 260px);
+    padding:28px 20px 60px;
     font-size:12pt;
   }
+
+  #editor .ql-editor.ql-blank::before {
+    left:20px;
+    right:20px;
+  }
+
+  .extra-tools { padding:0 7px 7px; }
 }
 
-@media(min-width:701px) and (max-width:1050px){
-  .paper{padding:55px 55px}
-  .ribbon{gap:6px}
+@media print {
+  body { background:#fff; }
+
+  .topbar,
+  .docbar,
+  .toolbar-wrap,
+  .notice {
+    display:none!important;
+  }
+
+  .workspace {
+    margin:0;
+    padding:0;
+    max-width:none;
+  }
+
+  .editor-stage {
+    padding:0;
+    background:#fff;
+    border:0;
+  }
+
+  #editor {
+    width:100%;
+    min-height:0;
+    border:0;
+    box-shadow:none;
+  }
+
+  #editor .ql-editor {
+    min-height:0;
+    padding:0;
+    overflow:visible;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<header class="appbar">
+<header class="topbar">
   <div class="brand">QUANTAM <span>DOCS</span></div>
 
-  <div class="app-actions">
-    <button type="button" id="homeBtn">Home</button>
-    <button type="button" id="saveBtn" class="primary">Save</button>
+  <div class="top-actions">
+    <a href="./index.html">← Dashboard</a>
+    <button id="downloadBtn" type="button">Download HTML</button>
+    <button id="printBtn" type="button">Print / PDF</button>
+    <button id="saveBtn" class="primary" type="button">Save</button>
   </div>
 </header>
 
-<div class="docbar">
-  <input id="docTitle" value="Untitled Document" aria-label="Document name">
-</div>
+<main class="workspace">
 
-<nav class="tabs">
-  <button class="tab active" type="button">Home</button>
-  <button class="tab" type="button" id="insertTab">Insert</button>
-  <button class="tab" type="button" id="layoutTab">Layout</button>
-</nav>
-
-<section class="ribbon" id="homeRibbon">
-
-  <div class="group">
-    <button type="button" id="undoBtn" title="Undo">↶</button>
-    <button type="button" id="redoBtn" title="Redo">↷</button>
-  </div>
-
-  <div class="group">
-    <select id="fontFamily" aria-label="Font family">
-      <option>Arial</option>
-      <option>Calibri</option>
-      <option>Georgia</option>
-      <option>Times New Roman</option>
-      <option>Verdana</option>
-      <option>Courier New</option>
-    </select>
-
-    <select id="fontSize" class="font-size" aria-label="Font size">
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-      <option>11</option>
-      <option selected>12</option>
-      <option>14</option>
-      <option>16</option>
-      <option>18</option>
-      <option>20</option>
-      <option>22</option>
-      <option>24</option>
-      <option>26</option>
-      <option>28</option>
-      <option>36</option>
-      <option>48</option>
-      <option>72</option>
-    </select>
-  </div>
-
-  <div class="group">
-    <button type="button" data-style="bold"><b>B</b></button>
-    <button type="button" data-style="italic"><i>I</i></button>
-    <button type="button" data-style="underline"><u>U</u></button>
-    <button type="button" data-style="strike"><s>S</s></button>
-  </div>
-
-  <div class="group">
-    <label title="Font colour">
-      A
-      <input type="color" id="textColor" value="#000000" aria-label="Font colour">
-    </label>
-
-    <label title="Highlight colour">
-      ▰
-      <input type="color" id="highlightColor" value="#ffff00" aria-label="Highlight colour">
-    </label>
-  </div>
-
-  <div class="group">
-    <button type="button" data-cmd="justifyLeft">Left</button>
-    <button type="button" data-cmd="justifyCenter">Center</button>
-    <button type="button" data-cmd="justifyRight">Right</button>
-    <button type="button" data-cmd="justifyFull">Justify</button>
-  </div>
-
-  <div class="group">
-    <select id="blockStyle" aria-label="Paragraph style">
-      <option value="P">Normal</option>
-      <option value="H1">Heading 1</option>
-      <option value="H2">Heading 2</option>
-      <option value="H3">Heading 3</option>
-    </select>
-  </div>
-
-  <div class="group">
-    <button type="button" data-cmd="insertUnorderedList">• List</button>
-    <button type="button" data-cmd="insertOrderedList">1. List</button>
-  </div>
-
-  <div class="group">
-    <button type="button" id="linkBtn">Link</button>
-    <button type="button" id="clearBtn">Clear</button>
-  </div>
-
-</section>
-
-<section class="ribbon hidden" id="insertRibbon">
-  <div class="group">
-    <button type="button" id="imageBtn">Insert Image</button>
-    <button type="button" id="tableBtn">Insert Table</button>
-    <button type="button" id="linkBtn2">Insert Link</button>
-  </div>
-
-  <div class="group">
-    <span style="font-size:12px;color:#64748b">
-      Images are embedded in this browser document.
+  <div class="docbar">
+    <input
+      id="docTitle"
+      class="doc-title"
+      type="text"
+      value="Untitled document"
+      aria-label="Document title"
+      maxlength="100"
+    >
+    <span id="saveStatus" class="status" role="status">
+      Not saved yet
     </span>
   </div>
-</section>
 
-<section class="ribbon hidden" id="layoutRibbon">
-  <div class="group">
+  <section class="toolbar-wrap" aria-label="Document formatting tools">
 
-    <label style="font-size:13px">
-      Page width
-      <select id="pageWidth">
-        <option value="816">A4 (screen)</option>
-        <option value="900">Wide</option>
-        <option value="100%">Fit screen</option>
-      </select>
-    </label>
+    <div id="toolbar">
 
-    <label style="font-size:13px">
-      Margins
-      <select id="pagePadding">
-        <option value="80">Normal</option>
-        <option value="45">Narrow</option>
-        <option value="110">Wide</option>
-      </select>
-    </label>
+      <span class="ql-formats">
+        <select class="ql-header" aria-label="Heading">
+          <option selected></option>
+          <option value="1"></option>
+          <option value="2"></option>
+          <option value="3"></option>
+        </select>
 
-  </div>
-</section>
+        <select class="ql-size" aria-label="Font size">
+          <option value="8pt">8</option>
+          <option value="9pt">9</option>
+          <option value="10pt">10</option>
+          <option value="11pt">11</option>
+          <option value="12pt" selected>12</option>
+          <option value="14pt">14</option>
+          <option value="16pt">16</option>
+          <option value="18pt">18</option>
+          <option value="20pt">20</option>
+          <option value="24pt">24</option>
+          <option value="28pt">28</option>
+          <option value="36pt">36</option>
+          <option value="48pt">48</option>
+          <option value="72pt">72</option>
+        </select>
+      </span>
 
-<main class="workspace">
-  <article
-    id="editor"
-    class="paper"
-    contenteditable="true"
-    spellcheck="true"
-    role="textbox"
-    aria-multiline="true">
-  </article>
+      <span class="ql-formats">
+        <button class="ql-bold" aria-label="Bold"></button>
+        <button class="ql-italic" aria-label="Italic"></button>
+        <button class="ql-underline" aria-label="Underline"></button>
+        <button class="ql-strike" aria-label="Strikethrough"></button>
+      </span>
+
+      <span class="ql-formats">
+        <select class="ql-color" aria-label="Text colour"></select>
+        <select class="ql-background" aria-label="Highlight colour"></select>
+      </span>
+
+      <span class="ql-formats">
+        <button class="ql-list" value="ordered" aria-label="Numbered list"></button>
+        <button class="ql-list" value="bullet" aria-label="Bulleted list"></button>
+        <button class="ql-blockquote" aria-label="Quote"></button>
+      </span>
+
+      <span class="ql-formats">
+        <select class="ql-align" aria-label="Text alignment">
+          <option selected></option>
+          <option value="center"></option>
+          <option value="right"></option>
+          <option value="justify"></option>
+        </select>
+
+        <button class="ql-indent" value="-1" aria-label="Decrease indent"></button>
+        <button class="ql-indent" value="+1" aria-label="Increase indent"></button>
+      </span>
+
+      <span class="ql-formats">
+        <button class="ql-link" aria-label="Insert link"></button>
+        <button id="imageButton" type="button" aria-label="Insert image">▧</button>
+        <button class="ql-clean" aria-label="Clear formatting"></button>
+      </span>
+
+    </div>
+
+    <div class="extra-tools">
+      <button id="undoBtn" type="button">↶ Undo</button>
+      <button id="redoBtn" type="button">↷ Redo</button>
+      <button id="newDocBtn" type="button">＋ New document</button>
+    </div>
+
+  </section>
+
+  <section class="editor-stage">
+    <div id="editor"><p><br></p></div>
+
+    <p class="notice">
+      Your document is saved in this browser on this device.
+      Download an HTML copy for a separate backup.
+    </p>
+  </section>
+
 </main>
 
-<input id="imageFile" type="file" accept="image/*" hidden>
+<input
+  id="imageInput"
+  type="file"
+  accept="image/png,image/jpeg,image/webp,image/gif"
+>
 
-<footer class="status">
-  <span id="wordCount">Words: 0</span>
-  <span id="saveStatus">Ready</span>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
 <script>
-(()=>{
- const editor=document.getElementById('editor');
- const title=document.getElementById('docTitle');
+(() => {
+  'use strict';
 
- let storedRange=null;
- let dirty=false;
- let history=[];
- let historyIndex=-1;
+  const STORAGE_KEY = 'quantam_docs_document_v2';
+  const OLD_KEY = 'quantam_document';
 
- const $=id=>document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
 
- function isInsideEditor(node){
-   return !!node && (node===editor || editor.contains(node));
- }
+  const statusEl = $('saveStatus');
 
- function remember(){
-   const s=getSelection();
+  let saveTimer = null;
+  let quill;
 
-   if(s&&s.rangeCount){
-     const r=s.getRangeAt(0);
+  function setStatus(message, isError = false) {
+    statusEl.textContent = message;
+    statusEl.style.color = isError ? '#b42318' : '#697386';
+  }
 
-     if(isInsideEditor(r.commonAncestorContainer)){
-       storedRange=r.cloneRange();
-     }
-   }
- }
+  function getSavedDocument() {
+    try {
+      const current = localStorage.getItem(STORAGE_KEY);
 
- function restore(){
-   if(!storedRange || !isInsideEditor(storedRange.commonAncestorContainer)){
-     return false;
-   }
+      if (current) {
+        return JSON.parse(current);
+      }
 
-   editor.focus({preventScroll:true});
+      const old = localStorage.getItem(OLD_KEY);
 
-   const s=getSelection();
-   s.removeAllRanges();
-   s.addRange(storedRange);
+      if (old) {
+        const parsed = JSON.parse(old);
 
-   return true;
- }
-
- document.addEventListener('selectionchange',remember);
-
- document.querySelectorAll(
-   '.ribbon button,.ribbon select,.ribbon input'
- ).forEach(el=>{
-
-   el.addEventListener('pointerdown',remember,{passive:true});
-   el.addEventListener('touchstart',remember,{passive:true});
-
-   if(el.tagName==='BUTTON'){
-     el.addEventListener('mousedown',e=>e.preventDefault());
-   }
- });
-
- function selectedRange(){
-
-   if(!restore()){
-     alert('Editor mein pehle text select karo.');
-     return null;
-   }
-
-   const s=getSelection();
-
-   if(!s || !s.rangeCount || s.getRangeAt(0).collapsed){
-     alert('Pehle text select karo.');
-     return null;
-   }
-
-   return s.getRangeAt(0).cloneRange();
- }
-
- function selectedTextNodes(range){
-
-   const walker=document.createTreeWalker(
-     editor,
-     NodeFilter.SHOW_TEXT
-   );
-
-   const out=[];
-   let n;
-
-   while((n=walker.nextNode())){
-
-     if(!n.nodeValue.length)continue;
-
-     const nr=document.createRange();
-     nr.selectNodeContents(n);
-
-     if(!range.intersectsNode(n))continue;
-
-     let start=n===range.startContainer ? range.startOffset : 0;
-     let end=n===range.endContainer ? range.endOffset : n.nodeValue.length;
-
-     start=Math.max(0,Math.min(start,n.nodeValue.length));
-     end=Math.max(start,Math.min(end,n.nodeValue.length));
-
-     if(end>start){
-       out.push({node:n,start,end});
-     }
-   }
-
-   return out;
- }
-
- function wrapSelection(styles){
-
-   const r=selectedRange();
-   if(!r)return;
-
-   const parts=selectedTextNodes(r);
-
-   if(!parts.length){
-     alert('Selected text ko format nahi kar paye.');
-     return;
-   }
-
-   const wrappers=[];
-
-   for(let i=parts.length-1;i>=0;i--){
-
-     const {node,start,end}=parts[i];
-
-     let selected=node;
-
-     if(end<selected.length){
-       selected.splitText(end);
-     }
-
-     if(start>0){
-       selected=selected.splitText(start);
-     }
-
-     const span=document.createElement('span');
-
-     for(const [key,value] of Object.entries(styles)){
-       span.style[key]=value;
-     }
-
-     selected.parentNode.insertBefore(span,selected);
-     span.appendChild(selected);
-
-     wrappers.unshift(span);
-   }
-
-   const first=wrappers[0].firstChild;
-   const last=wrappers[wrappers.length-1].firstChild;
-
-   const nr=document.createRange();
-
-   nr.setStart(first,0);
-   nr.setEnd(last,last.nodeValue.length);
-
-   const s=getSelection();
-
-   s.removeAllRanges();
-   s.addRange(nr);
-
-   storedRange=nr.cloneRange();
-
-   changed();
- }
-
- function currentStyle(prop){
-
-   const r=selectedRange();
-   if(!r)return null;
-
-   let n=r.startContainer;
-
-   if(n.nodeType===3){
-     n=n.parentElement;
-   }
-
-   return getComputedStyle(n)[prop];
- }
-
- function toggle(prop,on,off,marker){
-
-   const cur=currentStyle(prop);
-   if(cur===null)return;
-
-   let useOn=true;
-
-   if(prop==='fontWeight'){
-     useOn=!(cur==='bold'||Number(cur)>=600);
-   }else if(prop==='fontStyle'){
-     useOn=cur!=='italic';
-   }else if(prop==='textDecoration'){
-     useOn=!cur.includes(marker);
-   }
-
-   wrapSelection({
-     [prop]:useOn?on:off
-   });
- }
-
- document.querySelectorAll('[data-style]').forEach(b=>{
-
-   b.addEventListener('click',()=>{
-
-     const t=b.dataset.style;
-
-     if(t==='bold'){
-       toggle('fontWeight','700','400');
-     }
-
-     if(t==='italic'){
-       toggle('fontStyle','italic','normal');
-     }
-
-     if(t==='underline'){
-       toggle('textDecoration','underline','none','underline');
-     }
-
-     if(t==='strike'){
-       toggle('textDecoration','line-through','none','line-through');
-     }
-
-   });
- });
-
- $('fontSize').addEventListener('change',e=>{
-   wrapSelection({
-     fontSize:e.target.value+'pt'
-   });
- });
-
- $('fontFamily').addEventListener('change',e=>{
-   wrapSelection({
-     fontFamily:e.target.value
-   });
- });
-
- $('textColor').addEventListener('change',e=>{
-   wrapSelection({
-     color:e.target.value
-   });
- });
-
- $('highlightColor').addEventListener('change',e=>{
-   wrapSelection({
-     backgroundColor:e.target.value
-   });
- });
-
- document.querySelectorAll('[data-cmd]').forEach(b=>{
-
-   b.addEventListener('click',()=>{
-
-     if(!restore()){
-       alert('Editor mein cursor rakho ya text select karo.');
-       return;
-     }
-
-     document.execCommand(b.dataset.cmd,false,null);
-
-     remember();
-     changed();
-   });
-
- });
-
- $('blockStyle').addEventListener('change',e=>{
-
-   if(!restore())return;
-
-   document.execCommand(
-     'formatBlock',
-     false,
-     '<'+e.target.value+'>'
-   );
-
-   remember();
-   changed();
- });
-
- function insertLink(){
-
-   const r=selectedRange();
-   if(!r)return;
-
-   const url=prompt('Full link URL (https://...)');
-   if(!url)return;
-
-   if(!/^https?:\/\//i.test(url)){
-     alert('http:// ya https:// URL enter karo.');
-     return;
-   }
-
-   const a=document.createElement('a');
-
-   a.href=url;
-   a.target='_blank';
-   a.rel='noopener noreferrer';
-
-   a.appendChild(r.extractContents());
-   r.insertNode(a);
-
-   const nr=document.createRange();
-   nr.selectNodeContents(a);
-
-   const s=getSelection();
-   s.removeAllRanges();
-   s.addRange(nr);
-
-   storedRange=nr.cloneRange();
-
-   changed();
- }
-
- $('linkBtn').addEventListener('click',insertLink);
- $('linkBtn2').addEventListener('click',insertLink);
-
- $('imageBtn').addEventListener('click',()=>{
-   $('imageFile').click();
- });
-
- $('imageFile').addEventListener('change',e=>{
-
-   const file=e.target.files[0];
-   if(!file)return;
-
-   if(!file.type.startsWith('image/')){
-     alert('Valid image choose karo.');
-     e.target.value='';
-     return;
-   }
-
-   const reader=new FileReader();
-
-   reader.onload=()=>{
-
-     const img=document.createElement('img');
-
-     img.src=reader.result;
-     img.alt=file.name;
-
-     if(restore()){
-
-       const r=getSelection().getRangeAt(0);
-
-       r.deleteContents();
-       r.insertNode(img);
-       r.setStartAfter(img);
-       r.collapse(true);
-
-       const s=getSelection();
-       s.removeAllRanges();
-       s.addRange(r);
-
-       storedRange=r.cloneRange();
-
-     }else{
-       editor.appendChild(img);
-     }
-
-     changed();
-   };
-
-   reader.readAsDataURL(file);
-   e.target.value='';
- });
-
- $('tableBtn').addEventListener('click',()=>{
-
-   const rows=Number(prompt('Rows (1-20)','3'));
-   const cols=Number(prompt('Columns (1-10)','3'));
-
-   if(
-     !Number.isInteger(rows)||
-     !Number.isInteger(cols)||
-     rows<1||rows>20||
-     cols<1||cols>10
-   ){
-     alert('Valid row/column number enter karo.');
-     return;
-   }
-
-   if(!restore()){
-     editor.focus();
-   }
-
-   let html='<table><tbody>';
-
-   for(let i=0;i<rows;i++){
-     html+='<tr>';
-
-     for(let j=0;j<cols;j++){
-       html+='<td><br></td>';
-     }
-
-     html+='</tr>';
-   }
-
-   html+='</tbody></table><p><br></p>';
-
-   document.execCommand('insertHTML',false,html);
-
-   remember();
-   changed();
- });
-
- $('clearBtn').addEventListener('click',()=>{
-
-   if(!restore())return;
-
-   document.execCommand('removeFormat',false,null);
-
-   remember();
-   changed();
- });
-
- function count(){
-
-   const t=editor.innerText.trim();
-
-   $('wordCount').textContent=
-     'Words: '+(t?t.split(/\s+/).length:0);
- }
-
- function recordHistory(){
-
-   const snapshot={
-     title:title.value,
-     content:editor.innerHTML
-   };
-
-   const current=history[historyIndex];
-
-   if(
-     current &&
-     current.title===snapshot.title &&
-     current.content===snapshot.content
-   ){
-     return;
-   }
-
-   history=history.slice(0,historyIndex+1);
-   history.push(snapshot);
-
-   if(history.length>100){
-     history.shift();
-   }
-
-   historyIndex=history.length-1;
- }
-
- function changed(){
-
-   dirty=true;
-
-   $('saveStatus').textContent='Unsaved changes';
-
-   count();
-   recordHistory();
- }
-
- function restoreHistory(index){
-
-   if(index<0||index>=history.length)return;
-
-   historyIndex=index;
-
-   const item=history[historyIndex];
-
-   title.value=item.title;
-   editor.innerHTML=item.content;
-
-   storedRange=null;
-
-   count();
-
-   dirty=true;
-   $('saveStatus').textContent='Unsaved changes';
- }
-
- function undo(){
-
-   if(historyIndex>0){
-     restoreHistory(historyIndex-1);
-   }
- }
-
- function redo(){
-
-   if(historyIndex<history.length-1){
-     restoreHistory(historyIndex+1);
-   }
- }
-
- $('undoBtn').addEventListener('click',undo);
- $('redoBtn').addEventListener('click',redo);
-
- document.addEventListener('keydown',e=>{
-
-   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){
-
-     e.preventDefault();
-
-     if(e.shiftKey){
-       redo();
-     }else{
-       undo();
-     }
-
-   }else if(
-     (e.ctrlKey||e.metaKey)&&
-     e.key.toLowerCase()==='y'
-   ){
-
-     e.preventDefault();
-     redo();
-   }
- });
-
- function save(){
-
-   const data={
-     title:title.value||'Untitled Document',
-     content:editor.innerHTML,
-     updatedAt:new Date().toISOString()
-   };
-
-   try{
-
-     localStorage.setItem(
-       'quantam_document',
-       JSON.stringify(data)
-     );
-
-     dirty=false;
-
-     $('saveStatus').textContent='Saved on this device';
-
-   }catch(e){
-
-     $('saveStatus').textContent='Save failed';
-
-     alert('Browser storage full/unavailable.');
-   }
- }
-
- function load(){
-
-   try{
-
-     const raw=localStorage.getItem('quantam_document');
-
-     if(raw){
-
-       const d=JSON.parse(raw);
-
-       title.value=d.title||'Untitled Document';
-       editor.innerHTML=d.content||'';
-     }
-
-   }catch(e){
-     console.error(e);
-   }
-
-   $('saveStatus').textContent='Ready';
-
-   count();
- }
-
- $('saveBtn').addEventListener('click',save);
-
- $('homeBtn').addEventListener('click',()=>{
-   location.href='./index.html';
- });
-
- editor.addEventListener('input',()=>{
-   remember();
-   changed();
- });
-
- title.addEventListener('input',changed);
-
- $('insertTab').addEventListener('click',()=>{
-   showRibbon('insert');
- });
-
- $('layoutTab').addEventListener('click',()=>{
-   showRibbon('layout');
- });
-
- document.querySelector('.tab.active').addEventListener('click',()=>{
-   showRibbon('home');
- });
-
- function showRibbon(which){
-
-   $('homeRibbon').classList.toggle('hidden',which!=='home');
-   $('insertRibbon').classList.toggle('hidden',which!=='insert');
-   $('layoutRibbon').classList.toggle('hidden',which!=='layout');
-
-   document.querySelectorAll('.tab').forEach(t=>{
-     t.classList.remove('active');
-   });
-
-   document.querySelectorAll('.tab').forEach(t=>{
-     t.classList.remove('active');
-   });
-
-   document.querySelector(
-     which==='home'
-       ?'.tab'
-       :'#'+(which==='insert'?'insertTab':'layoutTab')
-   ).classList.add('active');
- }
-
- $('pageWidth').addEventListener('change',e=>{
-
-   editor.style.width=
-     e.target.value==='100%'
-       ?'100%'
-       :e.target.value+'px';
- });
-
- $('pagePadding').addEventListener('change',e=>{
-
-   editor.style.paddingLeft=e.target.value+'px';
-   editor.style.paddingRight=e.target.value+'px';
- });
-
- load();
- recordHistory();
+        if (typeof parsed === 'string') {
+          return {
+            title:'Untitled document',
+            html:parsed
+          };
+        }
+
+        if (parsed && typeof parsed === 'object') {
+          return {
+            title:parsed.title || parsed.name || 'Untitled document',
+            html:parsed.html || parsed.content || parsed.contentHTML || ''
+          };
+        }
+      }
+
+    } catch (error) {
+      console.warn('Could not read saved document:', error);
+      setStatus('Previous saved data could not be read', true);
+    }
+
+    return null;
+  }
+
+  function saveDocument(showMessage = true) {
+    const payload = {
+      title:$('docTitle').value.trim() || 'Untitled document',
+      html:quill.root.innerHTML,
+      updatedAt:new Date().toISOString()
+    };
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+
+      if (showMessage) {
+        setStatus(
+          'Saved on this device · ' +
+          new Date().toLocaleTimeString()
+        );
+      }
+
+      return true;
+
+    } catch (error) {
+      console.error('Save failed:', error);
+
+      setStatus(
+        'Save failed: browser storage is full. Download a backup.',
+        true
+      );
+
+      return false;
+    }
+  }
+
+  function scheduleSave() {
+    setStatus('Unsaved changes…');
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(() => {
+      saveDocument(true);
+    }, 700);
+  }
+
+  function downloadFile(filename, content, type) {
+    const blob = new Blob([content], {type});
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function safeFilename(name) {
+    return (
+      name || 'quantam-document'
+    ).replace(/[\\/:*?"<>|]+/g, '-').trim() ||
+      'quantam-document';
+  }
+
+  function exportHtml() {
+    const title =
+      $('docTitle').value.trim() || 'Untitled document';
+
+    const escapedTitle = title.replace(/[&<>"']/g, c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c]));
+
+    const html =
+      '<!DOCTYPE html><html lang="en"><head>' +
+      '<meta charset="UTF-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<title>' + escapedTitle + '</title>' +
+      '<style>' +
+      'body{font-family:Arial,sans-serif;max-width:794px;margin:40px auto;padding:0 24px;line-height:1.6}' +
+      'img{max-width:100%;height:auto}' +
+      '@media print{body{margin:0;max-width:none}}' +
+      '</style></head><body>' +
+      quill.root.innerHTML +
+      '</body></html>';
+
+    downloadFile(
+      safeFilename(title) + '.html',
+      html,
+      'text/html;charset=utf-8'
+    );
+  }
+
+  function insertImage(file) {
+    if (!file) return;
+
+    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
+      alert('Please choose a PNG, JPG, WEBP or GIF image.');
+      return;
+    }
+
+    if (file.size > 1.5 * 1024 * 1024) {
+      alert(
+        'Image is larger than 1.5 MB. ' +
+        'Please choose a smaller image to avoid filling browser storage.'
+      );
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const range = quill.getSelection(true) || {
+        index:Math.max(0, quill.getLength() - 1)
+      };
+
+      quill.insertEmbed(
+        range.index,
+        'image',
+        reader.result,
+        'user'
+      );
+
+      quill.setSelection(
+        range.index + 1,
+        0,
+        'silent'
+      );
+
+      scheduleSave();
+    };
+
+    reader.onerror = () => {
+      alert('Image could not be read. Try another image.');
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  function init() {
+
+    if (!window.Quill) {
+      setStatus(
+        'Editor library did not load. Check your internet connection and reload.',
+        true
+      );
+
+      $('editor').innerHTML =
+        '<p style="padding:20px;color:#b42318">' +
+        'QUANTAM DOCS editor could not load. ' +
+        'Please connect to the internet and reload this page.' +
+        '</p>';
+
+      return;
+    }
+
+    const SizeStyle =
+      Quill.import('attributors/style/size');
+
+    SizeStyle.whitelist = [
+      '8pt','9pt','10pt','11pt','12pt',
+      '14pt','16pt','18pt','20pt','24pt',
+      '28pt','36pt','48pt','72pt'
+    ];
+
+    Quill.register(SizeStyle, true);
+
+    quill = new Quill('#editor', {
+      theme:'snow',
+
+      placeholder:'Start writing your document…',
+
+      modules:{
+        toolbar:{
+          container:'#toolbar'
+        },
+
+        history:{
+          delay:800,
+          maxStack:100,
+          userOnly:true
+        }
+      }
+    });
+
+    const saved = getSavedDocument();
+
+    if (saved) {
+      $('docTitle').value =
+        saved.title || 'Untitled document';
+
+      if (saved.html) {
+        quill.root.innerHTML = saved.html;
+      }
+
+      setStatus('Saved document loaded');
+    }
+
+    quill.on('text-change', (delta, oldDelta, source) => {
+      if (source === 'user') {
+        scheduleSave();
+      }
+    });
+
+    $('docTitle').addEventListener(
+      'input',
+      scheduleSave
+    );
+
+    $('saveBtn').addEventListener(
+      'click',
+      () => saveDocument(true)
+    );
+
+    $('downloadBtn').addEventListener(
+      'click',
+      () => {
+        saveDocument(false);
+        exportHtml();
+      }
+    );
+
+    $('printBtn').addEventListener(
+      'click',
+      () => window.print()
+    );
+
+    $('undoBtn').addEventListener(
+      'click',
+      () => quill.history.undo()
+    );
+
+    $('redoBtn').addEventListener(
+      'click',
+      () => quill.history.redo()
+    );
+
+    $('imageButton').addEventListener(
+      'click',
+      () => $('imageInput').click()
+    );
+
+    $('imageInput').addEventListener(
+      'change',
+      (event) => {
+        insertImage(
+          event.target.files && event.target.files[0]
+        );
+
+        event.target.value = '';
+      }
+    );
+
+    $('newDocBtn').addEventListener(
+      'click',
+      () => {
+        if (!confirm(
+          'Start a new blank document? Download or save your current document first.'
+        )) {
+          return;
+        }
+
+        $('docTitle').value = 'Untitled document';
+
+        quill.setText('');
+
+        saveDocument(true);
+      }
+    );
+
+    window.addEventListener('beforeunload', () => {
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+        saveDocument(false);
+      }
+    });
+
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 
 })();
 </script>
