@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,20 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111827">
 <title>QUANTAM DOCS</title>
+
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f2f4f8;color:#182033;font-family:Arial,sans-serif}
+body{margin:0;background:#f1f3f7;color:#172033;font-family:Arial,sans-serif}
 button,input,select{font:inherit}
+button{cursor:pointer;border:1px solid #dce1ea;background:white;color:#172033;border-radius:7px;padding:8px 11px}
+button.primary{background:#4f46e5;color:white;border-color:#4f46e5}
+button.danger{color:#b42318}
 .topbar{background:#111827;color:white;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:30}
 .brand{font-size:17px;font-weight:800}.brand span{color:#a5b4fc}
 .actions{display:flex;gap:7px;flex-wrap:wrap}
-button{cursor:pointer;border:1px solid #d8deea;background:white;color:#182033;border-radius:7px;padding:8px 11px}
-button.primary{background:#4f46e5;color:white;border-color:#4f46e5}
-button.danger{color:#b42318}
-button:disabled{opacity:.5;cursor:not-allowed}
-.layout{max-width:1400px;margin:auto;padding:14px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:14px}
+.actions a{color:white;text-decoration:none;padding:8px}
+.layout{max-width:1450px;margin:auto;padding:14px;display:grid;grid-template-columns:265px minmax(0,1fr);gap:14px}
 .panel{background:white;border:1px solid #e0e5ee;border-radius:10px;padding:13px;min-width:0}
 .sidebar h3{margin:2px 0 12px}
 .sidebar input,.sidebar select{width:100%;padding:9px;border:1px solid #dce1e9;border-radius:7px;margin:5px 0 10px}
@@ -34,32 +34,99 @@ button:disabled{opacity:.5;cursor:not-allowed}
 #docTitle:focus{outline:none;border-color:#a5b4fc;background:white}
 #folderSelect{padding:8px;border:1px solid #dce1e9;border-radius:7px;background:white}
 #status{font-size:12px;color:#697386}
-.toolbar{background:white;border:1px solid #e0e5ee;border-radius:9px 9px 0 0;position:sticky;top:56px;z-index:10}
+.toolbar{background:white;border:1px solid #e0e5ee;border-radius:9px 9px 0 0;position:sticky;top:55px;z-index:10}
 #toolbar{border:0!important;display:flex;flex-wrap:wrap;gap:2px;padding:8px}
 #toolbar .ql-formats{margin-right:6px!important}
 #toolbar button{padding:0;border:0}
-#toolbar select{max-width:100px}
+#toolbar select{max-width:115px}
+#toolbar .ql-font{width:145px}
+#toolbar .ql-size{width:75px}
+#toolbar .ql-header{width:105px}
 .extra{display:flex;gap:7px;flex-wrap:wrap;padding:0 9px 9px}
 .stage{background:#e9edf4;padding:20px 10px 45px;border:1px solid #e0e5ee;border-top:0}
 #editor{width:min(100%,794px);margin:auto;background:white;border:1px solid #d8deea;box-shadow:0 4px 18px #11182712}
 #editor.ql-container{font-size:12pt;font-family:Arial,sans-serif}
-#editor .ql-editor{min-height:1000px;padding:65px 70px;line-height:1.6;overflow-wrap:anywhere}
+#editor .ql-editor{min-height:1050px;padding:65px 70px;line-height:1.6;overflow-wrap:anywhere}
 #editor .ql-editor.ql-blank::before{left:70px;right:70px}
-.library-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+#editor .ql-editor img{max-width:100%;height:auto}
+
+/* Font family definitions */
+.ql-font-arial{font-family:Arial,sans-serif}
+.ql-font-calibri{font-family:Calibri,Arial,sans-serif}
+.ql-font-aptos{font-family:Aptos,Arial,sans-serif}
+.ql-font-cambria{font-family:Cambria,Georgia,serif}
+.ql-font-times-new-roman{font-family:"Times New Roman",serif}
+.ql-font-georgia{font-family:Georgia,serif}
+.ql-font-verdana{font-family:Verdana,sans-serif}
+.ql-font-tahoma{font-family:Tahoma,sans-serif}
+.ql-font-trebuchet-ms{font-family:"Trebuchet MS",sans-serif}
+.ql-font-courier-new{font-family:"Courier New",monospace}
+.ql-font-consolas{font-family:Consolas,monospace}
+.ql-font-garamond{font-family:Garamond,serif}
+.ql-font-book-antiqua{font-family:"Book Antiqua",serif}
+.ql-font-century-gothic{font-family:"Century Gothic",sans-serif}
+.ql-font-comic-sans-ms{font-family:"Comic Sans MS",cursive}
+.ql-font-impact{font-family:Impact,sans-serif}
+.ql-font-palatino-linotype{font-family:"Palatino Linotype",serif}
+.ql-font-lucida-console{font-family:"Lucida Console",monospace}
+.ql-font-segoe-ui{font-family:"Segoe UI",sans-serif}
+.ql-font-microsoft-sans-serif{font-family:"Microsoft Sans Serif",sans-serif}
+.ql-font-franklin-gothic{font-family:"Franklin Gothic Medium",sans-serif}
+.ql-font-rockwell{font-family:Rockwell,serif}
+.ql-font-constantia{font-family:Constantia,serif}
+.ql-font-candara{font-family:Candara,sans-serif}
+.ql-font-corbel{font-family:Corbel,sans-serif}
+.ql-font-century-schoolbook{font-family:"Century Schoolbook",serif}
+.ql-font-bahnschrift{font-family:Bahnschrift,sans-serif}
+.ql-font-mangal{font-family:Mangal,sans-serif}
+.ql-font-nirmala-ui{font-family:"Nirmala UI",sans-serif}
+.ql-font-utsaah{font-family:Utsaah,sans-serif}
+.ql-font-kokila{font-family:Kokila,serif}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before{content:attr(data-value)}
+.ql-snow .ql-picker.ql-font .ql-picker-label:not([data-value])::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item:not([data-value])::before{content:"Arial"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times-new-roman"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before{content:"Times New Roman"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="calibri"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="calibri"]::before{content:"Calibri"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="aptos"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="aptos"]::before{content:"Aptos"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="cambria"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="cambria"]::before{content:"Cambria"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="georgia"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="georgia"]::before{content:"Georgia"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="verdana"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="verdana"]::before{content:"Verdana"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="tahoma"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="tahoma"]::before{content:"Tahoma"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="segoe-ui"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="segoe-ui"]::before{content:"Segoe UI"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="mangal"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="mangal"]::before{content:"Mangal"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="nirmala-ui"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="nirmala-ui"]::before{content:"Nirmala UI"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="comic-sans-ms"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="comic-sans-ms"]::before{content:"Comic Sans MS"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="courier-new"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="courier-new"]::before{content:"Courier New"}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="century-gothic"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="century-gothic"]::before{content:"Century Gothic"}
+
 .hint{font-size:12px;color:#697386;line-height:1.5}
 .empty{color:#697386;text-align:center;padding:25px 8px;font-size:13px}
 @media(max-width:760px){
  .layout{grid-template-columns:1fr;padding:8px;gap:9px}
- .sidebar{order:2}
- .main{order:1}
- .topbar{padding:10px}
- .brand{font-size:15px}
+ .sidebar{order:2}.main{order:1}
+ .topbar{padding:10px}.brand{font-size:15px}
  .actions button{padding:7px 8px;font-size:12px}
  .toolbar{top:54px}
  #toolbar{padding:5px}
  #toolbar .ql-formats{margin-right:3px!important}
  #toolbar button{width:29px;height:29px}
  #toolbar select{height:29px}
+ #toolbar .ql-font{width:120px}
  .stage{padding:8px 0 25px}
  #editor{width:100%;border-left:0;border-right:0;box-shadow:none}
  #editor .ql-editor{min-height:75vh;padding:28px 19px}
@@ -81,7 +148,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <header class="topbar">
  <div class="brand">QUANTAM <span>DOCS</span></div>
  <div class="actions">
-  <a href="./index.html" style="color:white;text-decoration:none;padding:8px">Dashboard</a>
+  <a href="./index.html">Dashboard</a>
   <button id="saveBtn" class="primary">Save</button>
   <button id="htmlBtn">Download HTML</button>
   <button id="backupBtn">Backup All</button>
@@ -91,111 +158,147 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <div class="layout">
 
- <aside class="panel sidebar">
-  <h3>My Library</h3>
+<aside class="panel sidebar">
+ <h3>My Library</h3>
+ <button id="newBtn" class="primary" style="width:100%">＋ New Document</button>
+ <button id="newFolderBtn" style="width:100%;margin-top:7px">＋ Create Folder</button>
 
-  <button id="newBtn" class="primary" style="width:100%">＋ New Document</button>
-  <button id="newFolderBtn" style="width:100%;margin-top:7px">＋ Create Folder</button>
+ <label class="hint">Filter folder</label>
+ <select id="folderFilter"><option value="all">All folders</option></select>
 
-  <label class="hint" for="folderFilter">Filter folder</label>
-  <select id="folderFilter">
-   <option value="all">All folders</option>
-  </select>
+ <input id="searchDocs" type="search" placeholder="Search documents...">
 
-  <input id="searchDocs" type="search" placeholder="Search documents...">
+ <div id="docList" class="doclist">
+  <div class="empty">Loading Library...</div>
+ </div>
 
-  <div id="docList" class="doclist">
-   <div class="empty">Loading Library...</div>
+ <button id="importBtn" style="margin-top:12px">Import Backup</button>
+ <input id="importFile" type="file" accept=".json,application/json" hidden>
+
+ <p class="hint">
+  Your documents are stored in this browser. Download backups regularly.
+ </p>
+</aside>
+
+<main class="main">
+ <div class="panel">
+  <div class="docbar">
+   <input id="docTitle" value="Untitled document" maxlength="100" aria-label="Document title">
+   <select id="folderSelect" aria-label="Document folder"></select>
+   <span id="status">Loading...</span>
+  </div>
+ </div>
+
+ <section class="toolbar">
+  <div id="toolbar">
+
+   <span class="ql-formats">
+    <select class="ql-font" aria-label="Font family">
+     <option value="arial" selected>Arial</option>
+     <option value="aptos">Aptos</option>
+     <option value="calibri">Calibri</option>
+     <option value="cambria">Cambria</option>
+     <option value="times-new-roman">Times New Roman</option>
+     <option value="georgia">Georgia</option>
+     <option value="verdana">Verdana</option>
+     <option value="tahoma">Tahoma</option>
+     <option value="trebuchet-ms">Trebuchet MS</option>
+     <option value="courier-new">Courier New</option>
+     <option value="consolas">Consolas</option>
+     <option value="garamond">Garamond</option>
+     <option value="book-antiqua">Book Antiqua</option>
+     <option value="century-gothic">Century Gothic</option>
+     <option value="comic-sans-ms">Comic Sans MS</option>
+     <option value="impact">Impact</option>
+     <option value="palatino-linotype">Palatino Linotype</option>
+     <option value="lucida-console">Lucida Console</option>
+     <option value="segoe-ui">Segoe UI</option>
+     <option value="microsoft-sans-serif">Microsoft Sans Serif</option>
+     <option value="franklin-gothic">Franklin Gothic</option>
+     <option value="rockwell">Rockwell</option>
+     <option value="constantia">Constantia</option>
+     <option value="candara">Candara</option>
+     <option value="corbel">Corbel</option>
+     <option value="century-schoolbook">Century Schoolbook</option>
+     <option value="bahnschrift">Bahnschrift</option>
+     <option value="mangal">Mangal</option>
+     <option value="nirmala-ui">Nirmala UI</option>
+     <option value="utsaah">Utsaah</option>
+     <option value="kokila">Kokila</option>
+    </select>
+
+    <select class="ql-size" aria-label="Font size">
+     <option value="8pt">8</option>
+     <option value="10pt">10</option>
+     <option value="11pt">11</option>
+     <option value="12pt" selected>12</option>
+     <option value="14pt">14</option>
+     <option value="16pt">16</option>
+     <option value="18pt">18</option>
+     <option value="20pt">20</option>
+     <option value="24pt">24</option>
+     <option value="28pt">28</option>
+     <option value="36pt">36</option>
+     <option value="48pt">48</option>
+     <option value="72pt">72</option>
+    </select>
+
+    <select class="ql-header" aria-label="Heading">
+     <option selected>Normal</option>
+     <option value="1">Heading 1</option>
+     <option value="2">Heading 2</option>
+     <option value="3">Heading 3</option>
+    </select>
+   </span>
+
+   <span class="ql-formats">
+    <button class="ql-bold" aria-label="Bold"></button>
+    <button class="ql-italic" aria-label="Italic"></button>
+    <button class="ql-underline" aria-label="Underline"></button>
+    <button class="ql-strike" aria-label="Strikethrough"></button>
+   </span>
+
+   <span class="ql-formats">
+    <select class="ql-color" aria-label="Text colour"></select>
+    <select class="ql-background" aria-label="Highlight colour"></select>
+   </span>
+
+   <span class="ql-formats">
+    <button class="ql-list" value="ordered" aria-label="Numbered list"></button>
+    <button class="ql-list" value="bullet" aria-label="Bulleted list"></button>
+    <button class="ql-blockquote" aria-label="Quote"></button>
+   </span>
+
+   <span class="ql-formats">
+    <select class="ql-align" aria-label="Alignment">
+     <option selected></option>
+     <option value="center"></option>
+     <option value="right"></option>
+     <option value="justify"></option>
+    </select>
+    <button class="ql-indent" value="-1" aria-label="Decrease indent"></button>
+    <button class="ql-indent" value="+1" aria-label="Increase indent"></button>
+   </span>
+
+   <span class="ql-formats">
+    <button class="ql-link" aria-label="Insert link"></button>
+    <button class="ql-image" aria-label="Insert image"></button>
+    <button class="ql-clean" aria-label="Clear formatting"></button>
+   </span>
+
   </div>
 
-  <div class="library-actions">
-   <button id="importBtn">Import Backup</button>
-   <input id="importFile" type="file" accept=".json,application/json" hidden>
+  <div class="extra">
+   <button id="undoBtn">↶ Undo</button>
+   <button id="redoBtn">↷ Redo</button>
+   <button id="deleteBtn" class="danger">Delete Document</button>
   </div>
+ </section>
 
-  <p class="hint">
-   Documents are stored in this browser using IndexedDB.
-   Use Backup All to keep a copy on your device.
-  </p>
- </aside>
-
- <main class="main">
-  <div class="panel">
-   <div class="docbar">
-    <input id="docTitle" value="Untitled document" maxlength="100" aria-label="Document title">
-    <select id="folderSelect" aria-label="Document folder"></select>
-    <span id="status">Loading...</span>
-   </div>
-  </div>
-
-  <section class="toolbar">
-   <div id="toolbar">
-    <span class="ql-formats">
-     <select class="ql-header">
-      <option selected></option>
-      <option value="1"></option>
-      <option value="2"></option>
-      <option value="3"></option>
-     </select>
-     <select class="ql-size">
-      <option value="8pt">8</option>
-      <option value="10pt">10</option>
-      <option value="11pt">11</option>
-      <option value="12pt" selected>12</option>
-      <option value="14pt">14</option>
-      <option value="16pt">16</option>
-      <option value="18pt">18</option>
-      <option value="20pt">20</option>
-      <option value="24pt">24</option>
-      <option value="28pt">28</option>
-      <option value="36pt">36</option>
-      <option value="48pt">48</option>
-      <option value="72pt">72</option>
-     </select>
-    </span>
-    <span class="ql-formats">
-     <button class="ql-bold"></button>
-     <button class="ql-italic"></button>
-     <button class="ql-underline"></button>
-     <button class="ql-strike"></button>
-    </span>
-    <span class="ql-formats">
-     <select class="ql-color"></select>
-     <select class="ql-background"></select>
-    </span>
-    <span class="ql-formats">
-     <button class="ql-list" value="ordered"></button>
-     <button class="ql-list" value="bullet"></button>
-     <button class="ql-blockquote"></button>
-    </span>
-    <span class="ql-formats">
-     <select class="ql-align">
-      <option selected></option>
-      <option value="center"></option>
-      <option value="right"></option>
-      <option value="justify"></option>
-     </select>
-     <button class="ql-indent" value="-1"></button>
-     <button class="ql-indent" value="+1"></button>
-    </span>
-    <span class="ql-formats">
-     <button class="ql-link"></button>
-     <button class="ql-image"></button>
-     <button class="ql-clean"></button>
-    </span>
-   </div>
-   <div class="extra">
-    <button id="undoBtn">↶ Undo</button>
-    <button id="redoBtn">↷ Redo</button>
-    <button id="deleteBtn" class="danger">Delete Current Document</button>
-   </div>
-  </section>
-
-  <section class="stage">
-   <div id="editor"><p><br></p></div>
-  </section>
- </main>
-
+ <section class="stage">
+  <div id="editor"><p><br></p></div>
+ </section>
+</main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
@@ -204,28 +307,38 @@ button:disabled{opacity:.5;cursor:not-allowed}
 (() => {
 'use strict';
 
-const DB_NAME = 'QUANTAM_DOCS_LIBRARY';
-const DB_VERSION = 1;
-const DOC_STORE = 'documents';
-const FOLDER_STORE = 'folders';
+const DB_NAME='QUANTAM_DOCS_LIBRARY';
+const DB_VERSION=1;
+const DOC_STORE='documents';
+const FOLDER_STORE='folders';
 
-let db;
-let quill;
-let currentId = null;
-let saveTimer = null;
-let isLoading = false;
+const FONT_NAMES=[
+ 'arial','aptos','calibri','cambria','times-new-roman',
+ 'georgia','verdana','tahoma','trebuchet-ms','courier-new',
+ 'consolas','garamond','book-antiqua','century-gothic',
+ 'comic-sans-ms','impact','palatino-linotype','lucida-console',
+ 'segoe-ui','microsoft-sans-serif','franklin-gothic','rockwell',
+ 'constantia','candara','corbel','century-schoolbook',
+ 'bahnschrift','mangal','nirmala-ui','utsaah','kokila'
+];
 
-const $ = id => document.getElementById(id);
+let db=null;
+let quill=null;
+let currentId=null;
+let saveTimer=null;
+let isLoading=false;
+
+const $=id=>document.getElementById(id);
 
 function makeId(){
- return (crypto.randomUUID ?
+ return crypto.randomUUID ?
   crypto.randomUUID() :
-  'doc-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+  'doc-'+Date.now()+'-'+Math.random().toString(36).slice(2);
 }
 
-function setStatus(message, error=false){
- $('status').textContent = message;
- $('status').style.color = error ? '#b42318' : '#697386';
+function status(message,error=false){
+ $('status').textContent=message;
+ $('status').style.color=error?'#b42318':'#697386';
 }
 
 function requestResult(request){
@@ -237,58 +350,41 @@ function requestResult(request){
 
 function openDatabase(){
  return new Promise((resolve,reject)=>{
-  const request=indexedDB.open(DB_NAME,DB_VERSION);
-
-  request.onupgradeneeded=()=>{
-   const database=request.result;
-
+  const req=indexedDB.open(DB_NAME,DB_VERSION);
+  req.onupgradeneeded=()=>{
+   const database=req.result;
    if(!database.objectStoreNames.contains(DOC_STORE)){
     const store=database.createObjectStore(DOC_STORE,{keyPath:'id'});
     store.createIndex('updatedAt','updatedAt');
     store.createIndex('folder','folder');
    }
-
    if(!database.objectStoreNames.contains(FOLDER_STORE)){
     database.createObjectStore(FOLDER_STORE,{keyPath:'id'});
    }
   };
-
-  request.onsuccess=()=>resolve(request.result);
-  request.onerror=()=>reject(request.error);
+  req.onsuccess=()=>resolve(req.result);
+  req.onerror=()=>reject(req.error);
  });
 }
 
-function getAll(storeName){
- return requestResult(
-  db.transaction(storeName,'readonly')
-    .objectStore(storeName).getAll()
- );
+function getAll(name){
+ return requestResult(db.transaction(name,'readonly').objectStore(name).getAll());
 }
 
-function getOne(storeName,id){
- return requestResult(
-  db.transaction(storeName,'readonly')
-    .objectStore(storeName).get(id)
- );
+function getOne(name,id){
+ return requestResult(db.transaction(name,'readonly').objectStore(name).get(id));
 }
 
-function putOne(storeName,value){
- return requestResult(
-  db.transaction(storeName,'readwrite')
-    .objectStore(storeName).put(value)
- );
+function putOne(name,value){
+ return requestResult(db.transaction(name,'readwrite').objectStore(name).put(value));
 }
 
-function deleteOne(storeName,id){
- return requestResult(
-  db.transaction(storeName,'readwrite')
-    .objectStore(storeName).delete(id)
- );
+function deleteOne(name,id){
+ return requestResult(db.transaction(name,'readwrite').objectStore(name).delete(id));
 }
 
-async function ensureDefaultFolder(){
- let folders=await getAll(FOLDER_STORE);
-
+async function ensureFolder(){
+ const folders=await getAll(FOLDER_STORE);
  if(!folders.length){
   await putOne(FOLDER_STORE,{
    id:'general',
@@ -299,39 +395,28 @@ async function ensureDefaultFolder(){
 }
 
 async function migrateOldDocument(){
- const existing=await getAll(DOC_STORE);
- if(existing.length) return;
-
- let old=null;
+ const docs=await getAll(DOC_STORE);
+ if(docs.length)return;
 
  try{
   const raw=localStorage.getItem('quantam_docs_document_v2') ||
             localStorage.getItem('quantam_document');
+  if(!raw)return;
 
-  if(raw) old=JSON.parse(raw);
- }catch(e){
-  console.warn('Old document migration failed',e);
- }
-
- if(old){
-  let title='Imported document';
-  let html='';
-
-  if(typeof old==='string'){
-   html=old;
-  }else{
-   title=old.title || old.name || title;
-   html=old.html || old.content || old.contentHTML || '';
-  }
+  const old=JSON.parse(raw);
+  const html=typeof old==='string'?old:
+   old.html||old.content||old.contentHTML||'';
 
   await putOne(DOC_STORE,{
    id:makeId(),
-   title,
+   title:old.title||old.name||'Imported document',
    html,
    folder:'general',
    createdAt:new Date().toISOString(),
    updatedAt:new Date().toISOString()
   });
+ }catch(e){
+  console.warn('Old document migration:',e);
  }
 }
 
@@ -340,15 +425,10 @@ async function refreshFolders(){
  const filter=$('folderFilter');
  const select=$('folderSelect');
  const oldFilter=filter.value;
- const oldFolder=select.value;
+ const oldSelect=select.value;
 
- filter.innerHTML='';
+ filter.innerHTML='<option value="all">All folders</option>';
  select.innerHTML='';
-
- const all=document.createElement('option');
- all.value='all';
- all.textContent='All folders';
- filter.appendChild(all);
 
  folders.sort((a,b)=>a.name.localeCompare(b.name));
 
@@ -364,69 +444,85 @@ async function refreshFolders(){
   select.appendChild(b);
  }
 
- if([...filter.options].some(o=>o.value===oldFilter)){
-  filter.value=oldFilter;
- }
-
- if([...select.options].some(o=>o.value===oldFolder)){
-  select.value=oldFolder;
- }else if(select.options.length){
-  select.value=select.options[0].value;
- }
+ if([...filter.options].some(o=>o.value===oldFilter))filter.value=oldFilter;
+ if([...select.options].some(o=>o.value===oldSelect))select.value=oldSelect;
 }
 
 async function refreshLibrary(){
  const docs=await getAll(DOC_STORE);
  const folders=await getAll(FOLDER_STORE);
  const folderMap=new Map(folders.map(f=>[f.id,f.name]));
+ const query=$('searchDocs').value.trim().toLowerCase();
+ const folder=$('folderFilter').value;
 
  const list=$('docList');
- const query=$('searchDocs').value.trim().toLowerCase();
- const selectedFolder=$('folderFilter').value;
-
  list.innerHTML='';
 
- const filtered=docs
-  .filter(doc=>{
-   const matchesFolder=selectedFolder==='all' ||
-     doc.folder===selectedFolder;
-   const matchesSearch=(doc.title || '').toLowerCase().includes(query);
-   return matchesFolder && matchesSearch;
-  })
-  .sort((a,b)=>(b.updatedAt || '').localeCompare(a.updatedAt || ''));
+ const results=docs.filter(d=>
+  (folder==='all'||d.folder===folder)&&
+  (d.title||'').toLowerCase().includes(query)
+ ).sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
 
- if(!filtered.length){
-  list.innerHTML='<div class="empty">No documents found. Create a new document.</div>';
+ if(!results.length){
+  list.innerHTML='<div class="empty">No documents found.</div>';
   return;
  }
 
- for(const doc of filtered){
-  const button=document.createElement('button');
-  button.className='docitem'+(doc.id===currentId?' active':'');
-  button.type='button';
-
+ results.forEach(doc=>{
+  const btn=document.createElement('button');
+  btn.type='button';
+  btn.className='docitem'+(doc.id===currentId?' active':'');
   const title=document.createElement('strong');
-  title.textContent=doc.title || 'Untitled document';
+  title.textContent=doc.title||'Untitled document';
+  const small=document.createElement('small');
+  small.textContent=(folderMap.get(doc.folder)||'General')+' · '+
+   (doc.updatedAt?new Date(doc.updatedAt).toLocaleString():'');
+  btn.append(title,small);
+  btn.addEventListener('click',()=>openDocument(doc.id));
+  list.appendChild(btn);
+ });
+}
 
-  const meta=document.createElement('small');
-  const date=doc.updatedAt ? new Date(doc.updatedAt).toLocaleString() : '';
-  meta.textContent=(folderMap.get(doc.folder)||'General')+' · '+date;
+async function saveCurrent(show=true){
+ if(!currentId||!quill||isLoading)return false;
+ clearTimeout(saveTimer);
 
-  button.append(title,meta);
-  button.addEventListener('click',()=>openDocument(doc.id));
+ try{
+  const old=await getOne(DOC_STORE,currentId);
+  if(!old)return false;
 
-  list.appendChild(button);
+  const doc={
+   ...old,
+   title:$('docTitle').value.trim()||'Untitled document',
+   folder:$('folderSelect').value||'general',
+   html:quill.root.innerHTML,
+   updatedAt:new Date().toISOString()
+  };
+
+  await putOne(DOC_STORE,doc);
+  if(show)status('Saved successfully');
+  await refreshLibrary();
+  return true;
+ }catch(error){
+  console.error(error);
+  status('Save failed: '+error.message,true);
+  return false;
  }
+}
+
+function scheduleSave(){
+ if(isLoading)return;
+ status('Saving changes...');
+ clearTimeout(saveTimer);
+ saveTimer=setTimeout(()=>saveCurrent(true),700);
 }
 
 async function createDocument(){
  await saveCurrent(false);
 
  const folders=await getAll(FOLDER_STORE);
- const folder=folders.find(f=>f.id===$('folderFilter').value) ||
-              folders.find(f=>f.id==='general') ||
-              folders[0];
-
+ const selected=folders.find(f=>f.id===$('folderFilter').value);
+ const folder=selected||folders[0];
  const now=new Date().toISOString();
 
  const doc={
@@ -439,132 +535,68 @@ async function createDocument(){
  };
 
  await putOne(DOC_STORE,doc);
- await refreshFolders();
  await openDocument(doc.id);
 }
 
 async function openDocument(id){
- if(id===currentId) return;
-
+ if(id===currentId)return;
  await saveCurrent(false);
 
  const doc=await getOne(DOC_STORE,id);
-
- if(!doc){
-  setStatus('Document not found',true);
-  return;
- }
+ if(!doc){status('Document not found',true);return;}
 
  isLoading=true;
  currentId=id;
 
- $('docTitle').value=doc.title || 'Untitled document';
- $('folderSelect').value=doc.folder || 'general';
+ $('docTitle').value=doc.title||'Untitled document';
+ $('folderSelect').value=doc.folder||'general';
 
  quill.setText('');
- quill.clipboard.dangerouslyPasteHTML(
-  doc.html || '<p><br></p>',
-  'silent'
- );
-
+ quill.clipboard.dangerouslyPasteHTML(doc.html||'<p><br></p>','silent');
  quill.history.clear();
 
  isLoading=false;
-
- setStatus('Document opened');
- await refreshLibrary();
-}
-
-async function saveCurrent(showMessage=true){
- if(!currentId || !quill || isLoading) return false;
-
- clearTimeout(saveTimer);
-
- const old=await getOne(DOC_STORE,currentId);
-
- if(!old) return false;
-
- const doc={
-  ...old,
-  title:$('docTitle').value.trim() || 'Untitled document',
-  folder:$('folderSelect').value || 'general',
-  html:quill.root.innerHTML,
-  updatedAt:new Date().toISOString()
- };
-
- try{
-  await putOne(DOC_STORE,doc);
-
-  if(showMessage) setStatus('Saved successfully');
-
-  await refreshLibrary();
-  return true;
-
- }catch(error){
-  console.error(error);
-  setStatus('Save failed: browser storage error',true);
-  return false;
- }
-}
-
-function scheduleSave(){
- if(isLoading) return;
-
- setStatus('Saving changes...');
-
- clearTimeout(saveTimer);
-
- saveTimer=setTimeout(()=>{
-  saveCurrent(true);
- },600);
-}
-
-async function deleteCurrent(){
- if(!currentId) return;
-
- const doc=await getOne(DOC_STORE,currentId);
- if(!doc) return;
-
- if(!confirm('Delete "'+doc.title+'"? This cannot be undone.')) return;
-
- await deleteOne(DOC_STORE,currentId);
- currentId=null;
-
- const remaining=await getAll(DOC_STORE);
-
- if(remaining.length){
-  remaining.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
-  await openDocument(remaining[0].id);
- }else{
-  await createDocument();
- }
-
+ status('Document opened');
  await refreshLibrary();
 }
 
 async function createFolder(){
  const name=prompt('Enter folder name:');
- if(!name || !name.trim()) return;
+ if(!name||!name.trim())return;
 
  const clean=name.trim().slice(0,60);
  const folders=await getAll(FOLDER_STORE);
 
  if(folders.some(f=>f.name.toLowerCase()===clean.toLowerCase())){
-  alert('This folder already exists.');
+  alert('Folder already exists.');
   return;
  }
 
- const folder={
-  id:makeId(),
-  name:clean,
-  createdAt:new Date().toISOString()
- };
-
+ const folder={id:makeId(),name:clean,createdAt:new Date().toISOString()};
  await putOne(FOLDER_STORE,folder);
  await refreshFolders();
  $('folderFilter').value=folder.id;
  $('folderSelect').value=folder.id;
  await saveCurrent(true);
+ await refreshLibrary();
+}
+
+async function deleteCurrent(){
+ if(!currentId)return;
+ const doc=await getOne(DOC_STORE,currentId);
+ if(!doc)return;
+
+ if(!confirm('Delete '+doc.title+'?'))return;
+ await deleteOne(DOC_STORE,currentId);
+ currentId=null;
+
+ const docs=await getAll(DOC_STORE);
+ if(docs.length){
+  docs.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+  await openDocument(docs[0].id);
+ }else{
+  await createDocument();
+ }
  await refreshLibrary();
 }
 
@@ -580,133 +612,101 @@ function download(filename,content,type){
  setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
 
-function cleanFilename(name){
- return (name||'document')
-  .replace(/[\\/:*?"<>|]/g,'-')
-  .trim() || 'document';
+function safeName(name){
+ return (name||'document').replace(/[\\/:*?"<>|]/g,'-').trim()||'document';
 }
 
-async function exportHtml(){
- await saveCurrent(false);
-
- const doc=await getOne(DOC_STORE,currentId);
- if(!doc) return;
-
- const html='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+
-  escapeHtml(doc.title)+
-  '</title><style>body{max-width:794px;margin:40px auto;padding:20px;font-family:Arial;line-height:1.6}img{max-width:100%;height:auto}</style></head><body>'+
-  doc.html+'</body></html>';
-
- download(cleanFilename(doc.title)+'.html',html,'text/html;charset=utf-8');
-}
-
-function escapeHtml(text){
- return String(text).replace(/[&<>"']/g,c=>({
+function escapeHtml(value){
+ return String(value).replace(/[&<>"']/g,c=>({
   '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
  }[c]));
 }
 
+async function exportHtml(){
+ await saveCurrent(false);
+ const doc=await getOne(DOC_STORE,currentId);
+ if(!doc)return;
+
+ const output='<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+
+ escapeHtml(doc.title)+'</title><style>body{max-width:794px;margin:40px auto;padding:20px;font-family:Arial;line-height:1.6}img{max-width:100%;height:auto}</style></head><body>'+
+ doc.html+'</body></html>';
+
+ download(safeName(doc.title)+'.html',output,'text/html;charset=utf-8');
+}
+
 async function exportBackup(){
  await saveCurrent(false);
-
- const docs=await getAll(DOC_STORE);
- const folders=await getAll(FOLDER_STORE);
-
  const backup={
   app:'QUANTAM DOCS',
   version:1,
   exportedAt:new Date().toISOString(),
-  folders,
-  documents:docs
+  folders:await getAll(FOLDER_STORE),
+  documents:await getAll(DOC_STORE)
  };
 
- download(
-  'QUANTAM-DOCS-BACKUP-'+new Date().toISOString().slice(0,10)+'.json',
-  JSON.stringify(backup,null,2),
-  'application/json'
- );
+ download('QUANTAM-DOCS-BACKUP.json',JSON.stringify(backup,null,2),'application/json');
 }
 
 async function importBackup(file){
- if(!file) return;
-
+ if(!file)return;
  try{
-  const backup=JSON.parse(await file.text());
-
-  if(backup.app!=='QUANTAM DOCS' ||
-     !Array.isArray(backup.documents) ||
-     !Array.isArray(backup.folders)){
-   throw new Error('Invalid QUANTAM DOCS backup file');
+  const data=JSON.parse(await file.text());
+  if(data.app!=='QUANTAM DOCS'||!Array.isArray(data.documents)||!Array.isArray(data.folders)){
+   throw new Error('Invalid backup file');
   }
 
-  if(!confirm('Import '+backup.documents.length+' documents? Existing documents will be kept.')) return;
+  if(!confirm('Import '+data.documents.length+' documents?'))return;
 
-  for(const folder of backup.folders){
-   if(!folder || !folder.name) continue;
-
-   const folders=await getAll(FOLDER_STORE);
-   const exists=folders.find(f=>
-    f.name.toLowerCase()===folder.name.toLowerCase()
-   );
-
-   if(!exists){
-    await putOne(FOLDER_STORE,{
-     id:makeId(),
-     name:folder.name,
-     createdAt:new Date().toISOString()
-    });
+  for(const f of data.folders){
+   if(!f.name)continue;
+   const all=await getAll(FOLDER_STORE);
+   if(!all.some(x=>x.name.toLowerCase()===f.name.toLowerCase())){
+    await putOne(FOLDER_STORE,{id:makeId(),name:f.name,createdAt:new Date().toISOString()});
    }
   }
 
-  const currentFolders=await getAll(FOLDER_STORE);
+  const folders=await getAll(FOLDER_STORE);
 
-  for(const doc of backup.documents){
-   if(!doc || typeof doc.html!=='string') continue;
-
-   const matching=currentFolders.find(f=>
-    f.name===(
-     backup.folders.find(x=>x.id===doc.folder)?.name || 'General'
-    )
-   );
+  for(const doc of data.documents){
+   if(!doc||typeof doc.html!=='string')continue;
+   const oldFolder=data.folders.find(f=>f.id===doc.folder);
+   const folder=folders.find(f=>f.name===(oldFolder?.name||'General'))||folders[0];
 
    await putOne(DOC_STORE,{
     id:makeId(),
     title:String(doc.title||'Imported document'),
     html:doc.html,
-    folder:matching ? matching.id : 'general',
+    folder:folder.id,
     createdAt:new Date().toISOString(),
     updatedAt:new Date().toISOString()
    });
   }
-
   await refreshFolders();
   await refreshLibrary();
-
-  alert('Backup imported successfully.');
-
+  alert('Backup imported.');
  }catch(error){
-  console.error(error);
   alert('Import failed: '+error.message);
  }
 }
 
 async function init(){
  if(!window.Quill){
-  setStatus('Editor library failed to load. Check internet.',true);
+  status('Editor library failed to load. Check internet.',true);
   return;
  }
 
  if(!window.indexedDB){
-  setStatus('This browser does not support IndexedDB.',true);
+  status('IndexedDB is not supported in this browser.',true);
   return;
  }
 
- const SizeStyle=Quill.import('attributors/style/size');
- SizeStyle.whitelist=[
-  '8pt','10pt','11pt','12pt','14pt','16pt',
-  '18pt','20pt','24pt','28pt','36pt','48pt','72pt'
- ];
- Quill.register(SizeStyle,true);
+ const Font=Quill.import('attributors/class/font');
+ Font.whitelist=FONT_NAMES;
+ Quill.register(Font,true);
+
+ const Size=Quill.import('attributors/style/size');
+ Size.whitelist=['8pt','10pt','11pt','12pt','14pt','16pt','18pt','20pt','24pt','28pt','36pt','48pt','72pt'];
+ Quill.register(Size,true);
 
  quill=new Quill('#editor',{
   theme:'snow',
@@ -719,13 +719,11 @@ async function init(){
 
  try{
   db=await openDatabase();
-
-  await ensureDefaultFolder();
+  await ensureFolder();
   await migrateOldDocument();
   await refreshFolders();
 
   let docs=await getAll(DOC_STORE);
-
   if(!docs.length){
    await createDocument();
   }else{
@@ -734,7 +732,6 @@ async function init(){
   }
 
   quill.on('text-change',scheduleSave);
-
   $('docTitle').addEventListener('input',scheduleSave);
   $('folderSelect').addEventListener('change',scheduleSave);
 
@@ -754,7 +751,6 @@ async function init(){
   $('folderFilter').addEventListener('change',refreshLibrary);
 
   $('importBtn').addEventListener('click',()=>$('importFile').click());
-
   $('importFile').addEventListener('change',async e=>{
    await importBackup(e.target.files[0]);
    e.target.value='';
@@ -768,10 +764,11 @@ async function init(){
   });
 
   await refreshLibrary();
+  status('Ready');
 
  }catch(error){
   console.error(error);
-  setStatus('Library initialization failed: '+error.message,true);
+  status('Library error: '+error.message,true);
  }
 }
 
