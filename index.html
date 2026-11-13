@@ -1,59 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
-  <title>QUANTAM DOCS</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,sans-serif;background:#0b1120;color:#f1f5f9;min-height:100vh}
-    header{padding:22px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #263247}
-    .logo{font-size:25px;font-weight:800;letter-spacing:1px}
-    .logo span{color:#38bdf8}
-    main{max-width:1100px;margin:55px auto;padding:0 22px}
-    .hero{padding:35px 0}
-    h1{font-size:clamp(30px,5vw,48px);margin-bottom:15px}
-    .sub{color:#9caec5;line-height:1.7;margin-bottom:28px}
-    .btn{display:inline-block;background:#0284c7;color:white;padding:15px 24px;border:0;border-radius:9px;text-decoration:none;font-size:16px;font-weight:bold;cursor:pointer}
-    .btn:hover{background:#0369a1}
-    h2{font-size:22px;margin:35px 0 18px}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
-    .card{background:#151f32;border:1px solid #29364d;border-radius:12px;padding:22px}
-    .card h3{margin-bottom:9px}
-    .card p{font-size:14px;color:#9caec5;line-height:1.5}
-    footer{text-align:center;color:#718096;padding:35px 15px;font-size:13px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>QUANTAM DOCS</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#0b1120;
+ color:#f1f5f9;
+ min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.header{
+ height:72px;
+ padding:0 5%;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ border-bottom:1px solid #263247;
+ background:#101827;
+ position:sticky;
+ top:0;
+ z-index:10;
+}
+.logo{font-size:23px;font-weight:800;letter-spacing:1px}
+.logo span{color:#38bdf8}
+.header-right{display:flex;align-items:center;gap:12px}
+.header-label{color:#94a3b8;font-size:13px}
+.container{max-width:1250px;margin:auto;padding:35px 22px}
+.welcome{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:20px;
+ flex-wrap:wrap;
+ margin-bottom:35px;
+}
+.welcome h1{font-size:clamp(28px,5vw,42px);margin-bottom:10px}
+.welcome p{color:#94a3b8;line-height:1.6}
+.primary{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ background:#0284c7;
+ color:white;
+ border:0;
+ border-radius:9px;
+ padding:13px 19px;
+ text-decoration:none;
+ font-weight:bold;
+}
+.primary:hover{background:#0369a1}
+.section-title{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ margin:30px 0 17px;
+}
+.section-title h2{font-size:21px}
+.search{
+ width:100%;
+ max-width:310px;
+ background:#151f32;
+ border:1px solid #334155;
+ border-radius:8px;
+ color:white;
+ padding:11px 13px;
+ outline:none;
+}
+.search:focus{border-color:#38bdf8}
+.templates{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:15px;
+}
+.template{
+ background:#151f32;
+ border:1px solid #29364d;
+ border-radius:12px;
+ padding:20px;
+ min-height:145px;
+ text-align:left;
+ color:white;
+ transition:.2s;
+}
+.template:hover{
+ border-color:#38bdf8;
+ transform:translateY(-2px);
+}
+.template-icon{
+ font-size:27px;
+ margin-bottom:13px;
+}
+.template h3{font-size:16px;margin-bottom:8px}
+.template p{font-size:13px;color:#94a3b8;line-height:1.5}
+.recent-list{
+ display:flex;
+ flex-direction:column;
+ gap:9px;
+}
+.document{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ background:#151f32;
+ border:1px solid #29364d;
+ border-radius:10px;
+ padding:15px;
+ min-width:0;
+}
+.document-icon{
+ width:43px;
+ height:48px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:8px;
+ background:#1e3a5f;
+ font-size:21px;
+ flex-shrink:0;
+}
+.document-info{min-width:0;flex:1}
+.document-info h3{
+ font-size:15px;
+ overflow-wrap:anywhere;
+ margin-bottom:6px;
+}
+.document-info p{font-size:12px;color:#94a3b8}
+.document-action{
+ background:#1e293b;
+ border:1px solid #475569;
+ color:white;
+ border-radius:7px;
+ padding:9px 13px;
+ text-decoration:none;
+ font-size:13px;
+ white-space:nowrap;
+}
+.empty{
+ text-align:center;
+ padding:35px 15px;
+ color:#94a3b8;
+ background:#151f32;
+ border:1px dashed #334155;
+ border-radius:12px;
+ line-height:1.7;
+}
+.empty strong{display:block;color:white;margin-bottom:7px}
+.status{font-size:12px;color:#94a3b8;margin-top:12px}
+.footer{
+ text-align:center;
+ padding:35px 15px;
+ color:#64748b;
+ font-size:12px;
+}
+@media(max-width:700px){
+ .header{height:62px;padding:0 15px}
+ .logo{font-size:19px}
+ .header-label{display:none}
+ .container{padding:25px 14px}
+ .welcome{align-items:flex-start}
+ .welcome .primary{width:100%}
+ .templates{grid-template-columns:1fr}
+ .template{min-height:115px}
+ .section-title{align-items:flex-start;flex-direction:column}
+ .search{max-width:none}
+ .document{padding:11px;gap:9px}
+ .document-action{padding:8px;font-size:12px}
+ .document-icon{width:37px;height:43px}
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <div class="logo">QUANTAM <span>DOCS</span></div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <h1>Your Ideas.<br>Beautiful Documents.</h1>
-      <p class="sub">Create, edit and manage your documents with QUANTAM DOCS.</p>
-      <a class="btn" href="./editor.html">＋ Start New Document</a>
-    </section>
+<header class="header">
+ <div class="logo">QUANTAM <span>DOCS</span></div>
+ <div class="header-right">
+  <span class="header-label">Your Document Workspace</span>
+ </div>
+</header>
 
-    <h2>Create a Document</h2>
-    <section class="cards">
-      <div class="card">
-        <h3>Blank Document</h3>
-        <p>Start writing from scratch.</p>
-      </div>
-      <div class="card">
-        <h3>Notes</h3>
-        <p>Create and organize your notes.</p>
-      </div>
-      <div class="card">
-        <h3>Professional Writing</h3>
-        <p>Prepare reports and professional documents.</p>
-      </div>
-    </section>
-  </main>
+<main class="container">
 
-  <footer>© 2026 QUANTAM DOCS. All rights reserved.</footer>
+ <section class="welcome">
+  <div>
+   <h1>Good to see you.</h1>
+   <p>Create, edit and manage all your documents in one workspace.</p>
+  </div>
+  <a class="primary" href="./editor.html">＋ Open Document Editor</a>
+ </section>
+
+ <section>
+  <div class="section-title">
+   <h2>Create a Document</h2>
+  </div>
+
+  <div class="templates">
+
+   <button class="template" onclick="openEditor()">
+    <div class="template-icon">📄</div>
+    <h3>Blank Document</h3>
+    <p>Start writing a new document from scratch.</p>
+   </button>
+
+   <button class="template" onclick="openEditor()">
+    <div class="template-icon">📝</div>
+    <h3>Notes</h3>
+    <p>Write notes, ideas and important information.</p>
+   </button>
+
+   <button class="template" onclick="openEditor()">
+    <div class="template-icon">📑</div>
+    <h3>Professional Document</h3>
+    <p>Prepare reports and professional writing.</p>
+   </button>
+
+  </div>
+ </section>
+
+ <section>
+  <div class="section-title">
+   <h2>Recent Documents</h2>
+   <input
+    class="search"
+    id="search"
+    type="search"
+    placeholder="Search your documents..."
+    oninput="renderDocuments()"
+   >
+  </div>
+
+  <div class="recent-list" id="recentList">
+   <div class="empty">
+    Loading documents...
+   </div>
+  </div>
+
+  <div class="status" id="dbStatus">Connecting to document library...</div>
+ </section>
+
+</main>
+
+<footer class="footer">
+© 2026 QUANTAM DOCS · Your Documents, Your Workspace
+</footer>
+
+<script>
+'use strict';
+
+const DB_NAME='QUANTAM_DOCS_LIBRARY';
+const DB_VERSION=1;
+
+let documents=[];
+
+function openEditor(){
+ window.location.href='./editor.html';
+}
+
+function openDatabase(){
+ return new Promise((resolve,reject)=>{
+  const request=indexedDB.open(DB_NAME,DB_VERSION);
+
+  request.onsuccess=()=>{
+   const db=request.result;
+
+   if(!db.objectStoreNames.contains('documents')){
+    db.close();
+    reject(new Error('Document store not found'));
+    return;
+   }
+
+   resolve(db);
+  };
+
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+async function loadDocuments(){
+ const list=document.getElementById('recentList');
+ const status=document.getElementById('dbStatus');
+
+ try{
+  const db=await openDatabase();
+
+  const transaction=db.transaction('documents','readonly');
+  const request=transaction.objectStore('documents').getAll();
+
+  request.onsuccess=()=>{
+   documents=request.result||[];
+
+   documents.sort((a,b)=>
+    (b.updatedAt||'').localeCompare(a.updatedAt||'')
+   );
+
+   renderDocuments();
+
+   status.textContent=
+    documents.length+' document(s) in your library';
+
+   db.close();
+  };
+
+  request.onerror=()=>{
+   status.textContent='Could not read document library.';
+   db.close();
+  };
+
+ }catch(error){
+  list.innerHTML=`
+   <div class="empty">
+    <strong>Document Library Not Available</strong>
+    Open the editor once to initialize your document library.
+    <br><br>
+    <a class="primary" href="./editor.html">Open Editor</a>
+   </div>
+  `;
+  status.textContent='Library connection unavailable.';
+ }
+}
+
+function renderDocuments(){
+ const list=document.getElementById('recentList');
+ const query=document.getElementById('search').value
+  .trim().toLowerCase();
+
+ const filtered=documents.filter(doc=>
+  (doc.title||'Untitled document').toLowerCase().includes(query)
+ );
+
+ if(!filtered.length){
+  list.innerHTML=`
+   <div class="empty">
+    <strong>No documents found</strong>
+    Try another search or create a document.
+   </div>
+  `;
+  return;
+ }
+
+ list.innerHTML='';
+
+ filtered.slice(0,20).forEach(doc=>{
+  const item=document.createElement('div');
+  item.className='document';
+
+  const icon=document.createElement('div');
+  icon.className='document-icon';
+  icon.textContent='📄';
+
+  const info=document.createElement('div');
+  info.className='document-info';
+
+  const title=document.createElement('h3');
+  title.textContent=doc.title||'Untitled document';
+
+  const date=document.createElement('p');
+  date.textContent=doc.updatedAt
+   ? 'Modified: '+new Date(doc.updatedAt).toLocaleString()
+   : 'Saved document';
+
+  info.append(title,date);
+
+  const action=document.createElement('a');
+  action.className='document-action';
+  action.href='./editor.html';
+  action.textContent='Open Editor';
+  action.title='Open the document editor';
+
+  item.append(icon,info,action);
+  list.appendChild(item);
+ });
+}
+
+loadDocuments();
+</script>
+
 </body>
 </html>
