@@ -3,568 +3,467 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#24569a">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
 <title>QUANTAM DOCS</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 body{
- font-family:Arial,sans-serif;
- background:#fff;
- color:#202124;
- min-height:100vh;
- padding-bottom:75px;
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ background:#f4f6fb;
+ color:#172033;
 }
 button,input{font:inherit}
 button{cursor:pointer}
-
+.app{min-height:100vh}
 .header{
- height:72px;
- background:#24569a;
- color:#fff;
+ height:66px;
+ background:#111827;
+ color:white;
  display:flex;
  align-items:center;
  justify-content:space-between;
  padding:0 22px;
  position:sticky;
  top:0;
- z-index:20;
- box-shadow:0 2px 6px #0002;
+ z-index:10;
 }
-.brand-area{display:flex;align-items:center;gap:15px}
-.avatar{
- width:42px;height:42px;border-radius:50%;
- background:#dce8f8;color:#24569a;
- display:grid;place-items:center;
- font-weight:bold;font-size:15px;
+.logo{font-size:21px;font-weight:800;letter-spacing:.5px}
+.logo span{color:#60a5fa}
+.header-actions{display:flex;gap:10px;align-items:center}
+.new-btn{
+ border:0;
+ background:#2563eb;
+ color:white;
+ padding:11px 17px;
+ border-radius:9px;
+ font-weight:700;
 }
-.brand{font-size:21px;font-weight:700;letter-spacing:.3px}
-.header-actions{display:flex;align-items:center;gap:20px}
-.header-btn{
- border:0;background:transparent;color:white;
- font-size:25px;width:36px;height:42px;
- display:grid;place-items:center;
+.new-btn:hover{background:#1d4ed8}
+.layout{
+ display:grid;
+ grid-template-columns:235px minmax(0,1fr);
+ min-height:calc(100vh - 66px);
 }
-.header-btn:hover{background:#ffffff20;border-radius:8px}
-
-.container{
- max-width:1050px;
- margin:auto;
- padding:24px 22px;
+.sidebar{
+ background:white;
+ border-right:1px solid #e5e7eb;
+ padding:22px 14px;
 }
-.section-heading{
- font-size:19px;font-weight:700;
- margin:4px 0 22px;
-}
-.group-title{
- color:#555;
- font-size:16px;
- font-weight:600;
- margin:20px 0 12px;
-}
-.document-list{display:flex;flex-direction:column}
-.document{
- min-height:82px;
- display:flex;
- align-items:center;
- gap:16px;
- padding:12px 8px;
- border-bottom:1px solid #ededed;
-}
-.doc-icon{
- width:48px;height:48px;flex-shrink:0;
- display:grid;place-items:center;
-}
-.doc-icon svg{width:43px;height:43px}
-.doc-info{min-width:0;flex:1}
-.doc-title{
- font-size:16px;font-weight:600;
- overflow-wrap:anywhere;
- margin-bottom:6px;
-}
-.doc-location{font-size:13px;color:#777}
-.menu-wrap{position:relative}
-.menu-button{
- border:0;background:transparent;
- width:38px;height:42px;
- font-size:25px;color:#333;
- border-radius:8px;
-}
-.menu-button:hover{background:#f0f2f5}
-.menu{
- position:absolute;right:0;top:40px;
- width:160px;background:#fff;
- box-shadow:0 4px 18px #0002;
- border:1px solid #eee;border-radius:9px;
- z-index:15;padding:5px;
- display:none;
-}
-.menu.show{display:block}
-.menu button{
- display:block;width:100%;text-align:left;
- padding:11px 12px;border:0;
- background:white;border-radius:6px;
- font-size:14px;
-}
-.menu button:hover{background:#f0f4fa}
-.menu .delete{color:#c62828}
-
-.search-panel{
- display:none;
- padding:12px 0 18px;
-}
-.search-panel.show{display:block}
-.search-input{
- width:100%;height:45px;
- padding:0 14px;border:1px solid #c9d1dc;
- border-radius:8px;outline:none;
-}
-.search-input:focus{border-color:#24569a}
-
-.empty{
- text-align:center;
- padding:55px 15px;
- color:#777;
- line-height:1.7;
-}
-.empty strong{display:block;color:#333;font-size:17px;margin-bottom:8px}
-.empty button{
- background:#24569a;color:#fff;
- border:0;border-radius:7px;
- padding:11px 18px;margin-top:15px;
-}
-.status{
- color:#888;font-size:12px;
- padding:14px 8px;
-}
-.bottom-nav{
- position:fixed;bottom:0;left:0;right:0;
- height:72px;background:white;
- border-top:1px solid #e6e6e6;
- display:flex;align-items:center;
- justify-content:space-around;
- z-index:30;
+.nav-title{
+ font-size:11px;
+ color:#8a94a6;
+ font-weight:700;
+ padding:8px 12px;
+ letter-spacing:1px;
 }
 .nav-item{
- border:0;background:transparent;
- color:#666;min-width:85px;
- display:flex;flex-direction:column;
- align-items:center;justify-content:center;
- gap:4px;font-size:12px;
+ width:100%;
+ text-align:left;
+ border:0;
+ background:transparent;
+ padding:12px;
+ border-radius:8px;
+ margin:3px 0;
+ color:#475569;
+ font-weight:600;
 }
-.nav-icon{font-size:23px;line-height:25px}
-.nav-item.active{color:#24569a;font-weight:700}
-.nav-item.active .nav-icon{
- background:#e7effb;border-radius:22px;
- padding:1px 13px;
+.nav-item:hover,.nav-item.active{
+ background:#eff6ff;
+ color:#2563eb;
 }
+.main{padding:30px;min-width:0}
 .screen{display:none}
 .screen.active{display:block}
-
-@media(min-width:760px){
- .container{padding-top:35px}
- .document{padding:15px 12px}
- .doc-title{font-size:17px}
- .bottom-nav{
-  position:static;
-  max-width:1050px;
-  margin:20px auto 0;
-  border:1px solid #eee;
-  border-radius:12px;
-  height:68px;
- }
- body{padding-bottom:15px}
+.welcome{
+ background:linear-gradient(120deg,#172554,#2563eb);
+ color:white;
+ border-radius:16px;
+ padding:30px;
+ margin-bottom:26px;
 }
-@media(max-width:480px){
- .header{height:64px;padding:0 13px}
- .brand{font-size:18px}
- .avatar{width:37px;height:37px}
- .header-actions{gap:8px}
- .container{padding:20px 12px}
- .document{gap:10px;min-height:76px}
- .doc-title{font-size:14px}
- .doc-location{font-size:12px}
- .doc-icon{width:40px;height:44px}
- .doc-icon svg{width:37px;height:37px}
+.welcome h1{margin:0 0 10px;font-size:27px}
+.welcome p{margin:0;color:#dbeafe;line-height:1.6}
+.section-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin:25px 0 15px;
+}
+.section-head h2{font-size:19px;margin:0}
+.text-btn{
+ border:0;
+ background:transparent;
+ color:#2563eb;
+ font-weight:700;
+}
+.templates{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:15px;
+}
+.template{
+ text-align:left;
+ background:white;
+ border:1px solid #e5e7eb;
+ border-radius:12px;
+ padding:17px;
+ min-width:0;
+ transition:.15s;
+}
+.template:hover{
+ border-color:#60a5fa;
+ transform:translateY(-2px);
+ box-shadow:0 5px 18px #17203312;
+}
+.template-icon{
+ width:45px;height:52px;
+ display:grid;place-items:center;
+ background:#eff6ff;
+ color:#2563eb;
+ border-radius:8px;
+ font-size:23px;
+ margin-bottom:13px;
+}
+.template strong{display:block;margin-bottom:6px}
+.template small{color:#64748b;line-height:1.5}
+.search-wrap{display:flex;gap:9px;max-width:480px}
+.search-wrap input{
+ width:100%;
+ padding:12px 14px;
+ border:1px solid #dce2eb;
+ border-radius:9px;
+ outline:none;
+ background:white;
+}
+.search-wrap input:focus{border-color:#3b82f6}
+.document-list{
+ display:grid;
+ gap:10px;
+}
+.document{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ padding:15px;
+ background:white;
+ border:1px solid #e5e7eb;
+ border-radius:10px;
+}
+.document-info{min-width:0}
+.document-info strong{
+ display:block;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ white-space:nowrap;
+}
+.document-info small{color:#64748b}
+.open-doc{
+ border:0;
+ background:#eff6ff;
+ color:#2563eb;
+ padding:9px 13px;
+ border-radius:7px;
+ font-weight:700;
+ flex-shrink:0;
+}
+.empty{
+ text-align:center;
+ padding:35px 15px;
+ background:white;
+ border:1px dashed #cbd5e1;
+ border-radius:12px;
+ color:#64748b;
+}
+.status{font-size:13px;color:#64748b;margin-top:12px}
+@media(max-width:760px){
+ .layout{grid-template-columns:1fr}
+ .sidebar{
+  display:flex;
+  gap:5px;
+  overflow-x:auto;
+  padding:8px;
+  border-right:0;
+  border-bottom:1px solid #e5e7eb;
+ }
+ .nav-title{display:none}
+ .nav-item{white-space:nowrap;width:auto;margin:0}
+ .main{padding:17px}
+ .templates{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .welcome{padding:22px}
+ .welcome h1{font-size:23px}
+}
+@media(max-width:420px){
+ .templates{grid-template-columns:1fr 1fr;gap:9px}
+ .template{padding:12px}
+ .header{padding:0 13px}
+ .logo{font-size:18px}
+ .new-btn{padding:10px 12px}
+ .document{padding:12px}
 }
 </style>
 </head>
 
 <body>
+<div class="app">
 
 <header class="header">
- <div class="brand-area">
-  <div class="avatar">Q</div>
-  <div class="brand">QUANTAM DOCS</div>
- </div>
-
+ <div class="logo">QUANTAM <span>DOCS</span></div>
  <div class="header-actions">
-  <button class="header-btn" id="searchToggle" title="Search">⌕</button>
-  <button class="header-btn" id="newDocument" title="New Document">＋</button>
+  <button class="new-btn" id="newDocument">＋ New Document</button>
  </div>
 </header>
 
-<main class="container">
+<div class="layout">
 
- <section class="screen active" id="recentScreen">
-  <div class="section-heading">Recent</div>
+<aside class="sidebar">
+ <div class="nav-title">WORKSPACE</div>
+ <button class="nav-item active" data-screen="homeScreen">⌂ Home</button>
+ <button class="nav-item" data-screen="recentScreen">▤ Recent Documents</button>
+ <button class="nav-item" id="templatesNav">＋ Templates</button>
+</aside>
 
-  <div class="search-panel" id="searchPanel">
-   <input class="search-input" id="searchInput"
-    type="search" placeholder="Search documents...">
-  </div>
+<main class="main">
 
-  <div id="recentList">
-   <div class="empty">Loading documents...</div>
-  </div>
+<section class="screen active" id="homeScreen">
 
-  <div class="status" id="dbStatus">
-   Connecting to your document library...
-  </div>
- </section>
+ <div class="welcome">
+  <h1>Welcome to QUANTAM DOCS</h1>
+  <p>Create, edit and organize your documents in one place.</p>
+ </div>
 
- <section class="screen" id="sharedScreen">
-  <div class="section-heading">Shared</div>
-  <div class="empty">
-   <strong>No shared documents</strong>
-   Document sharing will be available in a future update.
-  </div>
- </section>
+ <div class="section-head">
+  <h2>Create a document</h2>
+ </div>
 
- <section class="screen" id="openScreen">
-  <div class="section-heading">Open Documents</div>
-  <div class="empty">
-   <strong>Open your document workspace</strong>
-   Continue editing your saved documents.
-   <br>
-   <button onclick="openEditor()">Open Editor</button>
-  </div>
- </section>
+ <div class="templates">
+  <button class="template" onclick="openNew()">
+   <div class="template-icon">＋</div>
+   <strong>Blank Document</strong>
+   <small>Start with a new empty document.</small>
+  </button>
+
+  <button class="template" onclick="openNew()">
+   <div class="template-icon">▤</div>
+   <strong>Notes</strong>
+   <small>Create notes and organize your ideas.</small>
+  </button>
+
+  <button class="template" onclick="openNew()">
+   <div class="template-icon">▧</div>
+   <strong>Professional Document</strong>
+   <small>Start a professional document.</small>
+  </button>
+ </div>
+
+ <div class="section-head">
+  <h2>Recent Documents</h2>
+  <button class="text-btn" onclick="showScreen('recentScreen')">View all</button>
+ </div>
+
+ <div id="homeDocuments" class="document-list">
+  <div class="empty">Loading documents...</div>
+ </div>
+
+</section>
+
+<section class="screen" id="recentScreen">
+ <div class="section-head">
+  <h2>Recent Documents</h2>
+  <button class="new-btn" onclick="openNew()">＋ New</button>
+ </div>
+
+ <div class="search-wrap">
+  <input id="searchInput" type="search" placeholder="Search your documents...">
+ </div>
+
+ <div style="height:15px"></div>
+ <div id="allDocuments" class="document-list">
+  <div class="empty">Loading documents...</div>
+ </div>
+</section>
 
 </main>
-
-<nav class="bottom-nav">
- <button class="nav-item active" data-screen="recentScreen">
-  <span class="nav-icon">◷</span>
-  <span>Recent</span>
- </button>
-
- <button class="nav-item" data-screen="sharedScreen">
-  <span class="nav-icon">♧</span>
-  <span>Shared</span>
- </button>
-
- <button class="nav-item" data-screen="openScreen">
-  <span class="nav-icon">▱</span>
-  <span>Open</span>
- </button>
-</nav>
+</div>
+</div>
 
 <script>
-'use strict';
+"use strict";
 
-const DB_NAME='QUANTAM_DOCS_LIBRARY';
-const DB_VERSION=1;
+const DB_NAME = "QUANTAM_DOCS_LIBRARY";
+const DB_VERSION = 1;
+const DOC_STORE = "documents";
 
-let documents=[];
-let db=null;
+const $ = id => document.getElementById(id);
 
-const $=id=>document.getElementById(id);
+let db = null;
+let documents = [];
 
-function openEditor(){
- window.location.href='./editor.html';
+function openNew(){
+ window.location.href = "./new.html";
+}
+
+function showScreen(id){
+ document.querySelectorAll(".screen").forEach(screen=>{
+  screen.classList.remove("active");
+ });
+
+ document.querySelectorAll(".nav-item").forEach(button=>{
+  button.classList.remove("active");
+ });
+
+ const screen = $(id);
+ if(screen) screen.classList.add("active");
+
+ const nav = document.querySelector(
+  '.nav-item[data-screen="' + id + '"]'
+ );
+ if(nav) nav.classList.add("active");
+
+ if(id === "recentScreen") renderDocuments();
+}
+
+function escapeHTML(value){
+ return String(value ?? "").replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ }[c]));
+}
+
+function openDocument(id){
+ window.location.href =
+  "./editor.html?doc=" + encodeURIComponent(id);
 }
 
 function openDatabase(){
  return new Promise((resolve,reject)=>{
-  const request=indexedDB.open(DB_NAME,DB_VERSION);
+  const request = indexedDB.open(DB_NAME,DB_VERSION);
 
-  request.onsuccess=()=>{
-   const database=request.result;
+  request.onupgradeneeded = event=>{
+   const database = event.target.result;
 
-   if(!database.objectStoreNames.contains('documents')){
-    database.close();
-    reject(new Error('Document store not found'));
-    return;
+   if(!database.objectStoreNames.contains(DOC_STORE)){
+    database.createObjectStore(DOC_STORE,{keyPath:"id"});
    }
-   resolve(database);
+
+   if(!database.objectStoreNames.contains("folders")){
+    database.createObjectStore("folders",{keyPath:"id"});
+   }
   };
 
-  request.onerror=()=>reject(request.error);
- }
-
- );
+  request.onsuccess = ()=>resolve(request.result);
+  request.onerror = ()=>reject(request.error);
+ });
 }
 
-function documentIcon(){
- return `
- <svg viewBox="0 0 48 48" fill="none">
-  <rect x="5" y="5" width="35" height="38" rx="5"
-   fill="#e5f0ff" stroke="#8aa8d5" stroke-width="1.5"/>
-  <path d="M12 5V43" stroke="#24569a" stroke-width="3"/>
-  <path d="M18 16H33M18 22H33M18 28H30"
-   stroke="#6b8ebd" stroke-width="2" stroke-linecap="round"/>
-  <rect x="2" y="31" width="22" height="13" rx="3" fill="#24569a"/>
-  <text x="13" y="41" font-size="10" font-weight="bold"
-   text-anchor="middle" fill="white">Q</text>
- </svg>`;
+function getAllDocuments(){
+ return new Promise((resolve,reject)=>{
+  const transaction = db.transaction(DOC_STORE,"readonly");
+  const request = transaction.objectStore(DOC_STORE).getAll();
+
+  request.onsuccess = ()=>resolve(request.result || []);
+  request.onerror = ()=>reject(request.error);
+ });
 }
 
 function formatDate(value){
- if(!value)return 'This device';
- const date=new Date(value);
- if(Number.isNaN(date.getTime()))return 'This device';
+ if(!value) return "Recently edited";
 
- return 'This device · '+date.toLocaleDateString();
+ const date = new Date(value);
+ if(Number.isNaN(date.getTime())) return "Recently edited";
+
+ return date.toLocaleDateString(undefined,{
+  day:"numeric",
+  month:"short",
+  year:"numeric"
+ });
 }
 
-function isThisWeek(value){
- if(!value)return false;
- const date=new Date(value);
- if(Number.isNaN(date.getTime()))return false;
+function documentCard(doc){
+ const title = escapeHTML(doc.title || "Untitled document");
 
- const now=new Date();
- const start=new Date(now);
- start.setDate(now.getDate()-6);
- start.setHours(0,0,0,0);
-
- return date>=start && date<=now;
-}
-
-function createMenu(doc){
- const wrap=document.createElement('div');
- wrap.className='menu-wrap';
-
- const button=document.createElement('button');
- button.className='menu-button';
- button.textContent='⋮';
- button.setAttribute('aria-label','Document options');
-
- const menu=document.createElement('div');
- menu.className='menu';
-
- const open=document.createElement('button');
- open.textContent='Open';
- open.onclick=()=>openDocument(doc.id);
-
- const rename=document.createElement('button');
- rename.textContent='Rename';
- rename.onclick=()=>renameDocument(doc.id);
-
- const remove=document.createElement('button');
- remove.textContent='Delete';
- remove.className='delete';
- remove.onclick=()=>deleteDocument(doc.id);
-
- menu.append(open,rename,remove);
- button.onclick=(event)=>{
-  event.stopPropagation();
-  document.querySelectorAll('.menu.show').forEach(m=>{
-   if(m!==menu)m.classList.remove('show');
-  });
-  menu.classList.toggle('show');
- };
-
- wrap.append(button,menu);
- return wrap;
-}
-
-function makeDocumentRow(doc){
- const row=document.createElement('div');
- row.className='document';
-
- const icon=document.createElement('div');
- icon.className='doc-icon';
- icon.innerHTML=documentIcon();
-
- const info=document.createElement('div');
- info.className='doc-info';
-
- const title=document.createElement('div');
- title.className='doc-title';
- title.textContent=doc.title||'Untitled document';
-
- const location=document.createElement('div');
- location.className='doc-location';
- location.textContent=formatDate(doc.updatedAt);
-
- info.append(title,location);
-
- row.append(icon,info,createMenu(doc));
- return row;
+ return `
+  <article class="document">
+   <div class="document-info">
+    <strong>${title}</strong>
+    <small>Edited: ${formatDate(doc.updatedAt)}</small>
+   </div>
+   <button class="open-doc"
+    data-open-doc="${escapeHTML(doc.id)}">Open</button>
+  </article>
+ `;
 }
 
 function renderDocuments(){
- const list=$('recentList');
- const query=$('searchInput').value.trim().toLowerCase();
+ const query = ($("searchInput")?.value || "").trim().toLowerCase();
 
- const filtered=documents.filter(doc=>
-  (doc.title||'Untitled document').toLowerCase().includes(query)
+ const sorted = [...documents].sort((a,b)=>
+  String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""))
  );
 
- list.innerHTML='';
+ const filtered = sorted.filter(doc=>
+  String(doc.title || "Untitled document").toLowerCase().includes(query)
+ );
 
- if(!filtered.length){
-  list.innerHTML=`
-   <div class="empty">
-    <strong>No documents found</strong>
-    Try another search or create a document.
-    <br>
-    <button onclick="openEditor()">Open Editor</button>
-   </div>`;
-  return;
- }
+ $("homeDocuments").innerHTML = sorted.length
+  ? sorted.slice(0,5).map(documentCard).join("")
+  : '<div class="empty">No documents yet. Click ＋ New Document to start.</div>';
 
- const thisWeek=filtered.filter(d=>isThisWeek(d.updatedAt));
- const older=filtered.filter(d=>!isThisWeek(d.updatedAt));
-
- function addGroup(label,items){
-  if(!items.length)return;
-
-  const heading=document.createElement('div');
-  heading.className='group-title';
-  heading.textContent=label;
-  list.appendChild(heading);
-
-  const group=document.createElement('div');
-  group.className='document-list';
-
-  items.forEach(doc=>group.appendChild(makeDocumentRow(doc)));
-  list.appendChild(group);
- }
-
- addGroup('This Week',thisWeek);
- addGroup('Older',older);
+ $("allDocuments").innerHTML = filtered.length
+  ? filtered.map(documentCard).join("")
+  : '<div class="empty">No matching documents found.</div>';
 }
 
 async function loadDocuments(){
  try{
-  db=await openDatabase();
+  if(!window.indexedDB){
+   throw new Error("IndexedDB is not supported in this browser.");
+  }
 
-  const transaction=db.transaction('documents','readonly');
-  const request=transaction.objectStore('documents').getAll();
-
-  request.onsuccess=()=>{
-   documents=request.result||[];
-
-   documents.sort((a,b)=>
-    (b.updatedAt||'').localeCompare(a.updatedAt||'')
-   );
-
-   renderDocuments();
-
-   $('dbStatus').textContent=
-    documents.length+' document(s) in your library';
-  };
-
-  request.onerror=()=>{
-   $('dbStatus').textContent='Could not read document library.';
-  };
-
- }catch(error){
-  $('recentList').innerHTML=`
-   <div class="empty">
-    <strong>Document Library Not Available</strong>
-    Open the editor once to initialize your document library.
-    <br>
-    <button onclick="openEditor()">Open Editor</button>
-   </div>`;
-  $('dbStatus').textContent='Library connection unavailable.';
- }
-}
-
-async function renameDocument(id){
- const doc=documents.find(d=>d.id===id);
- if(!doc)return;
-
- const name=prompt('Enter document name:',doc.title||'Untitled document');
- if(name===null)return;
-
- const clean=name.trim().slice(0,100);
- if(!clean){
-  alert('Document name cannot be empty.');
-  return;
- }
-
- try{
-  const transaction=db.transaction('documents','readwrite');
-  const store=transaction.objectStore('documents');
-
-  doc.title=clean;
-  doc.updatedAt=new Date().toISOString();
-  store.put(doc);
-
-  transaction.oncomplete=()=>{
-   loadDocuments();
-  };
-  transaction.onerror=()=>{
-   alert('Could not rename document.');
-  };
- }catch(error){
-  alert('Rename failed: '+error.message);
- }
-}
-
-async function deleteDocument(id){
- const doc=documents.find(d=>d.id===id);
- if(!doc)return;
-
- if(!confirm('Delete "'+(doc.title||'Untitled document')+'"? This cannot be undone.'))return;
-
- try{
-  const transaction=db.transaction('documents','readwrite');
-  transaction.objectStore('documents').delete(id);
-
-  transaction.oncomplete=()=>{
-   loadDocuments();
-  };
-  transaction.onerror=()=>{
-   alert('Could not delete document.');
-  };
- }catch(error){
-  alert('Delete failed: '+error.message);
- }
-}
-
-function openDocument(id){
- window.location.href='./editor.html?doc='+encodeURIComponent(id);
-}
-
-$('searchToggle').addEventListener('click',()=>{
- $('searchPanel').classList.toggle('show');
-
- if($('searchPanel').classList.contains('show')){
-  $('searchInput').focus();
- }else{
-  $('searchInput').value='';
+  db = await openDatabase();
+  documents = await getAllDocuments();
   renderDocuments();
+
+ }catch(error){
+  console.error(error);
+
+  $("homeDocuments").innerHTML =
+   '<div class="empty">Could not load documents. ' +
+   escapeHTML(error.message) + '</div>';
+
+  $("allDocuments").innerHTML =
+   '<div class="empty">Could not load documents. ' +
+   escapeHTML(error.message) + '</div>';
  }
-});
+}
 
-$('searchInput').addEventListener('input',renderDocuments);
-$('newDocument').addEventListener('click',()=>{
- window.location.href='./new.html';
-});
- 
-document.querySelectorAll('.nav-item').forEach(button=>{
- button.addEventListener('click',()=>{
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+$("newDocument").addEventListener("click",openNew);
 
-  button.classList.add('active');
-  $(button.dataset.screen).classList.add('active');
+$("templatesNav").addEventListener("click",openNew);
+
+document.querySelectorAll(".nav-item[data-screen]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  showScreen(button.dataset.screen);
  });
 });
 
-document.addEventListener('click',event=>{
- if(!event.target.closest('.menu-wrap')){
-  document.querySelectorAll('.menu.show').forEach(m=>m.classList.remove('show'));
- }
+$("searchInput").addEventListener("input",renderDocuments);
+
+document.addEventListener("click",event=>{
+ const button = event.target.closest("[data-open-doc]");
+ if(!button) return;
+
+ openDocument(button.dataset.openDoc);
 });
 
 loadDocuments();
 </script>
-
 </body>
 </html>
