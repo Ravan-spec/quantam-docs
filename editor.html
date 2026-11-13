@@ -839,9 +839,25 @@ async function init(){
    await createDocument();
   }
   
-window.QUANTAM_IMAGE_MANAGER.create(quill, scheduleSave);
-  window.QUANTAM_DOCUMENT_TOOLS.create(quill, scheduleSave);
-window.QUANTAM_PAGE_LAYOUT.create();
+
+if(window.QUANTAM_IMAGE_MANAGER){
+ window.QUANTAM_IMAGE_MANAGER.create(quill,scheduleSave);
+}else{
+ console.warn('Image Manager JS not loaded');
+}
+
+if(window.QUANTAM_DOCUMENT_TOOLS){
+ window.QUANTAM_DOCUMENT_TOOLS.create(quill,scheduleSave);
+}else{
+ console.warn('Document Tools JS not loaded');
+}
+
+if(window.QUANTAM_PAGE_LAYOUT){
+ window.QUANTAM_PAGE_LAYOUT.create();
+}else{
+ console.warn('Page Layout JS not loaded');
+}
+  
   
   quill.on('text-change',scheduleSave);
   $('docTitle').addEventListener('input',scheduleSave);
