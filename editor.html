@@ -825,12 +825,18 @@ async function init(){
   await migrateOldDocument();
   await refreshFolders();
 
-  let docs=await getAll(DOC_STORE);
-  if(!docs.length){
-   await createDocument();
-  }else{
+    let docs=await getAll(DOC_STORE);
+
+  const requestedId=new URLSearchParams(window.location.search).get('doc');
+  const requestedDoc=docs.find(doc=>doc.id===requestedId);
+
+  if(requestedDoc){
+   await openDocument(requestedDoc.id);
+  }else if(docs.length){
    docs.sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
    await openDocument(docs[0].id);
+  }else{
+   await createDocument();
   }
   
 window.QUANTAM_IMAGE_MANAGER.create(quill, scheduleSave);
