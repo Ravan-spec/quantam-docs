@@ -372,7 +372,7 @@ function renderDocuments(){
 
   const action=document.createElement('a');
   action.className='document-action';
-  action.href='./editor.html';
+  action.href='./editor.html?doc='+encodeURIComponent(doc.id);
   action.textContent='Open Editor';
   action.title='Open the document editor';
 
