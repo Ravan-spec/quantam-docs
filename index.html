@@ -1,180 +1,192 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101827">
+<meta name="theme-color" content="#24569a">
 <title>QUANTAM DOCS</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{
  font-family:Arial,sans-serif;
- background:#0b1120;
- color:#f1f5f9;
+ background:#fff;
+ color:#202124;
  min-height:100vh;
+ padding-bottom:75px;
 }
 button,input{font:inherit}
 button{cursor:pointer}
+
 .header{
  height:72px;
- padding:0 5%;
+ background:#24569a;
+ color:#fff;
  display:flex;
  align-items:center;
  justify-content:space-between;
- border-bottom:1px solid #263247;
- background:#101827;
+ padding:0 22px;
  position:sticky;
  top:0;
- z-index:10;
+ z-index:20;
+ box-shadow:0 2px 6px #0002;
 }
-.logo{font-size:23px;font-weight:800;letter-spacing:1px}
-.logo span{color:#38bdf8}
-.header-right{display:flex;align-items:center;gap:12px}
-.header-label{color:#94a3b8;font-size:13px}
-.container{max-width:1250px;margin:auto;padding:35px 22px}
-.welcome{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:20px;
- flex-wrap:wrap;
- margin-bottom:35px;
+.brand-area{display:flex;align-items:center;gap:15px}
+.avatar{
+ width:42px;height:42px;border-radius:50%;
+ background:#dce8f8;color:#24569a;
+ display:grid;place-items:center;
+ font-weight:bold;font-size:15px;
 }
-.welcome h1{font-size:clamp(28px,5vw,42px);margin-bottom:10px}
-.welcome p{color:#94a3b8;line-height:1.6}
-.primary{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- gap:8px;
- background:#0284c7;
- color:white;
- border:0;
- border-radius:9px;
- padding:13px 19px;
- text-decoration:none;
- font-weight:bold;
+.brand{font-size:21px;font-weight:700;letter-spacing:.3px}
+.header-actions{display:flex;align-items:center;gap:20px}
+.header-btn{
+ border:0;background:transparent;color:white;
+ font-size:25px;width:36px;height:42px;
+ display:grid;place-items:center;
 }
-.primary:hover{background:#0369a1}
-.section-title{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:12px;
- margin:30px 0 17px;
+.header-btn:hover{background:#ffffff20;border-radius:8px}
+
+.container{
+ max-width:1050px;
+ margin:auto;
+ padding:24px 22px;
 }
-.section-title h2{font-size:21px}
-.search{
- width:100%;
- max-width:310px;
- background:#151f32;
- border:1px solid #334155;
- border-radius:8px;
- color:white;
- padding:11px 13px;
- outline:none;
+.section-heading{
+ font-size:19px;font-weight:700;
+ margin:4px 0 22px;
 }
-.search:focus{border-color:#38bdf8}
-.templates{
- display:grid;
- grid-template-columns:repeat(3,minmax(0,1fr));
- gap:15px;
+.group-title{
+ color:#555;
+ font-size:16px;
+ font-weight:600;
+ margin:20px 0 12px;
 }
-.template{
- background:#151f32;
- border:1px solid #29364d;
- border-radius:12px;
- padding:20px;
- min-height:145px;
- text-align:left;
- color:white;
- transition:.2s;
-}
-.template:hover{
- border-color:#38bdf8;
- transform:translateY(-2px);
-}
-.template-icon{
- font-size:27px;
- margin-bottom:13px;
-}
-.template h3{font-size:16px;margin-bottom:8px}
-.template p{font-size:13px;color:#94a3b8;line-height:1.5}
-.recent-list{
- display:flex;
- flex-direction:column;
- gap:9px;
-}
+.document-list{display:flex;flex-direction:column}
 .document{
+ min-height:82px;
  display:flex;
  align-items:center;
- gap:14px;
- background:#151f32;
- border:1px solid #29364d;
- border-radius:10px;
- padding:15px;
- min-width:0;
+ gap:16px;
+ padding:12px 8px;
+ border-bottom:1px solid #ededed;
 }
-.document-icon{
- width:43px;
- height:48px;
- display:flex;
- align-items:center;
- justify-content:center;
- border-radius:8px;
- background:#1e3a5f;
- font-size:21px;
- flex-shrink:0;
+.doc-icon{
+ width:48px;height:48px;flex-shrink:0;
+ display:grid;place-items:center;
 }
-.document-info{min-width:0;flex:1}
-.document-info h3{
- font-size:15px;
+.doc-icon svg{width:43px;height:43px}
+.doc-info{min-width:0;flex:1}
+.doc-title{
+ font-size:16px;font-weight:600;
  overflow-wrap:anywhere;
  margin-bottom:6px;
 }
-.document-info p{font-size:12px;color:#94a3b8}
-.document-action{
- background:#1e293b;
- border:1px solid #475569;
- color:white;
- border-radius:7px;
- padding:9px 13px;
- text-decoration:none;
- font-size:13px;
- white-space:nowrap;
+.doc-location{font-size:13px;color:#777}
+.menu-wrap{position:relative}
+.menu-button{
+ border:0;background:transparent;
+ width:38px;height:42px;
+ font-size:25px;color:#333;
+ border-radius:8px;
 }
+.menu-button:hover{background:#f0f2f5}
+.menu{
+ position:absolute;right:0;top:40px;
+ width:160px;background:#fff;
+ box-shadow:0 4px 18px #0002;
+ border:1px solid #eee;border-radius:9px;
+ z-index:15;padding:5px;
+ display:none;
+}
+.menu.show{display:block}
+.menu button{
+ display:block;width:100%;text-align:left;
+ padding:11px 12px;border:0;
+ background:white;border-radius:6px;
+ font-size:14px;
+}
+.menu button:hover{background:#f0f4fa}
+.menu .delete{color:#c62828}
+
+.search-panel{
+ display:none;
+ padding:12px 0 18px;
+}
+.search-panel.show{display:block}
+.search-input{
+ width:100%;height:45px;
+ padding:0 14px;border:1px solid #c9d1dc;
+ border-radius:8px;outline:none;
+}
+.search-input:focus{border-color:#24569a}
+
 .empty{
  text-align:center;
- padding:35px 15px;
- color:#94a3b8;
- background:#151f32;
- border:1px dashed #334155;
- border-radius:12px;
+ padding:55px 15px;
+ color:#777;
  line-height:1.7;
 }
-.empty strong{display:block;color:white;margin-bottom:7px}
-.status{font-size:12px;color:#94a3b8;margin-top:12px}
-.footer{
- text-align:center;
- padding:35px 15px;
- color:#64748b;
- font-size:12px;
+.empty strong{display:block;color:#333;font-size:17px;margin-bottom:8px}
+.empty button{
+ background:#24569a;color:#fff;
+ border:0;border-radius:7px;
+ padding:11px 18px;margin-top:15px;
 }
-@media(max-width:700px){
- .header{height:62px;padding:0 15px}
- .logo{font-size:19px}
- .header-label{display:none}
- .container{padding:25px 14px}
- .welcome{align-items:flex-start}
- .welcome .primary{width:100%}
- .templates{grid-template-columns:1fr}
- .template{min-height:115px}
- .section-title{align-items:flex-start;flex-direction:column}
- .search{max-width:none}
- .document{padding:11px;gap:9px}
- .document-action{padding:8px;font-size:12px}
- .document-icon{width:37px;height:43px}
+.status{
+ color:#888;font-size:12px;
+ padding:14px 8px;
+}
+.bottom-nav{
+ position:fixed;bottom:0;left:0;right:0;
+ height:72px;background:white;
+ border-top:1px solid #e6e6e6;
+ display:flex;align-items:center;
+ justify-content:space-around;
+ z-index:30;
+}
+.nav-item{
+ border:0;background:transparent;
+ color:#666;min-width:85px;
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center;
+ gap:4px;font-size:12px;
+}
+.nav-icon{font-size:23px;line-height:25px}
+.nav-item.active{color:#24569a;font-weight:700}
+.nav-item.active .nav-icon{
+ background:#e7effb;border-radius:22px;
+ padding:1px 13px;
+}
+.screen{display:none}
+.screen.active{display:block}
+
+@media(min-width:760px){
+ .container{padding-top:35px}
+ .document{padding:15px 12px}
+ .doc-title{font-size:17px}
+ .bottom-nav{
+  position:static;
+  max-width:1050px;
+  margin:20px auto 0;
+  border:1px solid #eee;
+  border-radius:12px;
+  height:68px;
+ }
+ body{padding-bottom:15px}
+}
+@media(max-width:480px){
+ .header{height:64px;padding:0 13px}
+ .brand{font-size:18px}
+ .avatar{width:37px;height:37px}
+ .header-actions{gap:8px}
+ .container{padding:20px 12px}
+ .document{gap:10px;min-height:76px}
+ .doc-title{font-size:14px}
+ .doc-location{font-size:12px}
+ .doc-icon{width:40px;height:44px}
+ .doc-icon svg{width:37px;height:37px}
 }
 </style>
 </head>
@@ -182,76 +194,72 @@ button{cursor:pointer}
 <body>
 
 <header class="header">
- <div class="logo">QUANTAM <span>DOCS</span></div>
- <div class="header-right">
-  <span class="header-label">Your Document Workspace</span>
+ <div class="brand-area">
+  <div class="avatar">Q</div>
+  <div class="brand">QUANTAM DOCS</div>
+ </div>
+
+ <div class="header-actions">
+  <button class="header-btn" id="searchToggle" title="Search">⌕</button>
+  <button class="header-btn" id="newDocument" title="New Document">＋</button>
  </div>
 </header>
 
 <main class="container">
 
- <section class="welcome">
-  <div>
-   <h1>Good to see you.</h1>
-   <p>Create, edit and manage all your documents in one workspace.</p>
-  </div>
-  <a class="primary" href="./editor.html">＋ Open Document Editor</a>
- </section>
+ <section class="screen active" id="recentScreen">
+  <div class="section-heading">Recent</div>
 
- <section>
-  <div class="section-title">
-   <h2>Create a Document</h2>
+  <div class="search-panel" id="searchPanel">
+   <input class="search-input" id="searchInput"
+    type="search" placeholder="Search documents...">
   </div>
 
-  <div class="templates">
+  <div id="recentList">
+   <div class="empty">Loading documents...</div>
+  </div>
 
-   <button class="template" onclick="openEditor()">
-    <div class="template-icon">📄</div>
-    <h3>Blank Document</h3>
-    <p>Start writing a new document from scratch.</p>
-   </button>
-
-   <button class="template" onclick="openEditor()">
-    <div class="template-icon">📝</div>
-    <h3>Notes</h3>
-    <p>Write notes, ideas and important information.</p>
-   </button>
-
-   <button class="template" onclick="openEditor()">
-    <div class="template-icon">📑</div>
-    <h3>Professional Document</h3>
-    <p>Prepare reports and professional writing.</p>
-   </button>
-
+  <div class="status" id="dbStatus">
+   Connecting to your document library...
   </div>
  </section>
 
- <section>
-  <div class="section-title">
-   <h2>Recent Documents</h2>
-   <input
-    class="search"
-    id="search"
-    type="search"
-    placeholder="Search your documents..."
-    oninput="renderDocuments()"
-   >
+ <section class="screen" id="sharedScreen">
+  <div class="section-heading">Shared</div>
+  <div class="empty">
+   <strong>No shared documents</strong>
+   Document sharing will be available in a future update.
   </div>
+ </section>
 
-  <div class="recent-list" id="recentList">
-   <div class="empty">
-    Loading documents...
-   </div>
+ <section class="screen" id="openScreen">
+  <div class="section-heading">Open Documents</div>
+  <div class="empty">
+   <strong>Open your document workspace</strong>
+   Continue editing your saved documents.
+   <br>
+   <button onclick="openEditor()">Open Editor</button>
   </div>
-
-  <div class="status" id="dbStatus">Connecting to document library...</div>
  </section>
 
 </main>
 
-<footer class="footer">
-© 2026 QUANTAM DOCS · Your Documents, Your Workspace
-</footer>
+<nav class="bottom-nav">
+ <button class="nav-item active" data-screen="recentScreen">
+  <span class="nav-icon">◷</span>
+  <span>Recent</span>
+ </button>
+
+ <button class="nav-item" data-screen="sharedScreen">
+  <span class="nav-icon">♧</span>
+  <span>Shared</span>
+ </button>
+
+ <button class="nav-item" data-screen="openScreen">
+  <span class="nav-icon">▱</span>
+  <span>Open</span>
+ </button>
+</nav>
 
 <script>
 'use strict';
@@ -260,6 +268,9 @@ const DB_NAME='QUANTAM_DOCS_LIBRARY';
 const DB_VERSION=1;
 
 let documents=[];
+let db=null;
+
+const $=id=>document.getElementById(id);
 
 function openEditor(){
  window.location.href='./editor.html';
@@ -270,27 +281,166 @@ function openDatabase(){
   const request=indexedDB.open(DB_NAME,DB_VERSION);
 
   request.onsuccess=()=>{
-   const db=request.result;
+   const database=request.result;
 
-   if(!db.objectStoreNames.contains('documents')){
-    db.close();
+   if(!database.objectStoreNames.contains('documents')){
+    database.close();
     reject(new Error('Document store not found'));
     return;
    }
-
-   resolve(db);
+   resolve(database);
   };
 
   request.onerror=()=>reject(request.error);
- });
+ }
+
+ );
+}
+
+function documentIcon(){
+ return `
+ <svg viewBox="0 0 48 48" fill="none">
+  <rect x="5" y="5" width="35" height="38" rx="5"
+   fill="#e5f0ff" stroke="#8aa8d5" stroke-width="1.5"/>
+  <path d="M12 5V43" stroke="#24569a" stroke-width="3"/>
+  <path d="M18 16H33M18 22H33M18 28H30"
+   stroke="#6b8ebd" stroke-width="2" stroke-linecap="round"/>
+  <rect x="2" y="31" width="22" height="13" rx="3" fill="#24569a"/>
+  <text x="13" y="41" font-size="10" font-weight="bold"
+   text-anchor="middle" fill="white">Q</text>
+ </svg>`;
+}
+
+function formatDate(value){
+ if(!value)return 'This device';
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime()))return 'This device';
+
+ return 'This device · '+date.toLocaleDateString();
+}
+
+function isThisWeek(value){
+ if(!value)return false;
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime()))return false;
+
+ const now=new Date();
+ const start=new Date(now);
+ start.setDate(now.getDate()-6);
+ start.setHours(0,0,0,0);
+
+ return date>=start && date<=now;
+}
+
+function createMenu(doc){
+ const wrap=document.createElement('div');
+ wrap.className='menu-wrap';
+
+ const button=document.createElement('button');
+ button.className='menu-button';
+ button.textContent='⋮';
+ button.setAttribute('aria-label','Document options');
+
+ const menu=document.createElement('div');
+ menu.className='menu';
+
+ const open=document.createElement('button');
+ open.textContent='Open';
+ open.onclick=()=>openDocument(doc.id);
+
+ const rename=document.createElement('button');
+ rename.textContent='Rename';
+ rename.onclick=()=>renameDocument(doc.id);
+
+ const remove=document.createElement('button');
+ remove.textContent='Delete';
+ remove.className='delete';
+ remove.onclick=()=>deleteDocument(doc.id);
+
+ menu.append(open,rename,remove);
+ button.onclick=(event)=>{
+  event.stopPropagation();
+  document.querySelectorAll('.menu.show').forEach(m=>{
+   if(m!==menu)m.classList.remove('show');
+  });
+  menu.classList.toggle('show');
+ };
+
+ wrap.append(button,menu);
+ return wrap;
+}
+
+function makeDocumentRow(doc){
+ const row=document.createElement('div');
+ row.className='document';
+
+ const icon=document.createElement('div');
+ icon.className='doc-icon';
+ icon.innerHTML=documentIcon();
+
+ const info=document.createElement('div');
+ info.className='doc-info';
+
+ const title=document.createElement('div');
+ title.className='doc-title';
+ title.textContent=doc.title||'Untitled document';
+
+ const location=document.createElement('div');
+ location.className='doc-location';
+ location.textContent=formatDate(doc.updatedAt);
+
+ info.append(title,location);
+
+ row.append(icon,info,createMenu(doc));
+ return row;
+}
+
+function renderDocuments(){
+ const list=$('recentList');
+ const query=$('searchInput').value.trim().toLowerCase();
+
+ const filtered=documents.filter(doc=>
+  (doc.title||'Untitled document').toLowerCase().includes(query)
+ );
+
+ list.innerHTML='';
+
+ if(!filtered.length){
+  list.innerHTML=`
+   <div class="empty">
+    <strong>No documents found</strong>
+    Try another search or create a document.
+    <br>
+    <button onclick="openEditor()">Open Editor</button>
+   </div>`;
+  return;
+ }
+
+ const thisWeek=filtered.filter(d=>isThisWeek(d.updatedAt));
+ const older=filtered.filter(d=>!isThisWeek(d.updatedAt));
+
+ function addGroup(label,items){
+  if(!items.length)return;
+
+  const heading=document.createElement('div');
+  heading.className='group-title';
+  heading.textContent=label;
+  list.appendChild(heading);
+
+  const group=document.createElement('div');
+  group.className='document-list';
+
+  items.forEach(doc=>group.appendChild(makeDocumentRow(doc)));
+  list.appendChild(group);
+ }
+
+ addGroup('This Week',thisWeek);
+ addGroup('Older',older);
 }
 
 async function loadDocuments(){
- const list=document.getElementById('recentList');
- const status=document.getElementById('dbStatus');
-
  try{
-  const db=await openDatabase();
+  db=await openDatabase();
 
   const transaction=db.transaction('documents','readonly');
   const request=transaction.objectStore('documents').getAll();
@@ -304,82 +454,112 @@ async function loadDocuments(){
 
    renderDocuments();
 
-   status.textContent=
+   $('dbStatus').textContent=
     documents.length+' document(s) in your library';
-
-   db.close();
   };
 
   request.onerror=()=>{
-   status.textContent='Could not read document library.';
-   db.close();
+   $('dbStatus').textContent='Could not read document library.';
   };
 
  }catch(error){
-  list.innerHTML=`
+  $('recentList').innerHTML=`
    <div class="empty">
     <strong>Document Library Not Available</strong>
     Open the editor once to initialize your document library.
-    <br><br>
-    <a class="primary" href="./editor.html">Open Editor</a>
-   </div>
-  `;
-  status.textContent='Library connection unavailable.';
+    <br>
+    <button onclick="openEditor()">Open Editor</button>
+   </div>`;
+  $('dbStatus').textContent='Library connection unavailable.';
  }
 }
 
-function renderDocuments(){
- const list=document.getElementById('recentList');
- const query=document.getElementById('search').value
-  .trim().toLowerCase();
+async function renameDocument(id){
+ const doc=documents.find(d=>d.id===id);
+ if(!doc)return;
 
- const filtered=documents.filter(doc=>
-  (doc.title||'Untitled document').toLowerCase().includes(query)
- );
+ const name=prompt('Enter document name:',doc.title||'Untitled document');
+ if(name===null)return;
 
- if(!filtered.length){
-  list.innerHTML=`
-   <div class="empty">
-    <strong>No documents found</strong>
-    Try another search or create a document.
-   </div>
-  `;
+ const clean=name.trim().slice(0,100);
+ if(!clean){
+  alert('Document name cannot be empty.');
   return;
  }
 
- list.innerHTML='';
+ try{
+  const transaction=db.transaction('documents','readwrite');
+  const store=transaction.objectStore('documents');
 
- filtered.slice(0,20).forEach(doc=>{
-  const item=document.createElement('div');
-  item.className='document';
+  doc.title=clean;
+  doc.updatedAt=new Date().toISOString();
+  store.put(doc);
 
-  const icon=document.createElement('div');
-  icon.className='document-icon';
-  icon.textContent='📄';
-
-  const info=document.createElement('div');
-  info.className='document-info';
-
-  const title=document.createElement('h3');
-  title.textContent=doc.title||'Untitled document';
-
-  const date=document.createElement('p');
-  date.textContent=doc.updatedAt
-   ? 'Modified: '+new Date(doc.updatedAt).toLocaleString()
-   : 'Saved document';
-
-  info.append(title,date);
-
-  const action=document.createElement('a');
-  action.className='document-action';
-  action.href='./editor.html?doc='+encodeURIComponent(doc.id);
-  action.textContent='Open Editor';
-  action.title='Open the document editor';
-
-  item.append(icon,info,action);
-  list.appendChild(item);
- });
+  transaction.oncomplete=()=>{
+   loadDocuments();
+  };
+  transaction.onerror=()=>{
+   alert('Could not rename document.');
+  };
+ }catch(error){
+  alert('Rename failed: '+error.message);
+ }
 }
+
+async function deleteDocument(id){
+ const doc=documents.find(d=>d.id===id);
+ if(!doc)return;
+
+ if(!confirm('Delete "'+(doc.title||'Untitled document')+'"? This cannot be undone.'))return;
+
+ try{
+  const transaction=db.transaction('documents','readwrite');
+  transaction.objectStore('documents').delete(id);
+
+  transaction.oncomplete=()=>{
+   loadDocuments();
+  };
+  transaction.onerror=()=>{
+   alert('Could not delete document.');
+  };
+ }catch(error){
+  alert('Delete failed: '+error.message);
+ }
+}
+
+function openDocument(id){
+ window.location.href='./editor.html?doc='+encodeURIComponent(id);
+}
+
+$('searchToggle').addEventListener('click',()=>{
+ $('searchPanel').classList.toggle('show');
+
+ if($('searchPanel').classList.contains('show')){
+  $('searchInput').focus();
+ }else{
+  $('searchInput').value='';
+  renderDocuments();
+ }
+});
+
+$('searchInput').addEventListener('input',renderDocuments);
+$('newDocument').addEventListener('click',openEditor);
+
+document.querySelectorAll('.nav-item').forEach(button=>{
+ button.addEventListener('click',()=>{
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+
+  button.classList.add('active');
+  $(button.dataset.screen).classList.add('active');
+ });
+});
+
+document.addEventListener('click',event=>{
+ if(!event.target.closest('.menu-wrap')){
+  document.querySelectorAll('.menu.show').forEach(m=>m.classList.remove('show'));
+ }
+});
 
 loadDocuments();
 </script>
