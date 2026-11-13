@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#24569a">
+<title>New Document - QUANTAM DOCS</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:#222;padding-bottom:30px}
+button{font:inherit;cursor:pointer}
+.header{
+ height:65px;display:flex;align-items:center;gap:20px;
+ padding:0 22px;border-bottom:1px solid #e5e5e5;
+ position:sticky;top:0;background:#fff;z-index:5
+}
+.back{border:0;background:none;font-size:28px;color:#555}
+.header h1{font-size:21px;font-weight:600}
+.container{max-width:1100px;margin:auto;padding:25px 22px}
+.label{font-size:16px;font-weight:600;margin-bottom:12px}
+.location{
+ width:100%;max-width:440px;padding:13px;
+ border:1px solid #aaa;border-radius:5px;
+ background:white;font-size:15px;margin-bottom:30px
+}
+.grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:24px
+}
+.template{border:0;background:none;text-align:center;color:#222;min-width:0}
+.preview{
+ height:230px;background:#fff;border:1px solid #e5e5e5;
+ border-radius:15px;box-shadow:0 3px 12px #00000015;
+ padding:22px;overflow:hidden;position:relative;
+ transition:.2s
+}
+.template:hover .preview{
+ box-shadow:0 5px 18px #0002;
+ border-color:#8aa9d5;transform:translateY(-2px)
+}
+.template-name{font-size:16px;font-weight:600;margin-top:11px}
+.paper{
+ width:100%;height:100%;text-align:left;
+ font-size:9px;color:#444;line-height:1.7;
+ overflow:hidden
+}
+.paper h2{font-size:15px;color:#24569a;margin-bottom:10px}
+.paper h3{font-size:11px;margin:10px 0 5px}
+.paper p{margin-bottom:6px}
+.paper .line{height:4px;background:#ddd;margin:8px 0;width:90%}
+.paper .short{width:55%}
+.paper .green{background:#75ad20;height:35px;margin-bottom:10px}
+.paper .orange{background:#e6a43c;height:3px;margin:8px 0}
+.blank-icon{font-size:65px;color:#24569a;display:grid;place-items:center;height:100%}
+.badge{position:absolute;right:12px;top:12px;color:#24569a;font-size:24px}
+.status{text-align:center;color:#777;font-size:13px;margin-top:22px}
+button:disabled{opacity:.6;cursor:wait}
+@media(max-width:600px){
+ .header{padding:0 14px}
+ .container{padding:22px 13px}
+ .grid{gap:18px 12px}
+ .preview{height:175px;padding:13px;border-radius:12px}
+ .template-name{font-size:14px}
+ .paper h2{font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+ <button class="back" onclick="history.back()" aria-label="Go back">‹</button>
+ <h1>New</h1>
+</header>
+
+<main class="container">
+ <div class="label">Create in</div>
+
+ <select class="location" id="folder">
+  <option value="general">This device › Documents</option>
+ </select>
+
+ <div class="grid">
+
+  <button class="template" data-template="blank">
+   <div class="preview">
+    <div class="blank-icon">＋</div>
+   </div>
+   <div class="template-name">Blank document</div>
+  </button>
+
+  <button class="template" data-template="welcome">
+   <div class="preview">
+    <span class="badge">➜</span>
+    <div class="paper" style="display:flex;align-items:center;justify-content:center;flex-direction:column">
+     <h2 style="font-size:25px">Welcome</h2>
+     <p>Take a tour of your workspace</p>
+    </div>
+   </div>
+   <div class="template-name">Welcome to Word</div>
+  </button>
+
+  <button class="template" data-template="list">
+   <div class="preview">
+    <div class="paper">
+     <h2>Make a List...</h2>
+     <p>1. Write your first task here.</p>
+     <p>2. Add another important task.</p>
+     <p>3. Complete your work.</p>
+     <div class="line"></div>
+     <div class="line short"></div>
+    </div>
+   </div>
+   <div class="template-name">Make a List</div>
+  </button>
+
+  <button class="template" data-template="journal">
+   <div class="preview">
+    <div class="paper">
+     <h2>My Journal</h2>
+     <div class="orange"></div>
+     <h3>Today's Entry</h3>
+     <p>Write about your day, thoughts and experiences.</p>
+     <div class="line"></div>
+     <div class="line"></div>
+     <div class="line short"></div>
+    </div>
+   </div>
+   <div class="template-name">Write a Journal</div>
+  </button>
+
+  <button class="template" data-template="report">
+   <div class="preview">
+    <div class="paper">
+     <h2 style="color:#222">REPORT TITLE</h2>
+     <h3>Introduction</h3>
+     <p>Write your introduction here...</p>
+     <h3>Main Content</h3>
+     <div class="line"></div>
+     <div class="line"></div>
+     <div class="line short"></div>
+     <h3>Conclusion</h3>
+     <div class="line"></div>
+    </div>
+   </div>
+   <div class="template-name">Professional Report</div>
+  </button>
+
+  <button class="template" data-template="letter">
+   <div class="preview">
+    <div class="paper">
+     <h2 style="color:#222">Your Name</h2>
+     <p>Date: __________</p>
+     <p>To,</p>
+     <p>Recipient Name</p>
+     <h3>Subject: __________</h3>
+     <p>Dear Sir/Madam,</p>
+     <div class="line"></div>
+     <div class="line"></div>
+     <p>Regards,</p>
+    </div>
+   </div>
+   <div class="template-name">Formal Letter</div>
+  </button>
+
+ </div>
+
+ <div class="status" id="status">Choose a template to create your document.</div>
+</main>
+
+<script>
+'use strict';
+
+const DB_NAME='QUANTAM_DOCS_LIBRARY';
+const DB_VERSION=1;
+
+const templates={
+ blank:{
+  title:'Untitled document',
+  html:'<p><br></p>'
+ },
+ welcome:{
+  title:'Welcome to QUANTAM DOCS',
+  html:'<h1>Welcome to QUANTAM DOCS</h1><p>Your document workspace is ready.</p><h2>Getting Started</h2><p>Start writing your document here.</p>'
+ },
+ list:{
+  title:'My List',
+  html:'<h1>My List</h1><ol><li>First task</li><li>Second task</li><li>Third task</li></ol>'
+ },
+ journal:{
+  title:'My Journal',
+  html:'<h1>My Journal</h1><h2>Today\\'s Entry</h2><p>Date: '+new Date().toLocaleDateString()+'</p><p>Write your thoughts here...</p>'
+ },
+ report:{
+  title:'Professional Report',
+  html:'<h1>Report Title</h1><h2>Introduction</h2><p>Write your introduction here.</p><h2>Main Content</h2><p>Write your main content here.</p><h2>Conclusion</h2><p>Write your conclusion here.</p>'
+ },
+ letter:{
+  title:'Formal Letter',
+  html:'<p>Your Name</p><p>Date: __________</p><p>To,</p><p>Recipient Name</p><h2>Subject: __________</h2><p>Dear Sir/Madam,</p><p>Write your letter here.</p><p>Regards,</p><p>Your Name</p>'
+ }
+};
+
+function makeId(){
+ return crypto.randomUUID ?
+  crypto.randomUUID() :
+  'doc-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+}
+
+function openDatabase(){
+ return new Promise((resolve,reject)=>{
+  const request=indexedDB.open(DB_NAME,DB_VERSION);
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+ });
+}
+
+async function createDocument(type,button){
+ const status=document.getElementById('status');
+ const data=templates[type];
+
+ if(!data)return;
+
+ document.querySelectorAll('.template').forEach(b=>b.disabled=true);
+ status.textContent='Creating document...';
+
+ let db;
+
+ try{
+  db=await openDatabase();
+
+  if(!db.objectStoreNames.contains('documents')){
+   throw new Error('Open the editor once to initialize the library.');
+  }
+
+  const now=new Date().toISOString();
+  const id=makeId();
+
+  const doc={
+   id:id,
+   title:data.title,
+   html:data.html,
+   folder:document.getElementById('folder').value||'general',
+   createdAt:now,
+   updatedAt:now
+  };
+
+  await new Promise((resolve,reject)=>{
+   const tx=db.transaction('documents','readwrite');
+   tx.objectStore('documents').add(doc);
+   tx.oncomplete=resolve;
+   tx.onerror=()=>reject(tx.error);
+   tx.onabort=()=>reject(tx.error||new Error('Creation cancelled'));
+  });
+
+  window.location.href='./editor.html?doc='+encodeURIComponent(id);
+
+ }catch(error){
+  status.textContent='Error: '+error.message;
+  document.querySelectorAll('.template').forEach(b=>b.disabled=false);
+ }finally{
+  if(db)db.close();
+ }
+}
+
+document.querySelectorAll('.template').forEach(button=>{
+ button.addEventListener('click',()=>{
+  createDocument(button.dataset.template,button);
+ });
+});
+</script>
+
+</body>
+</html>
