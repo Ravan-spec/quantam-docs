@@ -543,8 +543,10 @@ $('searchToggle').addEventListener('click',()=>{
 });
 
 $('searchInput').addEventListener('input',renderDocuments);
-$('newDocument').addEventListener('click',openEditor);
-
+$('newDocument').addEventListener('click',()=>{
+ window.location.href='./new.html';
+});
+ 
 document.querySelectorAll('.nav-item').forEach(button=>{
  button.addEventListener('click',()=>{
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
