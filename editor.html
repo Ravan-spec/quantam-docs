@@ -659,6 +659,9 @@ async function openDocument(id){
 
  isLoading=false;
  status('Document opened');
+ if(window.QUANTAM_PAGE_LAYOUT){
+ window.QUANTAM_PAGE_LAYOUT.load(id);
+ }
  await refreshLibrary();
 }
 
@@ -853,7 +856,7 @@ if(window.QUANTAM_DOCUMENT_TOOLS){
 }
 
 if(window.QUANTAM_PAGE_LAYOUT){
- window.QUANTAM_PAGE_LAYOUT.create();
+window.QUANTAM_PAGE_LAYOUT.create(() => currentId);
 }else{
  console.warn('Page Layout JS not loaded');
 }
