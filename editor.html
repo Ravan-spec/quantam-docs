@@ -236,7 +236,133 @@ button.danger{color:#b42318}
   }
  
 }
+
  
+/* QUANTAM DOCS - Professional Ribbon */
+
+#quantamRibbon {
+  background: #fff;
+  border: 1px solid #dce1ea;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  top: auto;
+}
+
+.ribbon-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 7px 9px 0;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+  scrollbar-width: thin;
+}
+
+.ribbon-tab {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 7px 7px 0 0;
+  padding: 11px 18px;
+  background: transparent;
+  color: #475569;
+  font-weight: 700;
+}
+
+.ribbon-tab.active {
+  background: white;
+  color: #4f46e5;
+  box-shadow: inset 0 -3px #4f46e5;
+}
+
+.ribbon-content {
+  padding: 9px;
+}
+
+.ribbon-pane {
+  display: none;
+  min-width: 0;
+}
+
+.ribbon-pane.active {
+  display: block;
+}
+
+.ribbon-section {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ribbon-section p {
+  margin: 0;
+  color: #697386;
+  font-size: 12px;
+}
+
+.ribbon-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#tab-home #toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 5px 0;
+}
+
+#tab-home .extra {
+  padding: 8px 0 2px;
+  border-top: 1px solid #edf0f5;
+}
+
+#tab-home #toolbar button {
+  border: 0;
+}
+
+#tab-home #toolbar select {
+  max-width: 145px;
+}
+
+#insertPanel,
+#layoutPanel,
+#reviewPanel {
+  min-width: 0;
+}
+
+@media(max-width:760px) {
+  .ribbon-tabs {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .ribbon-tab {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+  .ribbon-content {
+    padding: 7px;
+  }
+
+  #tab-home #toolbar {
+    gap: 3px;
+  }
+
+  #tab-home #toolbar .ql-formats {
+    margin-right: 3px !important;
+  }
+
+  #tab-home #toolbar .ql-font {
+    width: 115px;
+  }
+
+  #tab-home #toolbar .ql-size {
+    width: 65px;
+  }
+}
  
 </style>
 </head>
@@ -345,53 +471,158 @@ button.danger{color:#b42318}
      <option selected>Normal</option>
      <option value="1">Heading 1</option>
      <option value="2">Heading 2</option>
-     <option value="3">Heading 3</option>
-    </select>
-   </span>
 
-   <span class="ql-formats">
-    <button class="ql-bold" aria-label="Bold"></button>
-    <button class="ql-italic" aria-label="Italic"></button>
-    <button class="ql-underline" aria-label="Underline"></button>
-    <button class="ql-strike" aria-label="Strikethrough"></button>
-   </span>
+     <section class="toolbar" id="quantamRibbon">
 
-   <span class="ql-formats">
-    <select class="ql-color" aria-label="Text colour"></select>
-    <select class="ql-background" aria-label="Highlight colour"></select>
-   </span>
-
-   <span class="ql-formats">
-    <button class="ql-list" value="ordered" aria-label="Numbered list"></button>
-    <button class="ql-list" value="bullet" aria-label="Bulleted list"></button>
-    <button class="ql-blockquote" aria-label="Quote"></button>
-   </span>
-
-   <span class="ql-formats">
-    <select class="ql-align" aria-label="Alignment">
-     <option selected></option>
-     <option value="center"></option>
-     <option value="right"></option>
-     <option value="justify"></option>
-    </select>
-    <button class="ql-indent" value="-1" aria-label="Decrease indent"></button>
-    <button class="ql-indent" value="+1" aria-label="Increase indent"></button>
-   </span>
-
-   <span class="ql-formats">
-    <button class="ql-link" aria-label="Insert link"></button>
-    <button class="ql-image" aria-label="Insert image"></button>
-    <button class="ql-clean" aria-label="Clear formatting"></button>
-   </span>
-
+  <div class="ribbon-tabs" role="tablist">
+    <button class="ribbon-tab active" data-tab="home" aria-selected="true">Home</button>
+    <button class="ribbon-tab" data-tab="insert" aria-selected="false">Insert</button>
+    <button class="ribbon-tab" data-tab="layout" aria-selected="false">Layout</button>
+    <button class="ribbon-tab" data-tab="review" aria-selected="false">Review</button>
+    <button class="ribbon-tab" data-tab="view" aria-selected="false">View</button>
   </div>
 
-  <div class="extra">
-   <button id="undoBtn">↶ Undo</button>
-   <button id="redoBtn">↷ Redo</button>
-   <button id="deleteBtn" class="danger">Delete Document</button>
+  <div class="ribbon-content">
+
+    <!-- HOME -->
+    <div class="ribbon-pane active" id="tab-home">
+
+      <div id="toolbar">
+
+        <span class="ql-formats">
+          <select class="ql-font" aria-label="Font family">
+            <option value="arial" selected>Arial</option>
+            <option value="aptos">Aptos</option>
+            <option value="calibri">Calibri</option>
+            <option value="cambria">Cambria</option>
+            <option value="times-new-roman">Times New Roman</option>
+            <option value="georgia">Georgia</option>
+            <option value="verdana">Verdana</option>
+            <option value="tahoma">Tahoma</option>
+            <option value="trebuchet-ms">Trebuchet MS</option>
+            <option value="courier-new">Courier New</option>
+            <option value="consolas">Consolas</option>
+            <option value="garamond">Garamond</option>
+            <option value="book-antiqua">Book Antiqua</option>
+            <option value="century-gothic">Century Gothic</option>
+            <option value="comic-sans-ms">Comic Sans MS</option>
+            <option value="impact">Impact</option>
+            <option value="palatino-linotype">Palatino Linotype</option>
+            <option value="lucida-console">Lucida Console</option>
+            <option value="segoe-ui">Segoe UI</option>
+            <option value="microsoft-sans-serif">Microsoft Sans Serif</option>
+            <option value="franklin-gothic">Franklin Gothic</option>
+            <option value="rockwell">Rockwell</option>
+            <option value="constantia">Constantia</option>
+            <option value="candara">Candara</option>
+            <option value="corbel">Corbel</option>
+            <option value="century-schoolbook">Century Schoolbook</option>
+            <option value="bahnschrift">Bahnschrift</option>
+            <option value="mangal">Mangal</option>
+            <option value="nirmala-ui">Nirmala UI</option>
+            <option value="utsaah">Utsaah</option>
+            <option value="kokila">Kokila</option>
+          </select>
+
+          <select class="ql-size" aria-label="Font size">
+            <option value="8pt">8</option>
+            <option value="10pt">10</option>
+            <option value="11pt">11</option>
+            <option value="12pt" selected>12</option>
+            <option value="14pt">14</option>
+            <option value="16pt">16</option>
+            <option value="18pt">18</option>
+            <option value="20pt">20</option>
+            <option value="24pt">24</option>
+            <option value="28pt">28</option>
+            <option value="36pt">36</option>
+            <option value="48pt">48</option>
+            <option value="72pt">72</option>
+          </select>
+
+          <select class="ql-header" aria-label="Heading">
+            <option selected>Normal</option>
+            <option value="1">Heading 1</option>
+            <option value="2">Heading 2</option>
+            <option value="3">Heading 3</option>
+          </select>
+        </span>
+
+        <span class="ql-formats">
+          <button class="ql-bold" aria-label="Bold"></button>
+          <button class="ql-italic" aria-label="Italic"></button>
+          <button class="ql-underline" aria-label="Underline"></button>
+          <button class="ql-strike" aria-label="Strikethrough"></button>
+        </span>
+
+        <span class="ql-formats">
+          <select class="ql-color" aria-label="Text colour"></select>
+          <select class="ql-background" aria-label="Highlight colour"></select>
+        </span>
+
+        <span class="ql-formats">
+          <button class="ql-list" value="ordered" aria-label="Numbered list"></button>
+          <button class="ql-list" value="bullet" aria-label="Bulleted list"></button>
+          <button class="ql-blockquote" aria-label="Quote"></button>
+        </span>
+
+        <span class="ql-formats">
+          <select class="ql-align" aria-label="Alignment">
+            <option selected></option>
+            <option value="center"></option>
+            <option value="right"></option>
+            <option value="justify"></option>
+          </select>
+          <button class="ql-indent" value="-1" aria-label="Decrease indent"></button>
+          <button class="ql-indent" value="+1" aria-label="Increase indent"></button>
+        </span>
+
+        <span class="ql-formats">
+          <button class="ql-link" aria-label="Insert link"></button>
+          <button class="ql-image" aria-label="Insert image"></button>
+          <button class="ql-clean" aria-label="Clear formatting"></button>
+        </span>
+
+      </div>
+
+      <div class="extra">
+        <button id="undoBtn">↶ Undo</button>
+        <button id="redoBtn">↷ Redo</button>
+        <button id="deleteBtn" class="danger">Delete Document</button>
+      </div>
+
+    </div>
+
+    <!-- INSERT -->
+    <div class="ribbon-pane" id="tab-insert">
+      <div id="insertPanel"></div>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="ribbon-pane" id="tab-layout">
+      <div id="layoutPanel"></div>
+    </div>
+
+    <!-- REVIEW -->
+    <div class="ribbon-pane" id="tab-review">
+      <div id="reviewPanel"></div>
+    </div>
+
+    <!-- VIEW -->
+    <div class="ribbon-pane" id="tab-view">
+
+      <div class="view-tools">
+        <strong>Zoom</strong>
+        <button type="button" id="zoomOut">−</button>
+        <span id="zoomValue">100%</span>
+        <button type="button" id="zoomIn">+</button>
+        <button type="button" id="zoomReset">Reset</button>
+      </div>
+
+    </div>
+
   </div>
- </section>
+     </section>
 
  <section class="stage">
   <div id="editor"><p><br></p></div>
@@ -861,7 +1092,99 @@ window.QUANTAM_PAGE_LAYOUT.create(() => currentId);
  console.warn('Page Layout JS not loaded');
 }
   
-  
+// ===================================
+// QUANTAM DOCS - RIBBON TAB SYSTEM
+// ===================================
+
+const imagePanel = document.querySelector(".qim-panel");
+const insertTarget = document.getElementById("insertPanel");
+
+if (imagePanel && insertTarget) {
+  insertTarget.appendChild(imagePanel);
+}
+
+const layoutPanel = document.querySelector("#qpl-panel");
+const layoutTarget = document.getElementById("layoutPanel");
+
+if (layoutPanel && layoutTarget) {
+  layoutTarget.appendChild(layoutPanel);
+}
+
+const reviewPanel = document.querySelector("#quantam-document-tools");
+const reviewTarget = document.getElementById("reviewPanel");
+
+if (reviewPanel && reviewTarget) {
+  reviewTarget.appendChild(reviewPanel);
+}
+
+const ribbonTabs = document.querySelectorAll(".ribbon-tab");
+const ribbonPanes = document.querySelectorAll(".ribbon-pane");
+
+ribbonTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+
+    const tabName = tab.dataset.tab;
+
+    ribbonTabs.forEach((item) => {
+      const isActive = item === tab;
+      item.classList.toggle("active", isActive);
+      item.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+
+    ribbonPanes.forEach((pane) => {
+      pane.classList.toggle("active", pane.id === "tab-" + tabName);
+    });
+
+  });
+});
+
+// ===================================
+// QUANTAM DOCS - ZOOM CONTROLS
+// ===================================
+
+let editorZoom = 100;
+
+const zoomValue = document.getElementById("zoomValue");
+const zoomIn = document.getElementById("zoomIn");
+const zoomOut = document.getElementById("zoomOut");
+const zoomReset = document.getElementById("zoomReset");
+
+function updateEditorZoom() {
+
+  if (zoomValue) {
+    zoomValue.textContent = editorZoom + "%";
+  }
+
+  const editorArea = document.querySelector("#editor");
+
+  if (editorArea) {
+    editorArea.style.zoom = editorZoom + "%";
+  }
+}
+
+if (zoomIn) {
+  zoomIn.addEventListener("click", () => {
+    editorZoom = Math.min(200, editorZoom + 10);
+    updateEditorZoom();
+  });
+}
+
+if (zoomOut) {
+  zoomOut.addEventListener("click", () => {
+    editorZoom = Math.max(50, editorZoom - 10);
+    updateEditorZoom();
+  });
+}
+
+if (zoomReset) {
+  zoomReset.addEventListener("click", () => {
+    editorZoom = 100;
+    updateEditorZoom();
+  });
+}
+
+updateEditorZoom();
+ 
   quill.on('text-change',scheduleSave);
   $('docTitle').addEventListener('input',scheduleSave);
   $('folderSelect').addEventListener('change',scheduleSave);
