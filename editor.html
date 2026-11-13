@@ -132,14 +132,81 @@ button.danger{color:#b42318}
  #editor .ql-editor{min-height:75vh;padding:28px 19px}
  #editor .ql-editor.ql-blank::before{left:19px;right:19px}
 }
-@media print{
- .topbar,.sidebar,.docbar,.toolbar,.no-print{display:none!important}
- .layout{display:block;padding:0}
- .panel{border:0;padding:0}
- .stage{background:white;padding:0;border:0}
- #editor{width:100%;border:0;box-shadow:none}
- #editor .ql-editor{padding:0;min-height:0}
+
+
+@media print {
+
+  @page {
+    margin: 20mm;
+  }
+
+  html, body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Hide all application controls */
+  .topbar,
+  .sidebar,
+  .docbar,
+  .toolbar,
+  .extra,
+  .no-print,
+  .main > :not(.stage) {
+    display: none !important;
+  }
+
+  /* Keep only the document area */
+  .layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .main {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .stage {
+    display: block !important;
+    background: white !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #editor {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #editor .ql-editor {
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #editor .ql-editor img {
+    max-width: 100% !important;
+    height: auto;
+  }
 }
+ 
+ 
 </style>
 </head>
 
