@@ -204,6 +204,37 @@ button.danger{color:#b42318}
     max-width: 100% !important;
     height: auto;
   }
+
+ 
+  #editor,
+  #editor .ql-container,
+  #editor .ql-editor,
+  #editor .ql-editor p,
+  #editor .ql-editor div,
+  #editor .ql-editor h1,
+  #editor .ql-editor h2,
+  #editor .ql-editor h3,
+  #editor .ql-editor li {
+    break-before: auto !important;
+    break-after: auto !important;
+    page-break-before: auto !important;
+    page-break-after: auto !important;
+  }
+
+  #editor .ql-editor {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+    orphans: 2;
+    widows: 2;
+  }
+
+  #editor .ql-editor p,
+  #editor .ql-editor div,
+  #editor .ql-editor li {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+ 
 }
  
  
