@@ -25,18 +25,238 @@
   let panel = null;
   let editor = null;
   let printStyle = null;
+  let pendingSettings = { ...DEFAULT_SETTINGS };
 
-  function create(getId) {
-    if (document.getElementById("qpl-panel")) return;
+  function validate(s) {
+    if (!s || !PAGE_SIZES[s.size]) return false;
 
+    if (
+      s.orientation !== "portrait" &&
+      s.orientation !== "landscape"
+    ) return false;
+
+    return ["top", "bottom", "left", "right"].every(key =>
+      Number.isFinite(Number(s[key])) &&
+      Number(s[key]) >= 5 &&
+      Number(s[key]) <= 50
+    );
+  }
+
+  function readSettings(id) {
+    const settings = { ...DEFAULT_SETTINGS };
+
+    if (!id) return settings;
+
+    try {
+      const saved = localStorage.getItem(STORAGE_PREFIX + id);
+
+      if (saved) {
+        const parsed = JSON.parse(saved);
+
+        if (validate(parsed)) {
+          return {
+            size: parsed.size,
+            orientation: parsed.orientation,
+            top: Number(parsed.top),
+            bottom: Number(parsed.bottom),
+            left: Number(parsed.left),
+            right: Number(parsed.right)
+          };
+        }
+      }
+    } catch (error) {
+      console.warn("Page settings could not be loaded.", error);
+    }
+
+    return settings;
+  }
+
+  function saveSettings(settings) {
+    const id = getDocumentId() || activeDocumentId;
+
+    if (!id) {
+      showStatus("Document ID not available.", true);
+      return false;
+    }
+
+    try {
+      localStorage.setItem(
+        STORAGE_PREFIX + id,
+        JSON.stringify(settings)
+      );
+      return true;
+    } catch (error) {
+      showStatus("Settings could not be saved.", true);
+      return false;
+    }
+  }
+
+  function control(id) {
+    return panel ? panel.querySelector("#" + id) : null;
+  }
+
+  function showStatus(message, error = false) {
+    const status = control("qplStatus");
+
+    if (!status) return;
+
+    status.textContent = message;
+    status.style.color = error ? "#b42318" : "#687386";
+  }
+
+  function getSettings() {
+    return {
+      size: control("qplSize").value,
+      orientation: control("qplOrientation").value,
+      top: Number(control("qplTop").value),
+      bottom: Number(control("qplBottom").value),
+      left: Number(control("qplLeft").value),
+      right: Number(control("qplRight").value)
+    };
+  }
+
+  function fillControls(settings) {
+    if (!panel) return;
+
+    control("qplSize").value = settings.size;
+    control("qplOrientation").value = settings.orientation;
+    control("qplTop").value = settings.top;
+    control("qplBottom").value = settings.bottom;
+    control("qplLeft").value = settings.left;
+    control("qplRight").value = settings.right;
+  }
+
+  function apply(settings, save = true) {
+    if (!validate(settings)) {
+      showStatus("Check page size, orientation and margins.", true);
+      return false;
+    }
+
+    editor = document.querySelector("#editor");
+
+    if (!editor) {
+      showStatus("Editor not found.", true);
+      return false;
+    }
+
+    const dimensions = PAGE_SIZES[settings.size];
+    let [width, height] = dimensions;
+
+    if (settings.orientation === "landscape") {
+      [width, height] = [height, width];
+    }
+
+    const pxWidth = width * 96 / 25.4;
+    const pxHeight = height * 96 / 25.4;
+
+    editor.style.width = pxWidth + "px";
+    editor.style.maxWidth = "100%";
+
+    const content = editor.querySelector(".ql-editor");
+
+    if (content) {
+      content.style.minHeight = pxHeight + "px";
+      content.style.padding =
+        settings.top + "mm " +
+        settings.right + "mm " +
+        settings.bottom + "mm " +
+        settings.left + "mm";
+
+      content.style.boxSizing = "border-box";
+    }
+
+    if (printStyle) {
+      printStyle.textContent = `
+        @page {
+          size: ${settings.size} ${settings.orientation};
+          margin: ${settings.top}mm ${settings.right}mm
+                  ${settings.bottom}mm ${settings.left}mm;
+        }
+
+        @media print {
+          .topbar,
+          .sidebar,
+          .docbar,
+          .toolbar,
+          .no-print {
+            display: none !important;
+          }
+
+          .layout {
+            display: block !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+
+          .stage {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: white !important;
+          }
+
+          #editor {
+            width: auto !important;
+            max-width: none !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+          }
+
+          #editor .ql-editor {
+            min-height: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+          }
+
+          #editor img {
+            max-width: 100% !important;
+          }
+        }
+      `;
+    }
+
+    if (save && !saveSettings(settings)) return false;
+
+    pendingSettings = { ...settings };
+
+    showStatus(
+      settings.size + " " + settings.orientation +
+      " applied for this document."
+    );
+
+    return true;
+  }
+
+  function load(docId) {
+    activeDocumentId = docId || getDocumentId() || null;
+
+    pendingSettings = readSettings(activeDocumentId);
+
+    if (!panel) return true;
+
+    fillControls(pendingSettings);
+    return apply(pendingSettings, false);
+  }
+
+  function create(getId, mountElement) {
     getDocumentId = typeof getId === "function" ? getId : () => null;
 
-    const toolbar = document.querySelector(".toolbar");
-    editor = document.querySelector("#editor");
-    const stage = document.querySelector(".stage");
+    if (panel && panel.isConnected) {
+      load(getDocumentId());
+      return {
+        panel,
+        destroy() {
+          panel.remove();
+          panel = null;
+        }
+      };
+    }
 
-    if (!toolbar || !editor || !stage) {
-      throw new Error("Editor layout elements not found.");
+    editor = document.querySelector("#editor");
+
+    if (!editor) {
+      throw new Error("Editor element not found.");
     }
 
     panel = document.createElement("section");
@@ -70,19 +290,19 @@
 
       <div class="qpl-grid">
         <label>Top
-          <input id="qplTop" type="number" min="5" max="50" value="20">
+          <input id="qplTop" type="number" min="5" max="50">
         </label>
 
         <label>Bottom
-          <input id="qplBottom" type="number" min="5" max="50" value="20">
+          <input id="qplBottom" type="number" min="5" max="50">
         </label>
 
         <label>Left
-          <input id="qplLeft" type="number" min="5" max="50" value="20">
+          <input id="qplLeft" type="number" min="5" max="50">
         </label>
 
         <label>Right
-          <input id="qplRight" type="number" min="5" max="50" value="20">
+          <input id="qplRight" type="number" min="5" max="50">
         </label>
       </div>
 
@@ -98,48 +318,68 @@
 
     panel.style.cssText = "margin:12px 0;display:grid;gap:12px;";
 
-    const style = document.createElement("style");
-    style.id = "qpl-style";
+    let style = document.getElementById("qpl-style");
+
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "qpl-style";
+      document.head.appendChild(style);
+    }
+
     style.textContent = `
       #qpl-panel label {
-        display:grid;
-        gap:5px;
-        font-size:13px;
+        display: grid;
+        gap: 5px;
+        font-size: 13px;
       }
 
       #qpl-panel select,
       #qpl-panel input {
-        width:100%;
-        min-width:0;
-        padding:9px;
-        border:1px solid #dce1ea;
-        border-radius:7px;
-        background:white;
-        color:#172033;
-        font-size:14px;
+        width: 100%;
+        min-width: 0;
+        padding: 9px;
+        border: 1px solid #dce1ea;
+        border-radius: 7px;
+        background: white;
+        color: #172033;
+        font-size: 14px;
       }
 
-      .qpl-grid {
-        display:grid;
-        grid-template-columns:repeat(4,minmax(0,1fr));
-        gap:9px;
+      #qpl-panel .qpl-grid {
+        display: grid;
+        grid-template-columns: repeat(4,minmax(0,1fr));
+        gap: 9px;
       }
 
-      .qpl-actions {
-        display:flex;
-        gap:8px;
-        flex-wrap:wrap;
+      #qpl-panel .qpl-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
       }
 
       @media(max-width:600px) {
-        .qpl-grid {
-          grid-template-columns:repeat(2,minmax(0,1fr));
+        #qpl-panel .qpl-grid {
+          grid-template-columns: repeat(2,minmax(0,1fr));
         }
       }
     `;
 
-    document.head.appendChild(style);
-    toolbar.insertAdjacentElement("afterend", panel);
+    const mount =
+      typeof mountElement === "string"
+        ? document.querySelector(mountElement)
+        : mountElement;
+
+    if (mount && mount.appendChild) {
+      mount.appendChild(panel);
+    } else {
+      const toolbar = document.querySelector(".toolbar");
+
+      if (!toolbar) {
+        throw new Error("Toolbar or Layout tab container not found.");
+      }
+
+      toolbar.insertAdjacentElement("afterend", panel);
+    }
 
     printStyle = document.getElementById("qpl-print-style");
 
@@ -149,199 +389,24 @@
       document.head.appendChild(printStyle);
     }
 
-    const $ = id => panel.querySelector("#" + id);
-
-    function getSettings() {
-      return {
-        size: $("qplSize").value,
-        orientation: $("qplOrientation").value,
-        top: Number($("qplTop").value),
-        bottom: Number($("qplBottom").value),
-        left: Number($("qplLeft").value),
-        right: Number($("qplRight").value)
-      };
-    }
-
-    function showStatus(message, error = false) {
-      $("qplStatus").textContent = message;
-      $("qplStatus").style.color = error ? "#b42318" : "#687386";
-    }
-
-    function validate(settings) {
-      if (!PAGE_SIZES[settings.size]) return false;
-
-      if (
-        settings.orientation !== "portrait" &&
-        settings.orientation !== "landscape"
-      ) return false;
-
-      return [
-        settings.top,
-        settings.bottom,
-        settings.left,
-        settings.right
-      ].every(value =>
-        Number.isFinite(value) && value >= 5 && value <= 50
-      );
-    }
-
-    function saveSettings(settings) {
-      const id = getDocumentId();
-
-      if (!id) {
-        showStatus("Document ID not available. Settings not saved.", true);
-        return false;
-      }
-
-      try {
-        localStorage.setItem(
-          STORAGE_PREFIX + id,
-          JSON.stringify(settings)
-        );
-        return true;
-      } catch (error) {
-        showStatus("Settings could not be saved.", true);
-        return false;
-      }
-    }
-
-    function apply(settings, save = true) {
-      if (!validate(settings)) {
-        showStatus("Check page size, orientation and margins.", true);
-        return false;
-      }
-
-      const dimensions = PAGE_SIZES[settings.size];
-      let [width, height] = dimensions;
-
-      if (settings.orientation === "landscape") {
-        [width, height] = [height, width];
-      }
-
-      const pxWidth = width * 96 / 25.4;
-      const pxHeight = height * 96 / 25.4;
-
-      editor.style.width = pxWidth + "px";
-      editor.style.maxWidth = "100%";
-
-      const content = editor.querySelector(".ql-editor");
-
-      if (content) {
-        content.style.minHeight = pxHeight + "px";
-        content.style.padding =
-          settings.top + "mm " +
-          settings.right + "mm " +
-          settings.bottom + "mm " +
-          settings.left + "mm";
-        content.style.boxSizing = "border-box";
-      }
-
-      printStyle.textContent = `
-        @page {
-          size: ${settings.size} ${settings.orientation};
-          margin: ${settings.top}mm ${settings.right}mm
-                  ${settings.bottom}mm ${settings.left}mm;
-        }
-
-        @media print {
-          .topbar, .sidebar, .docbar, .toolbar,
-          .no-print {
-            display:none !important;
-          }
-
-          .layout {
-            display:block !important;
-            padding:0 !important;
-            margin:0 !important;
-          }
-
-          .stage {
-            padding:0 !important;
-            margin:0 !important;
-            border:0 !important;
-            background:white !important;
-          }
-
-          #editor {
-            width:auto !important;
-            max-width:none !important;
-            border:0 !important;
-            box-shadow:none !important;
-            margin:0 !important;
-          }
-
-          #editor .ql-editor {
-            min-height:0 !important;
-            padding:0 !important;
-            overflow:visible !important;
-          }
-
-          #editor img {
-            max-width:100% !important;
-          }
-        }
-      `;
-
-      if (save && !saveSettings(settings)) return false;
-
-      showStatus(
-        settings.size + " " + settings.orientation +
-        " applied for this document."
-      );
-
-      return true;
-    }
-
-    function load(docId) {
-      activeDocumentId = docId || getDocumentId();
-
-      let settings = { ...DEFAULT_SETTINGS };
-
-      if (activeDocumentId) {
-        try {
-          const saved = localStorage.getItem(
-            STORAGE_PREFIX + activeDocumentId
-          );
-
-          if (saved) {
-            const parsed = JSON.parse(saved);
-
-            if (validate(parsed)) {
-              settings = parsed;
-            }
-          }
-        } catch (error) {
-          console.warn("Page settings could not be loaded.", error);
-        }
-      }
-
-      $("qplSize").value = settings.size;
-      $("qplOrientation").value = settings.orientation;
-      $("qplTop").value = settings.top;
-      $("qplBottom").value = settings.bottom;
-      $("qplLeft").value = settings.left;
-      $("qplRight").value = settings.right;
-
-      apply(settings, false);
-      showStatus("Settings loaded for this document.");
-    }
-
-    $("qplApply").addEventListener("click", () => {
+    control("qplApply").addEventListener("click", () => {
       apply(getSettings(), true);
     });
 
-    $("qplDefault").addEventListener("click", () => {
-      $("qplSize").value = DEFAULT_SETTINGS.size;
-      $("qplOrientation").value = DEFAULT_SETTINGS.orientation;
-      $("qplTop").value = DEFAULT_SETTINGS.top;
-      $("qplBottom").value = DEFAULT_SETTINGS.bottom;
-      $("qplLeft").value = DEFAULT_SETTINGS.left;
-      $("qplRight").value = DEFAULT_SETTINGS.right;
-
-      apply(getSettings(), true);
+    control("qplDefault").addEventListener("click", () => {
+      fillControls({ ...DEFAULT_SETTINGS });
+      apply({ ...DEFAULT_SETTINGS }, true);
     });
 
     load(getDocumentId());
+
+    return {
+      panel,
+      destroy() {
+        if (panel) panel.remove();
+        panel = null;
+      }
+    };
   }
 
   window.QUANTAM_PAGE_LAYOUT = {
