@@ -2,7 +2,16 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "quantam_docs_page_layout_v1";
+  const STORAGE_PREFIX = "quantam_docs_page_layout_v2_";
+
+  const DEFAULT_SETTINGS = {
+    size: "A4",
+    orientation: "portrait",
+    top: 20,
+    bottom: 20,
+    left: 20,
+    right: 20
+  };
 
   const PAGE_SIZES = {
     A4: [210, 297],
@@ -11,25 +20,28 @@
     Legal: [215.9, 355.6]
   };
 
-  function create() {
+  let activeDocumentId = null;
+  let getDocumentId = () => null;
+  let panel = null;
+  let editor = null;
+  let printStyle = null;
+
+  function create(getId) {
     if (document.getElementById("qpl-panel")) return;
 
+    getDocumentId = typeof getId === "function" ? getId : () => null;
+
     const toolbar = document.querySelector(".toolbar");
-    const editor = document.querySelector("#editor");
+    editor = document.querySelector("#editor");
     const stage = document.querySelector(".stage");
 
     if (!toolbar || !editor || !stage) {
       throw new Error("Editor layout elements not found.");
     }
 
-    const panel = document.createElement("section");
+    panel = document.createElement("section");
     panel.id = "qpl-panel";
     panel.className = "panel no-print";
-    panel.style.cssText = `
-      margin:12px 0;
-      display:grid;
-      gap:12px;
-    `;
 
     panel.innerHTML = `
       <strong>Page Layout & Page Setup</strong>
@@ -60,12 +72,15 @@
         <label>Top
           <input id="qplTop" type="number" min="5" max="50" value="20">
         </label>
+
         <label>Bottom
           <input id="qplBottom" type="number" min="5" max="50" value="20">
         </label>
+
         <label>Left
           <input id="qplLeft" type="number" min="5" max="50" value="20">
         </label>
+
         <label>Right
           <input id="qplRight" type="number" min="5" max="50" value="20">
         </label>
@@ -80,6 +95,8 @@
         Choose your page settings.
       </div>
     `;
+
+    panel.style.cssText = "margin:12px 0;display:grid;gap:12px;";
 
     const style = document.createElement("style");
     style.id = "qpl-style";
@@ -99,6 +116,7 @@
         border-radius:7px;
         background:white;
         color:#172033;
+        font-size:14px;
       }
 
       .qpl-grid {
@@ -123,11 +141,15 @@
     document.head.appendChild(style);
     toolbar.insertAdjacentElement("afterend", panel);
 
-    const $ = id => panel.querySelector("#" + id);
+    printStyle = document.getElementById("qpl-print-style");
 
-    const printStyle = document.createElement("style");
-    printStyle.id = "qpl-print-style";
-    document.head.appendChild(printStyle);
+    if (!printStyle) {
+      printStyle = document.createElement("style");
+      printStyle.id = "qpl-print-style";
+      document.head.appendChild(printStyle);
+    }
+
+    const $ = id => panel.querySelector("#" + id);
 
     function getSettings() {
       return {
@@ -140,33 +162,56 @@
       };
     }
 
-    function showStatus(text, error = false) {
-      $("qplStatus").textContent = text;
+    function showStatus(message, error = false) {
+      $("qplStatus").textContent = message;
       $("qplStatus").style.color = error ? "#b42318" : "#687386";
     }
 
-    function apply(settings, save = true) {
-      const dimensions = PAGE_SIZES[settings.size];
+    function validate(settings) {
+      if (!PAGE_SIZES[settings.size]) return false;
 
-      if (!dimensions) {
-        showStatus("Invalid page size.", true);
-        return;
-      }
+      if (
+        settings.orientation !== "portrait" &&
+        settings.orientation !== "landscape"
+      ) return false;
 
-      const margins = [
+      return [
         settings.top,
         settings.bottom,
         settings.left,
         settings.right
-      ];
+      ].every(value =>
+        Number.isFinite(value) && value >= 5 && value <= 50
+      );
+    }
 
-      if (margins.some(value =>
-        !Number.isFinite(value) || value < 5 || value > 50
-      )) {
-        showStatus("Margins must be between 5 and 50 mm.", true);
-        return;
+    function saveSettings(settings) {
+      const id = getDocumentId();
+
+      if (!id) {
+        showStatus("Document ID not available. Settings not saved.", true);
+        return false;
       }
 
+      try {
+        localStorage.setItem(
+          STORAGE_PREFIX + id,
+          JSON.stringify(settings)
+        );
+        return true;
+      } catch (error) {
+        showStatus("Settings could not be saved.", true);
+        return false;
+      }
+    }
+
+    function apply(settings, save = true) {
+      if (!validate(settings)) {
+        showStatus("Check page size, orientation and margins.", true);
+        return false;
+      }
+
+      const dimensions = PAGE_SIZES[settings.size];
       let [width, height] = dimensions;
 
       if (settings.orientation === "landscape") {
@@ -184,8 +229,10 @@
       if (content) {
         content.style.minHeight = pxHeight + "px";
         content.style.padding =
-          `${settings.top}mm ${settings.right}mm ` +
-          `${settings.bottom}mm ${settings.left}mm`;
+          settings.top + "mm " +
+          settings.right + "mm " +
+          settings.bottom + "mm " +
+          settings.left + "mm";
         content.style.boxSizing = "border-box";
       }
 
@@ -235,72 +282,70 @@
         }
       `;
 
-      if (save) {
+      if (save && !saveSettings(settings)) return false;
+
+      showStatus(
+        settings.size + " " + settings.orientation +
+        " applied for this document."
+      );
+
+      return true;
+    }
+
+    function load(docId) {
+      activeDocumentId = docId || getDocumentId();
+
+      let settings = { ...DEFAULT_SETTINGS };
+
+      if (activeDocumentId) {
         try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+          const saved = localStorage.getItem(
+            STORAGE_PREFIX + activeDocumentId
+          );
+
+          if (saved) {
+            const parsed = JSON.parse(saved);
+
+            if (validate(parsed)) {
+              settings = parsed;
+            }
+          }
         } catch (error) {
-          showStatus("Settings could not be saved.", true);
-          return;
+          console.warn("Page settings could not be loaded.", error);
         }
       }
 
-      showStatus(
-        `${settings.size} ${settings.orientation} applied. ` +
-        "Use Print / PDF to check the printed pages."
-      );
-    }
+      $("qplSize").value = settings.size;
+      $("qplOrientation").value = settings.orientation;
+      $("qplTop").value = settings.top;
+      $("qplBottom").value = settings.bottom;
+      $("qplLeft").value = settings.left;
+      $("qplRight").value = settings.right;
 
-    function loadSettings() {
-      try {
-        const saved = JSON.parse(
-          localStorage.getItem(STORAGE_KEY) || "null"
-        );
-
-        const settings = saved || {
-          size: "A4",
-          orientation: "portrait",
-          top: 20,
-          bottom: 20,
-          left: 20,
-          right: 20
-        };
-
-        $("qplSize").value = PAGE_SIZES[settings.size]
-          ? settings.size : "A4";
-
-        $("qplOrientation").value =
-          settings.orientation === "landscape"
-            ? "landscape" : "portrait";
-
-        $("qplTop").value = settings.top ?? 20;
-        $("qplBottom").value = settings.bottom ?? 20;
-        $("qplLeft").value = settings.left ?? 20;
-        $("qplRight").value = settings.right ?? 20;
-
-        apply(getSettings(), false);
-      } catch (error) {
-        showStatus("Could not load page settings.", true);
-      }
+      apply(settings, false);
+      showStatus("Settings loaded for this document.");
     }
 
     $("qplApply").addEventListener("click", () => {
-      apply(getSettings());
+      apply(getSettings(), true);
     });
 
     $("qplDefault").addEventListener("click", () => {
-      $("qplSize").value = "A4";
-      $("qplOrientation").value = "portrait";
-      $("qplTop").value = 20;
-      $("qplBottom").value = 20;
-      $("qplLeft").value = 20;
-      $("qplRight").value = 20;
+      $("qplSize").value = DEFAULT_SETTINGS.size;
+      $("qplOrientation").value = DEFAULT_SETTINGS.orientation;
+      $("qplTop").value = DEFAULT_SETTINGS.top;
+      $("qplBottom").value = DEFAULT_SETTINGS.bottom;
+      $("qplLeft").value = DEFAULT_SETTINGS.left;
+      $("qplRight").value = DEFAULT_SETTINGS.right;
 
-      apply(getSettings());
+      apply(getSettings(), true);
     });
 
-    loadSettings();
+    load(getDocumentId());
   }
 
-  window.QUANTAM_PAGE_LAYOUT = { create };
+  window.QUANTAM_PAGE_LAYOUT = {
+    create,
+    load
+  };
 })();
-      
